@@ -1,0 +1,94 @@
+@import './pseudoHelper';
+
+// *** Start Spin Cycle code ***
+@mixin ic-Spin-cycle-animation(
+  $animation-name: spin-cycle,
+  $animation-grow-to: 1,
+  $animation-shrink-to: 1,
+  $color-spin-highlight: $white,
+  $color-spin-base: $darkGray
+) {
+  @keyframes #{$animation-name} {
+    from {
+      fill: $color-spin-highlight;
+      transform: scale($animation-grow-to);
+    }
+    to {
+      fill: $color-spin-base;
+      transform: scale($animation-shrink-to);
+    }
+  }
+}
+
+@mixin ic-Spin-cycle-branding(
+  $animation-name: spin-cycle,
+  $animation-grow-to: 1,
+  $animation-shrink-to: 1,
+  $spin-width: 36px,
+  $spin-height: 36px,
+  $spin-margin: 6px 12px,
+  $color-spin-base: $darkGray,
+  $color-spin-highlight: $white,
+  $number-of-paths: 8
+) {
+  @include ic-Spin-cycle-animation(
+    $animation-name,
+    $animation-grow-to,
+    $animation-shrink-to,
+    $color-spin-highlight,
+    $color-spin-base
+  );
+  margin: $spin-margin;
+  width: $spin-width;
+  height: $spin-height;
+  > svg {
+    width: $spin-width;
+    height: $spin-height;
+    > * {
+      fill: $color-spin-base;
+      animation-name: $animation-name;
+      animation-duration: #{$number-of-paths * 0.1}s;
+      @for $i from 1 through ($number-of-paths) {
+        &:nth-of-type(#{$i}) {
+          animation-delay: #{$i * 0.1}s;
+        }
+      }
+    }
+  }
+}
+
+%ic-Spin-cycle {
+  box-sizing: border-box;
+  display: inline-block;
+  vertical-align: middle;
+  overflow: visible;
+  > svg {
+    display: block;
+    overflow: visible;
+    > * {
+      transform: translate3d(0, 0, 0);
+      transform-origin: center;
+      animation-iteration-count: infinite;
+    }
+  }
+}
+
+.ic-Spin-cycle--classic {
+  @extend %ic-Spin-cycle;
+  @include ic-Spin-cycle-branding;
+  margin-top: 90%;
+}
+
+.loading-container {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  z-index: 900;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+  background-color: $gray;
+  opacity: 0.6;
+}

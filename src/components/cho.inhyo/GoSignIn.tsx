@@ -7,7 +7,9 @@ import TextView from '../../foundations/cho.inhyo/TextView'
 import GoSignInStyle from '../../styles/cho.inhyo/components/GoSignInStyle'
 import { RoutePath } from '../../utils/cho.inhyo/types'
 
-const GoSignIn = function ({ history }: Router.RouteComponentProps) {
+export default Router.withRouter(function GoSignIn({
+  history,
+}: Router.RouteComponentProps) {
   const { t } = useTranslation()
 
   const onClick = () => {
@@ -24,6 +26,4 @@ const GoSignIn = function ({ history }: Router.RouteComponentProps) {
       />
     </Box>
   )
-}
-
-export default Router.withRouter(GoSignIn)
+})

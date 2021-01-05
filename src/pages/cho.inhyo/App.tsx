@@ -22,27 +22,30 @@ export default function App() {
   const loading = Recoil.useRecoilValue(loadingState)
 
   return (
-    <I18nextProvider i18n={i18n}>
-      <ThemeProvider theme={theme}>
-        <div className="App">
-          <OnLoading loading={loading}>
-            <LoadingSpinner />
-          </OnLoading>
-          <Suspense fallback={<></>}>
-            <BrowserRouter>
-              <Auth>
-                <Switch>
-                  <Route path={RoutePath.ROOT} exact component={Redirector} />
-                  <Route path={RoutePath.LOGIN} component={LoginPage} />
-                  <Route path={RoutePath.SIGNIN} component={SignInPage} />
-                  <Route path={RoutePath.MAIN} component={MainPage} />
-                  <Route component={NoPage} />
-                </Switch>
-              </Auth>
-            </BrowserRouter>
-          </Suspense>
-        </div>
-      </ThemeProvider>
-    </I18nextProvider>
+    <>
+      <div data-test="loginTitle">aaaaaa</div>
+      <I18nextProvider i18n={i18n}>
+        <ThemeProvider theme={theme}>
+          <div className="App">
+            <OnLoading loading={loading}>
+              <LoadingSpinner />
+            </OnLoading>
+            <Suspense fallback={<></>}>
+              <BrowserRouter>
+                <Auth>
+                  <Switch>
+                    <Route path={RoutePath.ROOT} exact component={Redirector} />
+                    <Route path={RoutePath.LOGIN} component={LoginPage} />
+                    <Route path={RoutePath.SIGNIN} component={SignInPage} />
+                    <Route path={RoutePath.MAIN} component={MainPage} />
+                    <Route component={NoPage} />
+                  </Switch>
+                </Auth>
+              </BrowserRouter>
+            </Suspense>
+          </div>
+        </ThemeProvider>
+      </I18nextProvider>
+    </>
   )
 }

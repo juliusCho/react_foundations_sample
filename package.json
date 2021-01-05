@@ -50,13 +50,24 @@
       "last 1 safari version"
     ]
   },
+  "jest": {
+    "snapshotSerializers": ["enzyme-to-json/serializer"],
+    "collectCoverageFrom": ["./src/tests/**/*.tsx"],
+    "coverageReporters": ["text"]
+  },
   "devDependencies": {
+    "@types/": "wojtekmaj/enzyme-adapter-react-17",
+    "@types/enzyme": "^3.10.8",
+    "@types/enzyme-to-json": "^1.5.4",
     "@types/i18next": "^13.0.0",
     "@types/react-i18next": "^8.1.0",
     "@types/react-router-dom": "^5.1.6",
     "@types/styled-components": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.11.1",
     "@typescript-eslint/parser": "^4.11.1",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.4.1",
+    "enzyme": "^3.11.0",
+    "enzyme-to-json": "^3.6.1",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.0",
     "eslint-plugin-react": "^7.21.5",

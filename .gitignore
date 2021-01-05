@@ -351,6 +351,7 @@ $RECYCLE.BIN/
 # https://yarnpkg.com/advanced/qa#which-files-should-be-gitignored
 
 .yarn/*
+.yarn.loock
 !.yarn/releases
 !.yarn/plugins
 !.yarn/sdks

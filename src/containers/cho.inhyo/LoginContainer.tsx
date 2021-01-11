@@ -60,11 +60,7 @@ export default function LoginContainer({ onLogin }: Props) {
 
   return (
     <Box direction="vertical" style={LoginContainerStyle.container}>
-      <TextView
-        value={t('login.title')}
-        style={LoginContainerStyle.title}
-        data-test="loginTitle"
-      />
+      <TextView value={t('login.title')} style={LoginContainerStyle.title} />
       <SocialLogin loginAttempt={loginAttempt} />
       <TextView value="OR" style={LoginContainerStyle.or} />
       <Login loginAttempt={loginAttempt} attemptSuccess={attemptSuccess} />

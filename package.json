@@ -56,7 +56,6 @@
     "coverageReporters": ["text"]
   },
   "devDependencies": {
-    "@types/": "wojtekmaj/enzyme-adapter-react-17",
     "@types/enzyme": "^3.10.8",
     "@types/enzyme-to-json": "^1.5.4",
     "@types/i18next": "^13.0.0",

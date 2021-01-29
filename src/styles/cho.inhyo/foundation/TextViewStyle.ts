@@ -4,9 +4,9 @@ import { StyledPropType } from '../global/theme'
 const TextViewStyle = {
   text: styled.span`
     ${(props: StyledPropType) => css`
-      font-family: ${props.theme.font.basic};
-      font-size: ${props.theme.font.size.medium};
-      color: ${props.theme.palette.black};
+      font-weight: ${props.theme.font.text1.fontWeight};
+      font-size: ${props.theme.font.text1.fontSize};
+      color: ${props.theme.palette.mono.black};
     `}
     background-color: transparent;
     margin: 5px;

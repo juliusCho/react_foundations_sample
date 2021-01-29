@@ -4,8 +4,8 @@ import { StyledPropType } from '../global/theme'
 const LabelButonStyle = {
   button: styled.span`
     ${(props: StyledPropType) => css`
-      font-family: ${props.theme.font.basic};
-      font-size: ${props.theme.font.size.medium};
+      font-weight: ${props.theme.font.item1.fontWeight};
+      font-size: ${props.theme.font.item1.fontSize};
     `}
     border: none;
     border-radius: 10px;

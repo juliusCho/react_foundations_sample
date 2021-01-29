@@ -20,7 +20,7 @@ const AlertOrConfirm = (
       confirmButtonText,
       showCancelButton: confirm,
       cancelButtonText,
-      confirmButtonColor: theme.palette.blue,
+      confirmButtonColor: theme.palette.main.blue,
       reverseButtons: true,
       showCloseButton: true,
     }

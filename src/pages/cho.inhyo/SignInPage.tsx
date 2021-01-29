@@ -32,7 +32,7 @@ export default function SignInPage({ history }: RouteComponentProps) {
       <LabelButton
         value={t('signin.goBack')}
         onClick={onClick}
-        style={{ color: theme.palette.blue }}
+        style={{ color: theme.palette.main.blue }}
       />
     </Box>
   )

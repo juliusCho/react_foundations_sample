@@ -37,7 +37,7 @@ export default function MainPage({ history }: RouteComponentProps) {
       <LabelButton
         value={t('mainPage.logout')}
         onClick={onClick}
-        style={{ color: theme.palette.blue }}
+        style={{ color: theme.palette.main.blue }}
       />
     </Box>
   )

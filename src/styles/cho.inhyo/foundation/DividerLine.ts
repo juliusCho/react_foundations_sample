@@ -5,7 +5,7 @@ export const DividerLineStyle = {
   line: styled.div`
     border: none;
     ${(props: StyledPropType) => css`
-      background-color: ${props.theme.palette.lightGray};
+      background-color: ${props.theme.palette.mono.lightGray};
     `}
   `,
 }

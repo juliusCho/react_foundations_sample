@@ -4,11 +4,9 @@ const GoSignInStyle = {
   container: {
     marginTop: '20px',
   },
-  text: {
-    fontSize: theme.font.size.xsmedium,
-  },
+  text: theme.font.text2,
   button: {
-    color: theme.palette.blue,
+    color: theme.palette.main.blue,
   },
 }
 

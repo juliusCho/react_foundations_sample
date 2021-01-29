@@ -3,6 +3,21 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import endpoint from './endpoints.config'
 
+export const Months = [
+  'january',
+  'february',
+  'march',
+  'april',
+  'may',
+  'june',
+  'july',
+  'august',
+  'september',
+  'october',
+  'november',
+  'december',
+]
+
 export const locales = {
   ko: {
     translation: {
@@ -32,6 +47,27 @@ export const locales = {
         yourPasswordIs: '당신의 비밀번호는 [{{password}}] 입니다.',
         signinMsg: '아직도 회원이 아니신가요?',
         goSignin: '회원가입',
+      },
+      etc: {
+        ok: '선택',
+        time: '시간',
+      },
+      calendar: {
+        mission: '마감 할일 카드',
+        attend: '마감 일정 카드',
+        dueto: '{{date}} 마감',
+        january: '1월',
+        february: '2월',
+        march: '3월',
+        april: '4월',
+        may: '5월',
+        june: '6월',
+        july: '7월',
+        august: '8월',
+        september: '9월',
+        october: '10월',
+        november: '11월',
+        december: '12월',
       },
     },
   },
@@ -63,6 +99,27 @@ export const locales = {
         yourPasswordIs: 'Your password is [{{password}}].',
         signinMsg: 'Still not a member?',
         goSignin: 'Sign In',
+      },
+      etc: {
+        ok: 'Select',
+        time: 'Time',
+      },
+      calendar: {
+        mission: 'Due Mission Cards',
+        attend: 'Due Attend Cards',
+        dueto: 'Due to {{date}}',
+        january: 'January',
+        february: 'February',
+        march: 'March',
+        april: 'April',
+        may: 'May',
+        june: 'June',
+        july: 'July',
+        august: 'August',
+        september: 'September',
+        october: 'October',
+        november: 'November',
+        december: 'December',
       },
     },
   },

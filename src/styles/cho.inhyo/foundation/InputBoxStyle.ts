@@ -9,22 +9,22 @@ export const InputBoxStyle = {
     margin: 3px;
 
     ${(props: StyledPropType) => css`
-      font-family: ${props.theme.font.basic};
-      font-size: ${props.theme.font.size.smedium};
-      color: ${props.theme.palette.black};
-      border: 1px solid ${props.theme.palette.gray};
-      background-color: ${props.theme.palette.input};
+      font-family: ${props.theme.font.text1.fontWeight};
+      font-size: ${props.theme.font.text1.fontSize};
+      color: ${props.theme.palette.mono.black};
+      border: 1px solid ${props.theme.palette.mono.gray};
+      background-color: ${props.theme.palette.mono.lightGray};
 
       &::-webkit-input-placeholder {
-        font-weight: lighter;
-        color: ${props.theme.palette.gray};
-        font-size: ${props.theme.font.size.xsmedium};
+        color: ${props.theme.palette.mono.gray};
+        font-size: ${props.theme.font.small.fontSize};
+        font-weight: ${props.theme.font.small.fontWeight};
       }
 
       &:-ms-input-placeholder {
-        font-weight: lighter;
-        color: ${props.theme.palette.gray};
-        font-size: ${props.theme.font.size.xsmedium};
+        font-size: ${props.theme.font.small.fontSize};
+        font-weight: ${props.theme.font.small.fontWeight};
+        color: ${props.theme.palette.mono.gray};
       }
     `}
   `,

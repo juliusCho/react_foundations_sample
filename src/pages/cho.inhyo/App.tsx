@@ -17,6 +17,7 @@ const MainPage = React.lazy(() => import('./MainPage'))
 const NoPage = React.lazy(() => import('./NoPage'))
 const Redirector = React.lazy(() => import('./Redirector'))
 const SignInPage = React.lazy(() => import('./SignInPage'))
+const CalendarPage = React.lazy(() => import('./CalendarPage'))
 
 export default function App() {
   const loading = Recoil.useRecoilValue(loadingState)
@@ -36,6 +37,7 @@ export default function App() {
                   <Route path={RoutePath.LOGIN} component={LoginPage} />
                   <Route path={RoutePath.SIGNIN} component={SignInPage} />
                   <Route path={RoutePath.MAIN} component={MainPage} />
+                  <Route path={RoutePath.CALENDAR} component={CalendarPage} />
                   <Route component={NoPage} />
                 </Switch>
               </Auth>

@@ -7,7 +7,7 @@ const SocialLoginStyle = {
   icon: {
     width: '35px',
     height: '35px',
-    color: theme.palette.white,
+    color: theme.palette.mono.white,
     borderRadius: '5px',
     margin: '5px',
   },
@@ -19,7 +19,7 @@ const SocialLoginStyle = {
   },
   kakao: {
     backgroundColor: theme.palette.kakao,
-    color: theme.palette.black,
+    color: theme.palette.mono.black,
   },
   google: {
     backgroundColor: theme.palette.google,

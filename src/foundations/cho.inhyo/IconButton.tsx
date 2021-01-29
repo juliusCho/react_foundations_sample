@@ -4,7 +4,7 @@ import { Icons } from '../../utils/cho.inhyo/types'
 
 type Props = {
   icon: Icons
-  onClick: (e?: React.MouseEvent<HTMLElement>) => void
+  onClick?: (e?: React.MouseEvent<HTMLElement>) => void
   style?: React.CSSProperties
   className?: string
 }

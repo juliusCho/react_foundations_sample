@@ -8,9 +8,9 @@ const LoginStyle = {
     width: 'calc(100% - 25px)',
   },
   button: {
-    backgroundColor: theme.palette.blue,
-    color: theme.palette.white,
-    fontSize: theme.font.size.smedium,
+    backgroundColor: theme.palette.main.blue,
+    color: theme.palette.mono.white,
+    ...theme.font.text1,
     borderRadius: '5px',
     margin: '7px 0 20px 0',
     height: '35px',

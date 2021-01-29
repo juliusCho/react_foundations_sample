@@ -18,6 +18,16 @@ export const Months = [
   'december',
 ]
 
+export const Days = [
+  'sunday',
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+]
+
 export const locales = {
   ko: {
     translation: {
@@ -68,6 +78,13 @@ export const locales = {
         october: '10월',
         november: '11월',
         december: '12월',
+        sunday: '일요일',
+        monday: '월요일',
+        tuesday: '화요일',
+        wednesday: '수요일',
+        thursday: '목요일',
+        friday: '금요일',
+        saturday: '토요일',
       },
     },
   },
@@ -120,6 +137,13 @@ export const locales = {
         october: 'October',
         november: 'November',
         december: 'December',
+        sunday: 'Sunday',
+        monday: 'Monday',
+        tuesday: 'Tuesday',
+        wednesday: 'Wednesday',
+        thursday: 'Thursday',
+        friday: 'Friday',
+        saturday: 'Saturday',
       },
     },
   },

@@ -15,9 +15,14 @@ import { Icons } from '../../utils/cho.inhyo/types'
 interface Props {
   dueDate?: Date
   onClick: (date: Date) => void
+  startDay?: 0 | 1 | 2 | 3 | 4 | 5 | 6
 }
 
-export default function CalendarContainer({ dueDate, onClick }: Props) {
+export default function CalendarContainer({
+  dueDate,
+  onClick,
+  startDay = 0,
+}: Props) {
   const { t } = useTranslation()
 
   const setLoading = Recoil.useSetRecoilState(loadingState)
@@ -43,7 +48,9 @@ export default function CalendarContainer({ dueDate, onClick }: Props) {
     }
   }, [isMounted, dueDate])
 
+  // const DayList:
   const MonthList: React.ReactNode[] = []
+
   for (let monthNum = 1; monthNum <= 12; monthNum++) {
     MonthList.push(
       <Box

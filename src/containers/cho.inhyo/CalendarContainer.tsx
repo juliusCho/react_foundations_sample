@@ -2,6 +2,7 @@ import moment from 'moment'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import Recoil from 'recoil'
+import DateTimePicker from '../../components/cho.inhyo/DateTimePicker'
 import Box from '../../foundations/cho.inhyo/Box'
 import IconButton from '../../foundations/cho.inhyo/IconButton'
 import LabelButton from '../../foundations/cho.inhyo/LabelButton'
@@ -113,9 +114,13 @@ export default function CalendarContainer({
     }
   }
 
-  const onSelect = (year: number, month: number) => {
-    console.log('year', year)
-    console.log('month', month)
+  const onSelect = (date?: Date | Array<Date | undefined>) => {
+    console.log('date', date)
+    if (date && !Array.isArray(date)) {
+      setYear(Number(moment(date).format('YYYY')))
+      setMonth(Number(moment(date).format('MM')))
+      setShowYearMonthModal(false)
+    }
   }
 
   return (
@@ -123,6 +128,14 @@ export default function CalendarContainer({
       <Box direction="vertical" style={CalendarContainerStyle.container}>
         <Box direction="vertical" style={CalendarContainerStyle.header}>
           <Box direction="horizontal" style={CalendarContainerStyle.headerTop}>
+            <div style={CalendarContainerStyle.pickerModal}>
+              <DateTimePicker
+                date={new Date(year, month - 1, 1)}
+                changeDate={onSelect}
+                isOpen={showYearMonthModal}
+                datePick={false}
+              />
+            </div>
             <Box
               direction="horizontal"
               style={CalendarContainerStyle.headerTopSub}>

@@ -53,7 +53,7 @@ export default function TimePicker({
         height: '20px',
         fontSize: '14px',
         position: 'absolute' as const,
-        top: value ? '7px' : date ? '28px' : '12px',
+        bottom: value ? '2px' : '8px',
         left: value
           ? id === 'end'
             ? '6.5px'

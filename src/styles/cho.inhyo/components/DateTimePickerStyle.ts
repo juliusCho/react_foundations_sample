@@ -59,11 +59,12 @@ const DatePickerStyle = {
     }
 
     & .react-calendar__navigation {
-      margin-bottom: 0;
+      margin-bottom: 5px;
     }
 
     & .react-calendar__navigation__label {
       margin-top: 5px;
+      border-radius: 10px;
     }
 
     ${(props: StyledPropType) => css`
@@ -136,6 +137,7 @@ const DatePickerStyle = {
         display: flex;
         justify-content: center;
         align-items: center;
+        border-radius: 10px !important;
       }
 
       & .react-calendar__tile:hover {
@@ -181,6 +183,11 @@ const DatePickerStyle = {
 
       & .react-calendar__tile--rangeBothEnds {
         border-radius: 50% !important;
+      }
+
+      &
+        .react-calendar__tile--rangeBothEnds.react-calendar__year-view__months__month {
+        border-radius: 10px !important;
       }
 
       & .react-calendar__tile:disabled {

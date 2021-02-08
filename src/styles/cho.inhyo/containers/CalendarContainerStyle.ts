@@ -23,6 +23,11 @@ const CalendarContainerStyle = {
     width: '50%',
     justifyContent: 'space-between' as const,
   },
+  pickerModal: {
+    position: 'absolute' as const,
+    top: '20px',
+    left: 'calc(50% - 140px)',
+  },
   topItem: {
     ...theme.font.titleLarge,
   },

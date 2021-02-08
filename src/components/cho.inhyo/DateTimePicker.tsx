@@ -28,6 +28,7 @@ interface Props {
   minDate?: Date
   calculatedTop?: string
   calculatedLeft?: string
+  datePick?: boolean
 }
 
 export default function DateTimePicker({
@@ -41,10 +42,13 @@ export default function DateTimePicker({
   minDate,
   calculatedTop,
   calculatedLeft,
+  datePick = true,
 }: Props) {
   const { t } = useTranslation()
 
-  const [viewMode, setViewMode] = React.useState<Detail>('month')
+  const [viewMode, setViewMode] = React.useState<Detail>(
+    datePick ? 'month' : 'year',
+  )
   const [containerHeight, setContainerHeight] = React.useState<string>(
     timeDisplay ? '470px' : selectRange ? '420px' : '350px',
   )
@@ -62,7 +66,7 @@ export default function DateTimePicker({
 
   React.useEffect(() => {
     if (isMounted()) {
-      setViewMode(() => 'month')
+      setViewMode(() => (datePick ? 'month' : 'year'))
 
       const initialize = () => {
         setValue(() => undefined)
@@ -130,7 +134,7 @@ export default function DateTimePicker({
         initialize()
       }
     }
-  }, [isMounted, isOpen, date, selectRange])
+  }, [isMounted, isOpen, date, datePick, selectRange])
 
   React.useEffect(() => {
     if (isMounted()) {
@@ -155,6 +159,9 @@ export default function DateTimePicker({
   }, [isMounted, viewMode, timeDisplay])
 
   const onViewChange = (props: ViewCallbackProperties) => {
+    // eslint-disable-next-line react/prop-types
+    if (!datePick && props.view === 'month') return
+
     // eslint-disable-next-line react/prop-types
     setViewMode(props.view)
   }
@@ -354,6 +361,11 @@ export default function DateTimePicker({
     changeDate(date)
   }
 
+  const onClickMonth = (date: Date) => {
+    setValue(date)
+    changeDate(date)
+  }
+
   return (
     <>
       <DateTimePickerStyle.exterior
@@ -388,8 +400,10 @@ export default function DateTimePicker({
           isOpen={isOpen}
           onCalendarClose={onCalendarClose}
           selectRange={selectRange}
+          onClickMonth={datePick ? undefined : onClickMonth}
           onViewChange={onViewChange}
           view={viewMode}
+          defaultView={datePick ? undefined : 'year'}
           calendarType="US"
         />
         {timeDisplay &&

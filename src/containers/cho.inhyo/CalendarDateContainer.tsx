@@ -28,6 +28,7 @@ export default function CalendarDateContainer({
   >([])
   const [dateRow, setDateRow] = React.useState<React.ReactNode[]>([])
   const [lastScrollTop, setLastScrollTop] = React.useState(0)
+  const [init, setInit] = React.useState(true)
 
   const focusMonth = (focusingYear: number, focusingMonth: number) => {
     if (!_dateList || _dateList.length === 0) return
@@ -67,6 +68,19 @@ export default function CalendarDateContainer({
 
     onClick(date)
   }
+
+  React.useEffect(() => {
+    if (isMounted()) {
+      if (!init) return
+      if (_dateBody.current && dateRow.length > 0) {
+        focusMonth(
+          Number(yearMonth.substr(0, 4)),
+          Number(yearMonth.substr(4, 2)) - 1,
+        )
+        setInit(() => false)
+      }
+    }
+  }, [isMounted, init, _dateBody.current, dateRow.length, yearMonth])
 
   React.useEffect(() => {
     if (!isMounted()) return
@@ -335,11 +349,8 @@ export default function CalendarDateContainer({
   }, [isMounted, onWheel])
 
   return (
-    <Box
-      direction="vertical"
-      style={CalendarDateContainerStyle.container}
-      refObj={_dateBody}>
+    <CalendarDateContainerStyle.container ref={_dateBody}>
       {dateRow}
-    </Box>
+    </CalendarDateContainerStyle.container>
   )
 }

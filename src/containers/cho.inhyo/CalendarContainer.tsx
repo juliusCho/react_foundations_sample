@@ -115,7 +115,6 @@ export default function CalendarContainer({
   }
 
   const onSelect = (date?: Date | Array<Date | undefined>) => {
-    console.log('date', date)
     if (date && !Array.isArray(date)) {
       setYear(Number(moment(date).format('YYYY')))
       setMonth(Number(moment(date).format('MM')))

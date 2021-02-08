@@ -12,11 +12,19 @@ export default function CalendarPage({ platform }: Props) {
   const [showDateSchedule, setShowDateSchedule] = React.useState(false)
   const [containerWidth, setContainerWidth] = React.useState('100%')
 
+  const data: any[] = []
+
   const onClickDate = (date: Date) => {
+    setDueDate(date)
+
+    if (data.length === 0) {
+      setContainerWidth('100%')
+      return
+    }
+
     if (platform === 'web') {
       setContainerWidth('70%')
     }
-    setDueDate(date)
     setShowDateSchedule(true)
   }
 

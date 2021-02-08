@@ -1,5 +1,5 @@
 import React from 'react'
-import CalendarContainer from '../../containers/cho.inhyo/CalenderContainer'
+import CalendarContainer from '../../containers/cho.inhyo/CalendarContainer'
 import DateScheduleListContainer from '../../containers/cho.inhyo/DateScheduleListContainer'
 import Box from '../../foundations/cho.inhyo/Box'
 
@@ -21,10 +21,14 @@ export default function CalendarPage({ platform }: Props) {
   }
 
   return (
-    <Box direction="horizontal" style={{ width: containerWidth }}>
-      <CalendarContainer dueDate={dueDate} onClick={onClickDate} />
+    <Box direction="horizontal" style={{ width: '100%' }}>
+      <Box direction="vertical" style={{ width: containerWidth }}>
+        <CalendarContainer dueDate={dueDate} onClick={onClickDate} />
+      </Box>
       {showDateSchedule && !!dueDate && (
-        <DateScheduleListContainer platform={platform} date={dueDate} />
+        <Box direction="vertical" style={{ width: '30%' }}>
+          <DateScheduleListContainer platform={platform} date={dueDate} />
+        </Box>
       )}
     </Box>
   )

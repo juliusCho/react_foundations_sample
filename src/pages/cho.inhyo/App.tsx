@@ -37,7 +37,12 @@ export default function App() {
                   <Route path={RoutePath.LOGIN} component={LoginPage} />
                   <Route path={RoutePath.SIGNIN} component={SignInPage} />
                   <Route path={RoutePath.MAIN} component={MainPage} />
-                  <Route path={RoutePath.CALENDAR} component={CalendarPage} />
+                  <Route
+                    path={RoutePath.CALENDAR}
+                    render={(props) => (
+                      <CalendarPage platform="web" {...props} />
+                    )}
+                  />
                   <Route component={NoPage} />
                 </Switch>
               </Auth>

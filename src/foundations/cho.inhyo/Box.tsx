@@ -7,6 +7,8 @@ type Props = {
   style?: React.CSSProperties
   className?: string
   onClick?: (e?: React.MouseEvent<HTMLDivElement>) => void
+  refObj?: React.RefObject<HTMLDivElement> | null
+  id?: string
 }
 
 export default function Box({
@@ -15,6 +17,8 @@ export default function Box({
   style = {},
   className,
   onClick,
+  refObj,
+  id,
 }: Props) {
   if (direction === 'vertical') {
     style.flexDirection = 'column'
@@ -23,7 +27,12 @@ export default function Box({
   }
 
   return (
-    <BoxStyle.box className={className} style={style} onClick={onClick}>
+    <BoxStyle.box
+      id={id}
+      className={className}
+      style={style}
+      onClick={onClick}
+      ref={refObj}>
       {children}
     </BoxStyle.box>
   )

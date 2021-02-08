@@ -38,7 +38,6 @@ export default function LoginPage({ history }: RouteComponentProps) {
   }
 
   const changeDate = (date?: Date | Array<Date | undefined>) => {
-    console.log('여기까진 오나/?', date)
     setLocalDate(date)
     setShowPicker(false)
   }

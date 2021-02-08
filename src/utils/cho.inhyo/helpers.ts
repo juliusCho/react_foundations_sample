@@ -34,3 +34,33 @@ export const convertToDate = (input: string) => {
 
 // Date class object with integrated format
 export const getToday = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
+
+// Add zero for 1 digit number to string
+export const makeTwoDigits = (num: number) => {
+  return num < 0 ? '00' : num < 10 ? `0${num}` : String(num)
+}
+
+// extract year, month, date, disability from calendar date id
+export const extractValFromId = (id: string) => {
+  const extractedYear = id.substr(0, 4)
+  const extractedMonth = id.substr(id.indexOf('-') + 1, 2)
+  const extractedDate = id.substr(id.lastIndexOf('-') + 1, 2)
+  const disabled = id.indexOf(':disabled') > -1
+
+  return {
+    extractedYear,
+    extractedMonth,
+    extractedDate,
+    disabled,
+  }
+}
+
+// change year based on month
+export const setYear = (year: number, month: number) => {
+  return String(month < 0 ? year - 1 : month > 11 ? year + 1 : year)
+}
+
+// change month based on month seq
+export const setMonth = (month: number) => {
+  return makeTwoDigits(month < 0 ? 12 + month : month > 11 ? month - 12 : month)
+}

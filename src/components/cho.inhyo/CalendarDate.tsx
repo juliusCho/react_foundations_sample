@@ -10,6 +10,7 @@ import { useIsMounted } from '../../utils/cho.inhyo/hooks'
 
 interface Props {
   chosenDate?: Date
+  startWeekOffset: number
   day: number
   month: number
   year: number
@@ -23,6 +24,7 @@ interface Props {
 
 export default function CalendarDate({
   chosenDate,
+  startWeekOffset,
   day,
   month,
   year,
@@ -38,6 +40,7 @@ export default function CalendarDate({
   const [selected, setSelected] = React.useState(false)
   const [isToday, setIsToday] = React.useState(false)
   const [isWeekend, setIsWeekend] = React.useState(false)
+  const [thisWeek, setThisWeek] = React.useState<Date[]>([])
 
   const isMounted = useIsMounted()
 
@@ -91,6 +94,19 @@ export default function CalendarDate({
     setSelected(() => moment(chosenDate).format('YYYYMMDD') === thisDay)
   }, [isMounted, chosenDate, actualYear, actualMonth, day])
 
+  React.useEffect(() => {
+    if (!isMounted()) return
+
+    const week: Date[] = []
+
+    for (let i = 0; i < 7; i++) {
+      const dt = new Date(actualYear, actualMonth, day)
+      dt.setDate(dt.getDate() + startWeekOffset + i)
+      week.push(dt)
+    }
+    setThisWeek(() => week)
+  }, [isMounted, actualYear, actualMonth, day, startWeekOffset])
+
   const onClickDay = (e?: React.MouseEvent<HTMLDivElement>) => {
     if (e) {
       e.preventDefault()
@@ -118,14 +134,15 @@ export default function CalendarDate({
       )}-${helper.makeTwoDigits(day)}${!thisMonth ? ':disabled' : ''}`}>
       <Box direction="horizontal" style={CalendarDateStyle.title}>
         <TextView
-          value={String(day)}
+          value={day === 1 ? `${actualMonth + 1}/${day}` : String(day)}
           style={{
+            ...theme.font.sub,
             marginRight: '10px',
             border: 'none' as const,
             borderRadius: '50%',
-            padding: '7px 5px 5px 5px',
+            padding: '9px 5px 5px 5px',
             width: '24px',
-            height: '22px',
+            height: '20px',
             textAlign: 'center' as const,
             backgroundColor: isToday
               ? polished.lighten(thisMonth ? 0 : 0.3, theme.palette.main.red)

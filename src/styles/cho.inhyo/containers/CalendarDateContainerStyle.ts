@@ -18,6 +18,7 @@ const CalendarDateContainerStyle = {
     width: '100%',
     minHeight: '120px',
     maxHeight: '350px',
+    height: '200px',
     borderTop: `1px solid ${theme.palette.mono.gray}`,
     margin: 0,
     alignItems: 'flex-start' as const,

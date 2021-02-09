@@ -181,6 +181,7 @@ export default function CalendarDateContainer({
                   monthNum,
                 )}_${displayWeekNum}_${displayDate ? displayDate[num] : num}`}
                 chosenDate={chosenDate}
+                startWeekOffset={displayDate ? 0 - num : 1 - num}
                 day={displayDate ? displayDate[num] : num}
                 year={year}
                 month={Number(helper.setMonth(monthNum))}
@@ -194,8 +195,26 @@ export default function CalendarDateContainer({
                 }
                 onClick={onClickDate}
                 _date={_date}>
-                <div>1</div>
-                <div>2</div>
+                {year === 2021 &&
+                  monthNum === 1 &&
+                  (displayDate ? displayDate[num] : num) === 6 && (
+                    // <Box
+                    //   direction="horizontal"
+                    //   style={{
+                    //     justifyContent: 'flex-start' as const,
+                    //   }}>
+                    <div
+                      style={{
+                        wordBreak: 'keep-all' as const,
+                        whiteSpace: 'pre' as const,
+                        position: 'absolute' as const,
+                        left: 0,
+                      }}>
+                      145yw45w45uw45uw45uw4tus w35w45 w4jw4jw45jw4 jw4jw4j
+                    </div>
+                    // </Box>
+                  )}
+                {/* <div>2</div>
                 <div>3</div>
                 <div>4</div>
                 <div>5</div>
@@ -208,7 +227,7 @@ export default function CalendarDateContainer({
                 <div>12</div>
                 <div>13</div>
                 <div>14</div>
-                <div>15</div>
+                <div>15</div> */}
               </CalendarDate>,
             )
             _tmpDateList.push(_date)
@@ -293,7 +312,7 @@ export default function CalendarDateContainer({
         const position = _date.current.getBoundingClientRect()
 
         if (
-          extractedDate === '15' &&
+          extractedDate === '12' &&
           disabled &&
           position.top >= 0 &&
           position.bottom <= _dateBody.current.clientHeight

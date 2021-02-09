@@ -127,6 +127,15 @@ export default function CalendarDate({
               theme.palette.main.turquoise,
             )
           : undefined,
+        borderLeft:
+          thisWeek.length === 0
+            ? undefined
+            : helper.compareDate(
+                thisWeek[0],
+                new Date(actualYear, actualMonth, day),
+              )
+            ? undefined
+            : `1px solid ${theme.palette.mono.paleWhite}`,
       }}
       refObj={_date}
       id={`${actualYear}-${helper.makeTwoDigits(
@@ -157,14 +166,13 @@ export default function CalendarDate({
           }}
         />
       </Box>
-      <Box
-        direction="vertical"
+      <div
         style={{
           ...CalendarDateStyle.contents,
           opacity: !thisMonth ? 0.2 : undefined,
         }}>
         {children}
-      </Box>
+      </div>
     </Box>
   )
 }

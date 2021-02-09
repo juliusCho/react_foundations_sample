@@ -75,3 +75,8 @@ export const getBaseSeq = (day: number, base: number) => {
       return diff < 0 ? 7 + diff : diff
   }
 }
+
+// compare two dates
+export const compareDate = (day1: Date, day2: Date) => {
+  return moment(day1).format('YYYYMMDD') === moment(day2).format('YYYYMMDD')
+}

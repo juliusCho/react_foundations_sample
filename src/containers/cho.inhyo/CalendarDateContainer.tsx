@@ -1,6 +1,7 @@
 import moment from 'moment'
 import React from 'react'
 import CalendarDate from '../../components/cho.inhyo/CalendarDate'
+import CalendarIcons from '../../components/cho.inhyo/CalendarIcons'
 import Box from '../../foundations/cho.inhyo/Box'
 import CalendarDateContainerStyle from '../../styles/cho.inhyo/containers/CalendarDateContainerStyle'
 import * as helper from '../../utils/cho.inhyo/helpers'
@@ -175,6 +176,13 @@ export default function CalendarDateContainer({
           ) {
             const _date = React.createRef<HTMLDivElement>()
 
+            const day = displayDate ? displayDate[num] : num
+            const thisMonth = beforeOrAfter
+              ? beforeOrAfter === 'before'
+                ? (displayDate ? displayDate[num] : num) < 7
+                : (displayDate ? displayDate[num] : num) > 6
+              : month === monthNum
+
             DateList.push(
               <CalendarDate
                 key={`${year}_${helper.makeTwoDigits(
@@ -182,52 +190,23 @@ export default function CalendarDateContainer({
                 )}_${displayWeekNum}_${displayDate ? displayDate[num] : num}`}
                 chosenDate={chosenDate}
                 startWeekOffset={displayDate ? 0 - num : 1 - num}
-                day={displayDate ? displayDate[num] : num}
+                day={day}
                 year={year}
                 month={Number(helper.setMonth(monthNum))}
                 beforeOrAfter={beforeOrAfter}
-                thisMonth={
-                  beforeOrAfter
-                    ? beforeOrAfter === 'before'
-                      ? (displayDate ? displayDate[num] : num) < 7
-                      : (displayDate ? displayDate[num] : num) > 6
-                    : month === monthNum
-                }
+                thisMonth={thisMonth}
                 onClick={onClickDate}
                 _date={_date}>
-                {year === 2021 &&
-                  monthNum === 1 &&
-                  (displayDate ? displayDate[num] : num) === 6 && (
-                    // <Box
-                    //   direction="horizontal"
-                    //   style={{
-                    //     justifyContent: 'flex-start' as const,
-                    //   }}>
-                    <div
-                      style={{
-                        wordBreak: 'keep-all' as const,
-                        whiteSpace: 'pre' as const,
-                        position: 'absolute' as const,
-                        left: 0,
-                      }}>
-                      145yw45w45uw45uw45uw4tus w35w45 w4jw4jw45jw4 jw4jw4j
-                    </div>
-                    // </Box>
-                  )}
-                {/* <div>2</div>
-                <div>3</div>
-                <div>4</div>
-                <div>5</div>
-                <div>6</div>
-                <div>7</div>
-                <div>8</div>
-                <div>9</div>
-                <div>10</div>
-                <div>11</div>
-                <div>12</div>
-                <div>13</div>
-                <div>14</div>
-                <div>15</div> */}
+                <CalendarIcons
+                  endingProjects={[new Date()]}
+                  endingCards={[new Date()]}
+                  // endingTodos={[new Date()]}
+                  day={day}
+                  year={year}
+                  month={Number(helper.setMonth(monthNum))}
+                  beforeOrAfter={beforeOrAfter}
+                  thisMonth={thisMonth}
+                />
               </CalendarDate>,
             )
             _tmpDateList.push(_date)

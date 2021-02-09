@@ -16,7 +16,10 @@ const CalendarDateContainerStyle = {
   row: {
     justifyContent: 'space-between' as const,
     width: '100%',
+    minHeight: '80px',
+    maxHeight: '350px',
     borderTop: `1px solid ${theme.palette.mono.gray}`,
+    margin: 0,
   },
 }
 

@@ -17,13 +17,17 @@ import { Icons } from '../../utils/cho.inhyo/types'
 import CalendarDateContainer from './CalendarDateContainer'
 
 interface Props {
-  dueDate?: Date
+  baseDate: Date
+  onChangeMonth: (date: Date) => void
+  chosenDate?: Date
   onClick: (date: Date) => void
   startDay?: 0 | 1 | 2 | 3 | 4 | 5 | 6
 }
 
 export default function CalendarContainer({
-  dueDate,
+  baseDate,
+  onChangeMonth,
+  chosenDate,
   onClick,
   startDay = 0,
 }: Props) {
@@ -47,13 +51,13 @@ export default function CalendarContainer({
 
   React.useEffect(() => {
     if (isMounted()) {
-      if (dueDate) {
-        setYear(() => Number(moment(dueDate).format('YYYY')))
-        setMonth(() => Number(moment(dueDate).format('MM')))
+      if (baseDate) {
+        setYear(() => Number(moment(baseDate).format('YYYY')))
+        setMonth(() => Number(moment(baseDate).format('MM')))
       }
       setLoading(() => false)
     }
-  }, [isMounted, dueDate])
+  }, [isMounted, baseDate])
 
   React.useEffect(() => {
     if (isMounted()) {
@@ -163,6 +167,8 @@ export default function CalendarContainer({
       </div>
       <div style={CalendarContainerStyle.dateContainer}>
         <CalendarDateContainer
+          onChangeMonth={onChangeMonth}
+          chosenDate={chosenDate}
           yearMonth={yearMonth}
           onClick={onClick}
           actionProcessing={actionProcessing}

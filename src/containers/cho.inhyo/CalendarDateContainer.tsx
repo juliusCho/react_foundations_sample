@@ -7,6 +7,8 @@ import * as helper from '../../utils/cho.inhyo/helpers'
 import { useIsMounted } from '../../utils/cho.inhyo/hooks'
 
 interface Props {
+  onChangeMonth: (date: Date) => void
+  chosenDate?: Date
   yearMonth: string
   onClick: (date: Date) => void
   actionProcessing: boolean
@@ -14,6 +16,8 @@ interface Props {
 }
 
 export default function CalendarDateContainer({
+  onChangeMonth,
+  chosenDate,
   yearMonth,
   onClick,
   actionProcessing,
@@ -169,6 +173,7 @@ export default function CalendarDateContainer({
                 key={`${year}_${helper.makeTwoDigits(
                   monthNum,
                 )}_${displayWeekNum}_${displayDate ? displayDate[num] : num}`}
+                chosenDate={chosenDate}
                 day={displayDate ? displayDate[num] : num}
                 year={year}
                 month={Number(helper.setMonth(monthNum))}
@@ -191,8 +196,25 @@ export default function CalendarDateContainer({
                     : month === monthNum
                 }
                 onClick={onClickDate}
-                _date={_date}
-              />,
+                _date={_date}>
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+                <div>6</div>
+                <div>7</div>
+                <div>8</div>
+                <div>9</div>
+                <div>10</div>
+                <div>11</div>
+                <div>12</div>
+                <div>13</div>
+                <div>14</div>
+                <div>15</div>
+                <div>16</div>
+                <div>17</div>
+              </CalendarDate>,
             )
             _tmpDateList.push(_date)
           }
@@ -255,7 +277,7 @@ export default function CalendarDateContainer({
 
     setDateRow(() => DateRow)
     set_dateList(() => _tmpDateList)
-  }, [isMounted, yearMonth])
+  }, [isMounted, yearMonth, chosenDate])
 
   const onScroll = (e: Event) => {
     if (!isMounted()) return
@@ -317,7 +339,7 @@ export default function CalendarDateContainer({
       )
 
       focusMonth(Number(extractedYear), Number(extractedMonth))
-      onClick(new Date(Number(extractedYear), Number(extractedMonth), 1))
+      onChangeMonth(new Date(Number(extractedYear), Number(extractedMonth), 1))
       setActionProcessing(true)
     }
   }

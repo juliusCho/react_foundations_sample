@@ -3,21 +3,19 @@ import theme from '../global/theme'
 const CalendarContainerStyle = {
   container: {
     width: '100%',
-    backgroundColor: theme.palette.mono.white,
-    padding: '20px',
+    height: '100%',
+    overflow: 'hidden' as const,
   },
   header: {
     width: '100%',
     borderBottom: `1px solid ${theme.palette.mono.gray}`,
     backgroundColor: theme.palette.mono.white,
-    position: 'sticky' as const,
-    top: 0,
-    zIndex: 1,
   },
   headerTop: {
     width: '100%',
     padding: '20px',
     justifyContent: 'center' as const,
+    margin: 0,
   },
   headerTopSub: {
     width: '50%',
@@ -42,6 +40,11 @@ const CalendarContainerStyle = {
   },
   day: {
     ...theme.font.text1,
+  },
+  dateContainer: {
+    backgroundColor: theme.palette.mono.white,
+    padding: '20px',
+    overflow: 'hidden' as const,
   },
 }
 

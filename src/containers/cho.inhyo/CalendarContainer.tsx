@@ -123,54 +123,52 @@ export default function CalendarContainer({
   }
 
   return (
-    <>
-      <Box direction="vertical" style={CalendarContainerStyle.container}>
-        <Box direction="vertical" style={CalendarContainerStyle.header}>
-          <Box direction="horizontal" style={CalendarContainerStyle.headerTop}>
-            <div style={CalendarContainerStyle.pickerModal}>
-              <DateTimePicker
-                date={new Date(year, month - 1, 1)}
-                changeDate={onSelect}
-                isOpen={showYearMonthModal}
-                datePick={false}
-              />
-            </div>
-            <Box
-              direction="horizontal"
-              style={CalendarContainerStyle.headerTopSub}>
-              <IconButton
-                icon={Icons.ANGLE_LEFT}
-                onClick={() => onChange(false)}
-                style={CalendarContainerStyle.topItem}
-              />
-              <LabelButton
-                value={t('calendar.yearMonth', {
-                  year,
-                  month: t(`calendar.${Months[month - 1]}`),
-                })}
-                style={CalendarContainerStyle.topItem}
-                onClick={() => setShowYearMonthModal(true)}
-              />
-              <IconButton
-                icon={Icons.ANGLE_RIGHT}
-                onClick={() => onChange(true)}
-                style={CalendarContainerStyle.topItem}
-              />
-            </Box>
-          </Box>
+    <div style={CalendarContainerStyle.container}>
+      <div style={CalendarContainerStyle.header}>
+        <Box direction="horizontal" style={CalendarContainerStyle.headerTop}>
+          <div style={CalendarContainerStyle.pickerModal}>
+            <DateTimePicker
+              date={new Date(year, month - 1, 1)}
+              changeDate={onSelect}
+              isOpen={showYearMonthModal}
+              datePick={false}
+            />
+          </div>
           <Box
             direction="horizontal"
-            style={CalendarContainerStyle.dayContainer}>
-            {DayList}
+            style={CalendarContainerStyle.headerTopSub}>
+            <IconButton
+              icon={Icons.ANGLE_LEFT}
+              onClick={() => onChange(false)}
+              style={CalendarContainerStyle.topItem}
+            />
+            <LabelButton
+              value={t('calendar.yearMonth', {
+                year,
+                month: t(`calendar.${Months[month - 1]}`),
+              })}
+              style={CalendarContainerStyle.topItem}
+              onClick={() => setShowYearMonthModal(true)}
+            />
+            <IconButton
+              icon={Icons.ANGLE_RIGHT}
+              onClick={() => onChange(true)}
+              style={CalendarContainerStyle.topItem}
+            />
           </Box>
         </Box>
+        <Box direction="horizontal" style={CalendarContainerStyle.dayContainer}>
+          {DayList}
+        </Box>
+      </div>
+      <div style={CalendarContainerStyle.dateContainer}>
         <CalendarDateContainer
           yearMonth={yearMonth}
           onClick={onClick}
           actionProcessing={actionProcessing}
           setActionProcessing={setActionProcessing}
         />
-      </Box>
-    </>
+      </div>
+    </div>
   )
 }

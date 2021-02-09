@@ -27,38 +27,45 @@ export default function CalendarDateContainer({
     Array<React.RefObject<HTMLDivElement> | null>
   >([])
   const [dateRow, setDateRow] = React.useState<React.ReactNode[]>([])
+  const [offsetY, setOffsetY] = React.useState(0)
   const [lastScrollTop, setLastScrollTop] = React.useState(0)
   const [init, setInit] = React.useState(true)
 
   const focusMonth = (focusingYear: number, focusingMonth: number) => {
     if (!_dateList || _dateList.length === 0) return
-    _dateList.forEach((_date) => {
+    const _focusTargets = _dateList.filter((_date) => {
       if (_date?.current) {
-        if (
-          _date.current.attributes[0].value ===
-          `${focusingYear}-${helper.makeTwoDigits(focusingMonth)}-15`
-        ) {
-          _date.current.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center',
-          })
+        const id = _date.current.attributes[0].value.replace(':disabled', '')
+        const dt = `${focusingYear}-${helper.makeTwoDigits(focusingMonth)}`
+
+        if (id === `${dt}-12` || id === `${id}-01`) {
+          return true
         }
       }
     })
 
-    _dateList.forEach((_date) => {
-      if (_date?.current) {
-        if (
-          _date.current.attributes[0].value ===
-          `${focusingYear}-${helper.makeTwoDigits(focusingMonth)}-01`
-        ) {
-          _date.current.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-          })
+    if (_focusTargets.length > 0) {
+      _focusTargets.forEach((_date) => {
+        if (_date?.current) {
+          const id = _date.current.attributes[0].value.replace(':disabled', '')
+          const dt = `${focusingYear}-${helper.makeTwoDigits(focusingMonth)}-12`
+
+          if (id === dt) {
+            _date.current.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+              inline: 'nearest',
+            })
+          } else {
+            _date.current.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+              inline: 'nearest',
+            })
+          }
         }
-      }
-    })
+      })
+    }
   }
 
   const onClickDate = (date: Date) => {
@@ -73,14 +80,31 @@ export default function CalendarDateContainer({
     if (isMounted()) {
       if (!init) return
       if (_dateBody.current && dateRow.length > 0) {
-        focusMonth(
-          Number(yearMonth.substr(0, 4)),
-          Number(yearMonth.substr(4, 2)) - 1,
-        )
-        setInit(() => false)
+        if (offsetY === 0) {
+          setOffsetY(() =>
+            ((element?: HTMLDivElement | null) => {
+              let offsetTop = 0
+              if (!element) return offsetTop
+
+              do {
+                if (!isNaN(element.offsetHeight)) {
+                  offsetTop += element.offsetHeight
+                }
+              } while ((element = element.offsetParent as HTMLDivElement))
+
+              return offsetTop
+            })(_dateBody?.current),
+          )
+        } else {
+          focusMonth(
+            Number(yearMonth.substr(0, 4)),
+            Number(yearMonth.substr(4, 2)) - 1,
+          )
+          setInit(() => false)
+        }
       }
     }
-  }, [isMounted, init, _dateBody.current, dateRow.length, yearMonth])
+  }, [isMounted, init, _dateBody.current, dateRow.length, yearMonth, offsetY])
 
   React.useEffect(() => {
     if (!isMounted()) return
@@ -235,12 +259,13 @@ export default function CalendarDateContainer({
 
   const onScroll = (e: Event) => {
     if (!isMounted()) return
+    if (!_dateBody?.current) return
     if (!_dateList || _dateList.length === 0) return
 
     e.preventDefault()
 
     const _foundList = _dateList.filter((_date) => {
-      if (_date?.current) {
+      if (_date?.current && _dateBody?.current) {
         const {
           extractedYear,
           extractedMonth,
@@ -254,11 +279,9 @@ export default function CalendarDateContainer({
           extractedDate === '15' &&
           disabled &&
           position.top >= 0 &&
-          position.bottom <= window.innerHeight
+          position.bottom <= _dateBody.current.clientHeight
         ) {
-          const st =
-            window.pageYOffset ||
-            (_dateBody?.current ? _dateBody.current.scrollTop : 0)
+          const st = _dateBody?.current ? _dateBody.current.scrollTop : 0
 
           if (st > lastScrollTop) {
             if (
@@ -301,30 +324,31 @@ export default function CalendarDateContainer({
 
   React.useLayoutEffect(() => {
     if (!isMounted()) return
+    if (!_dateBody?.current) return
 
     if (!actionProcessing) {
-      window.addEventListener('scroll', onScroll)
+      _dateBody.current.addEventListener('scroll', onScroll)
     } else {
       const year = Number(yearMonth.substr(0, 4))
       const month = Number(yearMonth.substr(4, 2)) - 1
       focusMonth(year, month)
     }
-    const st =
-      window.pageYOffset ||
-      (_dateBody?.current ? _dateBody.current.scrollTop : 0)
+    const st = _dateBody?.current ? _dateBody.current.scrollTop : 0
     setLastScrollTop(() => st)
 
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      if (_dateBody?.current) {
+        _dateBody.current.removeEventListener('scroll', onScroll)
+      }
+    }
   }, [
     isMounted,
     actionProcessing,
     onScroll,
     focusMonth,
     yearMonth,
-    window.pageYOffset,
+    offsetY,
     _dateBody.current,
-    window.addEventListener,
-    window.removeEventListener,
   ])
 
   const onWheel = (e: WheelEvent) => {

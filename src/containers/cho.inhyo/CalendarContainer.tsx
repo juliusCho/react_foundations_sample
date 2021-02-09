@@ -167,6 +167,7 @@ export default function CalendarContainer({
       </div>
       <div style={CalendarContainerStyle.dateContainer}>
         <CalendarDateContainer
+          startDay={startDay}
           onChangeMonth={onChangeMonth}
           chosenDate={chosenDate}
           yearMonth={yearMonth}

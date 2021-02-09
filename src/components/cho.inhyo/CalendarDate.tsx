@@ -13,7 +13,6 @@ interface Props {
   day: number
   month: number
   year: number
-  weekend?: boolean
   holiday?: boolean
   thisMonth?: boolean
   beforeOrAfter?: 'before' | 'after'
@@ -27,7 +26,6 @@ export default function CalendarDate({
   day,
   month,
   year,
-  weekend,
   holiday,
   thisMonth = true,
   beforeOrAfter,
@@ -39,6 +37,7 @@ export default function CalendarDate({
   const [actualMonth, setActualMonth] = React.useState(month)
   const [selected, setSelected] = React.useState(false)
   const [isToday, setIsToday] = React.useState(false)
+  const [isWeekend, setIsWeekend] = React.useState(false)
 
   const isMounted = useIsMounted()
 
@@ -79,10 +78,10 @@ export default function CalendarDate({
 
   React.useEffect(() => {
     if (!isMounted()) return
-    const thisDay = moment(new Date(actualYear, actualMonth, day)).format(
-      'YYYYMMDD',
-    )
+    const thisDate = new Date(actualYear, actualMonth, day)
+    const thisDay = moment(thisDate).format('YYYYMMDD')
     setIsToday(() => moment(new Date()).format('YYYYMMDD') === thisDay)
+    setIsWeekend(() => thisDate.getDay() === 6 || thisDate.getDay() === 0)
 
     if (!chosenDate) {
       setSelected(() => false)
@@ -128,18 +127,25 @@ export default function CalendarDate({
             width: '24px',
             height: '22px',
             textAlign: 'center' as const,
-            backgroundColor: isToday ? theme.palette.main.red : undefined,
+            backgroundColor: isToday
+              ? polished.lighten(thisMonth ? 0 : 0.3, theme.palette.main.red)
+              : undefined,
             color: !thisMonth
               ? theme.palette.mono.gray
               : isToday
               ? theme.palette.mono.white
-              : !!weekend || !!holiday
+              : !!isWeekend || !!holiday
               ? theme.palette.main.red
               : theme.palette.mono.black,
           }}
         />
       </Box>
-      <Box direction="vertical" style={CalendarDateStyle.contents}>
+      <Box
+        direction="vertical"
+        style={{
+          ...CalendarDateStyle.contents,
+          opacity: !thisMonth ? 0.2 : undefined,
+        }}>
         {children}
       </Box>
     </Box>

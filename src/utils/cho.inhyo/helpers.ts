@@ -64,3 +64,14 @@ export const setYear = (year: number, month: number) => {
 export const setMonth = (month: number) => {
   return makeTwoDigits(month < 0 ? 12 + month : month > 11 ? month - 12 : month)
 }
+
+// get day seq based on config seq
+export const getBaseSeq = (day: number, base: number) => {
+  switch (base) {
+    case 0:
+      return day
+    default:
+      const diff = day - base
+      return diff < 0 ? 7 + diff : diff
+  }
+}

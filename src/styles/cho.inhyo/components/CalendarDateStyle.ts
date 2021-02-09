@@ -4,6 +4,7 @@ const CalendarDateStyle = {
     justifyContent: 'flex-start' as const,
     cursor: 'pointer' as const,
     margin: '0 5px',
+    minHeight: '120px',
   },
   title: {
     width: '100%',

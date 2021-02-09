@@ -51,6 +51,7 @@ export default function CalendarPage({ platform }: Props) {
           onChangeMonth={onChangeMonth}
           chosenDate={chosenDate}
           onClick={onClickDate}
+          startDay={3}
         />
       </Box>
       {showDateSchedule && !!chosenDate && (

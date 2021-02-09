@@ -7,6 +7,7 @@ import * as helper from '../../utils/cho.inhyo/helpers'
 import { useIsMounted } from '../../utils/cho.inhyo/hooks'
 
 interface Props {
+  startDay?: 0 | 1 | 2 | 3 | 4 | 5 | 6
   onChangeMonth: (date: Date) => void
   chosenDate?: Date
   yearMonth: string
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export default function CalendarDateContainer({
+  startDay = 0,
   onChangeMonth,
   chosenDate,
   yearMonth,
@@ -127,19 +129,24 @@ export default function CalendarDateContainer({
       let lastDayOfLastMonth = 0
 
       if (monthNum < 0) {
-        seqOfFirstDayOfThisMonth = moment(
-          new Date(year, 12 + monthNum, 1),
-        ).day()
+        seqOfFirstDayOfThisMonth = helper.getBaseSeq(
+          moment(new Date(year, 12 + monthNum, 1)).day(),
+          startDay,
+        )
         lastDayOfThisMonth = new Date(year, 12 + monthNum + 1, 0).getDate()
         lastDayOfLastMonth = new Date(year, 12 + monthNum, 0).getDate()
       } else if (monthNum > 11) {
-        seqOfFirstDayOfThisMonth = moment(
-          new Date(year, monthNum - 12, 1),
-        ).day()
+        seqOfFirstDayOfThisMonth = helper.getBaseSeq(
+          moment(new Date(year, monthNum - 12, 1)).day(),
+          startDay,
+        )
         lastDayOfThisMonth = new Date(year, monthNum - 12 + 1, 0).getDate()
         lastDayOfLastMonth = new Date(year, monthNum - 12, 0).getDate()
       } else {
-        seqOfFirstDayOfThisMonth = moment(new Date(year, monthNum, 1)).day()
+        seqOfFirstDayOfThisMonth = helper.getBaseSeq(
+          moment(new Date(year, monthNum, 1)).day(),
+          startDay,
+        )
         lastDayOfThisMonth = new Date(year, monthNum + 1, 0).getDate()
         lastDayOfLastMonth = new Date(year, monthNum, 0).getDate()
       }
@@ -178,16 +185,6 @@ export default function CalendarDateContainer({
                 year={year}
                 month={Number(helper.setMonth(monthNum))}
                 beforeOrAfter={beforeOrAfter}
-                weekend={
-                  ((displayDate ? displayDate[num] : num) -
-                    (7 - seqOfFirstDayOfThisMonth)) %
-                    7 ===
-                    0 ||
-                  ((displayDate ? displayDate[num] : num) -
-                    (8 - seqOfFirstDayOfThisMonth)) %
-                    7 ===
-                    0
-                }
                 thisMonth={
                   beforeOrAfter
                     ? beforeOrAfter === 'before'
@@ -211,8 +208,6 @@ export default function CalendarDateContainer({
                 <div>12</div>
                 <div>13</div>
                 <div>14</div>
-                <div>15</div>
-                <div>15</div>
                 <div>15</div>
               </CalendarDate>,
             )

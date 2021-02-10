@@ -1,41 +1,155 @@
 import moment from 'moment'
+import theme from '../../styles/cho.inhyo/global/theme'
 
 export type TestDataType = {
-  type: 'mission' | 'attend'
+  type: 'sub' | 'main'
+  parentNo?: number
   no: number
-  channelName: string
+  channel: {
+    no: number
+    color: string
+  }
   name: string
-  dueDate: Date
+  startDate: Date
+  endDate?: Date
 }
 
 const testScheduleData: TestDataType[] = [
   {
-    type: 'mission',
+    type: 'sub',
+    parentNo: 2,
     no: 1,
-    channelName: '테스트 채널',
-    name: 'aegagaewg',
-    dueDate: moment('2021-01-08 14:43:00').toDate(),
+    channel: {
+      no: 1,
+      color: theme.palette.main.turquoise,
+    },
+    name: '새로운 일정 sub',
+    startDate: moment('2021-02-07', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
   },
   {
-    type: 'attend',
-    no: 1,
-    channelName: '테스트 채널',
-    name: 'bbbbbbbb',
-    dueDate: moment('2021-06-23 18:43:00').toDate(),
-  },
-  {
-    type: 'attend',
+    type: 'main',
     no: 2,
-    channelName: '테스트 채널',
-    name: '3444gbbbbbbbb',
-    dueDate: moment('2021-04-18 06:34:00').toDate(),
+    channel: {
+      no: 1,
+      color: theme.palette.main.turquoise,
+    },
+    name: '새로운 일정',
+    startDate: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
   },
   {
-    type: 'mission',
-    no: 2,
-    channelName: '테스트 채널',
-    name: 'q3q34hh43ㅗ3',
-    dueDate: moment('2021-01-08 20:54:00').toDate(),
+    type: 'main',
+    no: 3,
+    channel: {
+      no: 1,
+      color: theme.palette.main.turquoise,
+    },
+    name: '파란 채널 새로운 일정1',
+    startDate: moment('2021-02-11', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-12', 'YYYY-MM-DD').toDate(),
+  },
+  {
+    type: 'sub',
+    parentNo: 3,
+    no: 4,
+    channel: {
+      no: 1,
+      color: theme.palette.main.turquoise,
+    },
+    name: '파란 채널 새로운 일정1 sub',
+    startDate: moment('2021-02-11', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-12', 'YYYY-MM-DD').toDate(),
+  },
+  {
+    type: 'main',
+    no: 5,
+    channel: {
+      no: 1,
+      color: theme.palette.main.turquoise,
+    },
+    name: '파란 채널 새로운 일정2',
+    startDate: moment('2021.02-05', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-15', 'YYYY-MM-DD').toDate(),
+  },
+  // {
+  //   type: 'sub',
+  //   no: 6,
+  //   parentNo: 5,
+  //   channel: {
+  //     no: 1,
+  //     color: theme.palette.main.turquoise,
+  //   },
+  //   name: '파란 채널 새로운 일정2 sub',
+  //   startDate: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
+  //   endDate: moment('2021-02-14', 'YYYY-MM-DD').toDate(),
+  // },
+  {
+    type: 'sub',
+    no: 7,
+    parentNo: 8,
+    channel: {
+      no: 2,
+      color: theme.palette.main.yellow,
+    },
+    name: '노란 채널의 다른 새로운 긴 일정',
+    startDate: moment('2021-02-11', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-16', 'YYYY-MM-DD').toDate(),
+  },
+  {
+    type: 'main',
+    no: 8,
+    channel: {
+      no: 2,
+      color: theme.palette.main.yellow,
+    },
+    name: '노란 채널의 다른 새로운 긴 일정 sub',
+    startDate: moment('2021-02-08', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-12', 'YYYY-MM-DD').toDate(),
+  },
+  {
+    type: 'main',
+    no: 9,
+    channel: {
+      no: 3,
+      color: theme.palette.main.red,
+    },
+    name: '빨간 채널의 다른 새로운 일정',
+    startDate: moment('2021-02-08', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
+  },
+  {
+    type: 'main',
+    no: 10,
+    channel: {
+      no: 4,
+      color: theme.palette.main.pink,
+    },
+    name: '다른 새로운 일정',
+    startDate: moment('2021-02-10', 'YYYY-MM-DD').toDate(),
+  },
+  {
+    type: 'sub',
+    parentNo: 10,
+    no: 11,
+    channel: {
+      no: 4,
+      color: theme.palette.main.pink,
+    },
+    name: '다른 새로운 일정 sub',
+    startDate: moment('2021-02-10', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-12', 'YYYY-MM-DD').toDate(),
+  },
+  {
+    type: 'main',
+    no: 12,
+    channel: {
+      no: 5,
+      color: theme.palette.main.navy,
+    },
+    name: '다른 새로운 일정',
+    startDate: moment('2021-02-10', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-10', 'YYYY-MM-DD').toDate(),
   },
 ]
 

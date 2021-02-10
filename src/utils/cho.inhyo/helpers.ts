@@ -80,3 +80,9 @@ export const getBaseSeq = (day: number, base: number) => {
 export const compareDate = (day1: Date, day2: Date) => {
   return moment(day1).format('YYYYMMDD') === moment(day2).format('YYYYMMDD')
 }
+
+// get date difference count
+export const getDiffDayCnt = (day1: Date, day2: Date) => {
+  const differenceInTime = Math.abs(day1.getTime() - day2.getTime())
+  return differenceInTime / (1000 * 3600 * 24)
+}

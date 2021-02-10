@@ -6,6 +6,9 @@ import Box from '../../foundations/cho.inhyo/Box'
 import CalendarDateContainerStyle from '../../styles/cho.inhyo/containers/CalendarDateContainerStyle'
 import * as helper from '../../utils/cho.inhyo/helpers'
 import { useIsMounted } from '../../utils/cho.inhyo/hooks'
+import testScheduleData, {
+  TestDataType,
+} from '../../utils/cho.inhyo/testScheduleData'
 
 interface Props {
   startDay?: 0 | 1 | 2 | 3 | 4 | 5 | 6
@@ -45,7 +48,7 @@ export default function CalendarDateContainer({
         const id = _date.current.attributes[0].value.replace(':disabled', '')
         const dt = `${focusingYear}-${helper.makeTwoDigits(focusingMonth)}`
 
-        if (id === `${dt}-12` || id === `${id}-01`) {
+        if (id === `${dt}-15` || id === `${id}-01`) {
           return true
         }
       }
@@ -55,7 +58,7 @@ export default function CalendarDateContainer({
       _focusTargets.forEach((_date) => {
         if (_date?.current) {
           const id = _date.current.attributes[0].value.replace(':disabled', '')
-          const dt = `${focusingYear}-${helper.makeTwoDigits(focusingMonth)}-12`
+          const dt = `${focusingYear}-${helper.makeTwoDigits(focusingMonth)}-15`
 
           if (id === dt) {
             _date.current.scrollIntoView({
@@ -113,6 +116,289 @@ export default function CalendarDateContainer({
     }
   }, [isMounted, init, _dateBody.current, dateRow.length, yearMonth, offsetY])
 
+  const constructWeekRow = (
+    year: number,
+    monthNum: number,
+    data: TestDataType[],
+    displayDate?: number[],
+  ) => {
+    const month = Number(helper.setMonth(monthNum))
+    const day = displayDate ? displayDate[0] : 1
+    const week: number[] = []
+
+    for (let i = 0; i < 7; i++) {
+      const dt = new Date(year, month, day)
+      dt.setDate(dt.getDate() + i)
+      week.push(Number(moment(dt).format('YYYYMMDD')))
+    }
+
+    const targetData = data.filter((datum) => {
+      const startDate = Number(moment(datum.startDate).format('YYYYMMDD'))
+      if (datum.endDate) {
+        const endDate = Number(moment(datum.endDate).format('YYYYMMDD'))
+        if (endDate === startDate) {
+          return (
+            startDate >= Math.min(...week) && Math.max(...week) >= startDate
+          )
+        }
+        return (
+          (startDate >= Math.min(...week) && Math.max(...week) >= startDate) ||
+          (endDate >= Math.min(...week) && Math.max(...week) >= endDate)
+        )
+      } else {
+        return startDate >= Math.min(...week) && Math.max(...week) >= startDate
+      }
+      // }).map((datum) => {
+      //   let startDate = datum.startDate
+      //   let endDate = datum.endDate
+      //   const startDateNum = Number(moment(startDate).format('YYYYMMDD'))
+      //   const endDateNum = endDate ? Number(moment(endDate).format('YYYYMMDD')) : undefined
+
+      //   if (startDateNum < Math.min(...week)) {
+      //     const str = String(Math.min(...week))
+      //     startDate = moment(str.substr(0, 4) + '-' + str.substr(4, 2) + '-' + str.substr(6, 2), 'YYYY-MM-DD').toDate()
+      //   }
+      //   if (endDate && (endDateNum as number) !== startDateNum && (endDateNum as number) > Math.max(...week)) {
+      //     const str = String(Math.max(...week))
+      //     endDate = moment(str.substr(0, 4) + '-' + str.substr(4, 2) + '-' + str.substr(6, 2), 'YYYY-MM-DD').toDate()
+      //   }
+      //   return {
+      //     ...datum,
+      //     startDate,
+      //     endDate
+      //   }
+    })
+
+    type ScheduleDisplay = {
+      start?: boolean
+      end?: boolean
+      sub?: boolean
+      label: string
+      color: string
+    }
+
+    const stack: Array<Array<{ no: number; week: number }> | null> = []
+
+    while (targetData.length > 0) {
+      const availableRange = [...week]
+      const queue: Array<{ no: number; parentNo?: number; week: number }> = []
+      console.log('QUEE', queue)
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!', targetData.length)
+
+      for (let i = 0; i < targetData.length; i++) {
+        console.log('?????', targetData[i])
+        console.log(targetData[i].endDate)
+        // if (
+        //   stack.some((stackStack) =>
+        //     stackStack?.some((stackLine) => stackLine.no === targetData[i].no),
+        //   )
+        // ) {
+        //   continue
+        // }
+
+        const startDate = Number(
+          moment(targetData[i].startDate).format('YYYYMMDD'),
+        )
+        const endDate: number | undefined = targetData[i].endDate
+          ? Number(moment(targetData[i].endDate).format('YYYYMMDD'))
+          : undefined
+
+        let added = false
+
+        if (endDate && endDate !== startDate) {
+          const dtNums: number[] = []
+          for (
+            let dtOffset = 0,
+              jj = helper.getDiffDayCnt(
+                targetData[i].startDate,
+                targetData[i].endDate as Date,
+              );
+            dtOffset <= jj;
+            dtOffset++
+          ) {
+            const dt = targetData[i].startDate
+            dt.setDate(dt.getDate() + dtOffset)
+
+            const dtNum = Number(moment(dt).format('YYYYMMDD'))
+
+            if (dtNum >= Math.min(...week) && Math.max(...week) >= dtNum) {
+              dtNums.push(Number(moment(dt).format('YYYYMMDD')))
+            }
+          }
+
+          console.log('-------------------------------')
+          console.log('target', targetData[i])
+          console.log('dtNums', dtNums)
+
+          const available = dtNums.every((dtNum) =>
+            availableRange.some((avlRng) => avlRng === dtNum),
+          )
+          if (available) {
+            dtNums.forEach((dtNum) => {
+              queue.push({
+                no: targetData[i].no,
+                parentNo: targetData[i].parentNo,
+                week: dtNum,
+              })
+              availableRange.splice(
+                availableRange.findIndex((avlRng) => avlRng === dtNum),
+                1,
+              )
+            })
+            added = true
+          }
+        } else {
+          const available = availableRange.findIndex(
+            (avlRng) => avlRng === startDate,
+          )
+          if (available > -1) {
+            queue.push({
+              no: targetData[i].no,
+              parentNo: targetData[i].parentNo,
+              week: startDate,
+            })
+            availableRange.splice(available, 1)
+            added = true
+          }
+        }
+
+        if (added) {
+          targetData.splice(i, 1)
+          if (targetData.length > 0) {
+            i--
+          }
+        }
+      }
+
+      if (queue.length === 0) break
+      stack.push(queue)
+      console.log('============================')
+      console.log('targetData', targetData)
+      console.log('stack', stack)
+    }
+
+    // console.log('stack', stack)
+    // console.log('targetData', targetData)
+  }
+
+  const constructDateRow = (
+    _date: React.RefObject<HTMLDivElement> | null,
+    num: number,
+    year: number,
+    month: number,
+    monthNum: number,
+    displayWeekNum: number,
+    displayDate?: number[],
+    beforeOrAfter?: 'before' | 'after',
+  ) => {
+    const day = displayDate ? displayDate[num] : num
+    const thisMonth = beforeOrAfter
+      ? beforeOrAfter === 'before'
+        ? (displayDate ? displayDate[num] : num) < 7
+        : (displayDate ? displayDate[num] : num) > 6
+      : month === monthNum
+
+    const testData = {
+      endingProjects: [
+        moment('2021-02-09', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-12', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-26', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-26', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-06', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-21', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-21', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-21', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-24', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-09', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-12', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-26', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-26', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-06', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-21', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-21', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-21', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-24', 'YYYY-MM-DD').toDate(),
+      ],
+      endingCards: [
+        moment('2021-02-24', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-24', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-02', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-01', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-22', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-14', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-02', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-09', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-28', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-27', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-24', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-24', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-02', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-01', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-22', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-14', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-02', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-09', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-28', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-27', 'YYYY-MM-DD').toDate(),
+      ],
+      endingTodos: [
+        moment('2021-02-01', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-01', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-11', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-21', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-25', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-03', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-16', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-25', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-17', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-17', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-20', 'YYYY-MM-DD').toDate(),
+        moment('2021-02-09', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-01', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-01', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-11', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-21', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-25', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-03', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-16', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-25', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-17', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-17', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-20', 'YYYY-MM-DD').toDate(),
+        moment('2021-03-09', 'YYYY-MM-DD').toDate(),
+      ],
+    }
+
+    return (
+      <CalendarDate
+        key={`${year}_${helper.makeTwoDigits(monthNum)}_${displayWeekNum}_${
+          displayDate ? displayDate[num] : num
+        }`}
+        chosenDate={chosenDate}
+        startWeekOffset={displayDate ? 0 - num : 1 - num}
+        day={day}
+        year={year}
+        month={Number(helper.setMonth(monthNum))}
+        beforeOrAfter={beforeOrAfter}
+        thisMonth={thisMonth}
+        onClick={onClickDate}
+        _date={_date}
+        icons={
+          <CalendarIcons
+            endingProjects={testData.endingProjects}
+            endingCards={testData.endingCards}
+            endingTodos={testData.endingTodos}
+            day={day}
+            year={year}
+            month={Number(helper.setMonth(monthNum))}
+            beforeOrAfter={beforeOrAfter}
+            thisMonth={thisMonth}
+          />
+        }
+      />
+    )
+  }
+
   React.useEffect(() => {
     if (!isMounted()) return
 
@@ -165,49 +451,34 @@ export default function CalendarDateContainer({
       ) {
         const DateList: React.ReactNode[] = []
 
-        const constructDateRow = (
+        const constructRow = (
           displayDate?: number[],
           beforeOrAfter?: 'before' | 'after',
         ) => {
+          if (
+            year === 2021 &&
+            monthNum === 1 &&
+            displayDate &&
+            displayDate[0] === 14
+          )
+            constructWeekRow(year, monthNum, testScheduleData, displayDate)
           for (
             let num = displayDate ? 0 : 1;
             num < (displayDate ? 7 : 8);
             num++
           ) {
             const _date = React.createRef<HTMLDivElement>()
-
-            const day = displayDate ? displayDate[num] : num
-            const thisMonth = beforeOrAfter
-              ? beforeOrAfter === 'before'
-                ? (displayDate ? displayDate[num] : num) < 7
-                : (displayDate ? displayDate[num] : num) > 6
-              : month === monthNum
-
             DateList.push(
-              <CalendarDate
-                key={`${year}_${helper.makeTwoDigits(
-                  monthNum,
-                )}_${displayWeekNum}_${displayDate ? displayDate[num] : num}`}
-                chosenDate={chosenDate}
-                startWeekOffset={displayDate ? 0 - num : 1 - num}
-                day={day}
-                year={year}
-                month={Number(helper.setMonth(monthNum))}
-                beforeOrAfter={beforeOrAfter}
-                thisMonth={thisMonth}
-                onClick={onClickDate}
-                _date={_date}>
-                <CalendarIcons
-                  endingProjects={[new Date()]}
-                  endingCards={[new Date()]}
-                  // endingTodos={[new Date()]}
-                  day={day}
-                  year={year}
-                  month={Number(helper.setMonth(monthNum))}
-                  beforeOrAfter={beforeOrAfter}
-                  thisMonth={thisMonth}
-                />
-              </CalendarDate>,
+              constructDateRow(
+                _date,
+                num,
+                year,
+                month,
+                monthNum,
+                displayWeekNum,
+                displayDate,
+                beforeOrAfter,
+              ),
             )
             _tmpDateList.push(_date)
           }
@@ -215,7 +486,7 @@ export default function CalendarDateContainer({
 
         if (displayWeekNum === 1) {
           if (seqOfFirstDayOfThisMonth === 0) {
-            constructDateRow()
+            constructRow()
             firstDayOfThisMonth = 8
           } else {
             const displayDate: number[] = []
@@ -228,7 +499,7 @@ export default function CalendarDateContainer({
               firstDayOfThisMonth++
             }
             if (month === monthNum) {
-              constructDateRow(displayDate, 'before')
+              constructRow(displayDate, 'before')
             }
           }
         } else if (displayWeekNum === displayWeekCnt) {
@@ -244,7 +515,7 @@ export default function CalendarDateContainer({
             }
           }
           if (month === monthNum) {
-            constructDateRow(displayDate, 'after')
+            constructRow(displayDate, 'after')
           }
         } else {
           const displayDate: number[] = []
@@ -252,7 +523,7 @@ export default function CalendarDateContainer({
             displayDate.push(firstDayOfThisMonth)
             firstDayOfThisMonth++
           }
-          constructDateRow(displayDate)
+          constructRow(displayDate)
         }
 
         if (DateList.length > 0) {

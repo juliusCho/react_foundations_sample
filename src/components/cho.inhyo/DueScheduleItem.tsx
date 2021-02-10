@@ -1,11 +1,7 @@
-import moment from 'moment'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import Box from '../../foundations/cho.inhyo/Box'
-import IconButton from '../../foundations/cho.inhyo/IconButton'
-import TextView from '../../foundations/cho.inhyo/TextView'
 import { TestDataType } from '../../utils/cho.inhyo/testScheduleData'
-import { Icons } from '../../utils/cho.inhyo/types'
 
 interface Props {
   date: Date
@@ -24,7 +20,7 @@ export default function DueScheduleList({
 
   return (
     <Box direction="vertical">
-      {dataList
+      {/* {dataList
         .filter(
           (data: TestDataType) =>
             data.type === type &&
@@ -51,7 +47,7 @@ export default function DueScheduleList({
               />
             </Box>
           </Box>
-        ))}
+        ))} */}
     </Box>
   )
 }

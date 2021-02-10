@@ -19,7 +19,8 @@ interface Props {
   beforeOrAfter?: 'before' | 'after'
   onClick: (date: Date) => void
   _date: React.RefObject<HTMLDivElement> | null
-  children?: React.ReactNode | React.ReactNode[]
+  schedules?: React.ReactNode | React.ReactNode[]
+  icons?: React.ReactNode | React.ReactNode[]
 }
 
 export default function CalendarDate({
@@ -33,7 +34,8 @@ export default function CalendarDate({
   beforeOrAfter,
   onClick,
   _date,
-  children,
+  schedules,
+  icons,
 }: Props) {
   const [actualYear, setActualYear] = React.useState(year)
   const [actualMonth, setActualMonth] = React.useState(month)
@@ -171,7 +173,14 @@ export default function CalendarDate({
           ...CalendarDateStyle.contents,
           opacity: !thisMonth ? 0.2 : undefined,
         }}>
-        {children}
+        {schedules}
+      </div>
+      <div
+        style={{
+          ...CalendarDateStyle.contents,
+          opacity: !thisMonth ? 0.2 : undefined,
+        }}>
+        {icons}
       </div>
     </Box>
   )

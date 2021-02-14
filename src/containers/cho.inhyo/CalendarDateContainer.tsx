@@ -216,7 +216,7 @@ export default function CalendarDateContainer({
             dtOffset <= jj;
             dtOffset++
           ) {
-            const dt = targetData[i].startDate
+            const dt = moment(targetData[i].startDate).toDate()
             dt.setDate(dt.getDate() + dtOffset)
 
             const dtNum = Number(moment(dt).format('YYYYMMDD'))
@@ -229,6 +229,7 @@ export default function CalendarDateContainer({
           console.log('-------------------------------')
           console.log('target', targetData[i])
           console.log('dtNums', dtNums)
+          console.log('new', new Date('2021-02-11T01:00:00.000'))
 
           const available = dtNums.every((dtNum) =>
             availableRange.some((avlRng) => avlRng === dtNum),

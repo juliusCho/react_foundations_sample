@@ -1,6 +1,8 @@
 import moment from 'moment'
 import theme from '../../styles/cho.inhyo/global/theme'
 
+const format = moment.localeData().longDateFormat('L')
+
 export type TestDataType = {
   type: 'sub' | 'main'
   parentNo?: number
@@ -61,17 +63,17 @@ const testScheduleData: TestDataType[] = [
     startDate: moment('2021-02-11', 'YYYY-MM-DD').toDate(),
     endDate: moment('2021-02-12', 'YYYY-MM-DD').toDate(),
   },
-  {
-    type: 'main',
-    no: 5,
-    channel: {
-      no: 1,
-      color: theme.palette.main.turquoise,
-    },
-    name: '파란 채널 새로운 일정2',
-    startDate: moment('2021.02-05', 'YYYY-MM-DD').toDate(),
-    endDate: moment('2021-02-15', 'YYYY-MM-DD').toDate(),
-  },
+  // {
+  //   type: 'main',
+  //   no: 5,
+  //   channel: {
+  //     no: 1,
+  //     color: theme.palette.main.turquoise,
+  //   },
+  //   name: '파란 채널 새로운 일정2',
+  //   startDate: moment('2021.02-05', 'YYYY-MM-DD').toDate(),
+  //   endDate: moment('2021-02-15', 'YYYY-MM-DD').toDate(),
+  // },
   // {
   //   type: 'sub',
   //   no: 6,
@@ -94,7 +96,7 @@ const testScheduleData: TestDataType[] = [
     },
     name: '노란 채널의 다른 새로운 긴 일정',
     startDate: moment('2021-02-11', 'YYYY-MM-DD').toDate(),
-    endDate: moment('2021-02-16', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-14', 'YYYY-MM-DD').toDate(),
   },
   {
     type: 'main',

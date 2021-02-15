@@ -218,13 +218,6 @@ export default function CalendarDateContainer({
       for (let i = 0; i < targetData.length; i++) {
         console.log('?????', [...targetData])
         console.log(targetData[i].endDate)
-        // if (
-        //   stack.some((stackStack) =>
-        //     stackStack?.some((stackLine) => stackLine.no === targetData[i].no),
-        //   )
-        // ) {
-        //   continue
-        // }
 
         const startDate = helper.getStartEndDateNum(
           'start',

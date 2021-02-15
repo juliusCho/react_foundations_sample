@@ -1,7 +1,6 @@
 import moment from 'moment'
 import React from 'react'
 import CalendarDate from '../../components/cho.inhyo/CalendarDate'
-import CalendarIcons from '../../components/cho.inhyo/CalendarIcons'
 import Box from '../../foundations/cho.inhyo/Box'
 import CalendarDateContainerStyle from '../../styles/cho.inhyo/containers/CalendarDateContainerStyle'
 import * as helper from '../../utils/cho.inhyo/helpers'
@@ -9,6 +8,16 @@ import { useIsMounted } from '../../utils/cho.inhyo/hooks'
 import testScheduleData, {
   TestDataType,
 } from '../../utils/cho.inhyo/testScheduleData'
+
+export type ScheduleStackType = {
+  no: number
+  subNo?: number
+  week: number
+  mainWeek: boolean
+  outOfThisWeek?: boolean
+  label: string
+  color: string
+}
 
 interface Props {
   startDay?: 0 | 1 | 2 | 3 | 4 | 5 | 6
@@ -132,61 +141,82 @@ export default function CalendarDateContainer({
       week.push(Number(moment(dt).format('YYYYMMDD')))
     }
 
-    const targetData = data.filter((datum) => {
-      const startDate = Number(moment(datum.startDate).format('YYYYMMDD'))
-      if (datum.endDate) {
-        const endDate = Number(moment(datum.endDate).format('YYYYMMDD'))
-        if (endDate === startDate) {
+    let targetData: TestDataType[] = []
+    const subData: TestDataType[] = []
+
+    data
+      .filter((datum) => {
+        const startDate = Number(moment(datum.startDate).format('YYYYMMDD'))
+        if (datum.endDate) {
+          const endDate = Number(moment(datum.endDate).format('YYYYMMDD'))
+          if (endDate === startDate) {
+            return (
+              startDate >= Math.min(...week) && Math.max(...week) >= startDate
+            )
+          }
+          return (
+            (startDate >= Math.min(...week) &&
+              Math.max(...week) >= startDate) ||
+            (endDate >= Math.min(...week) && Math.max(...week) >= endDate) ||
+            (Math.min(...week) >= startDate && endDate >= Math.min(...week)) ||
+            (Math.max(...week) >= startDate && endDate >= Math.max(...week))
+          )
+        } else {
           return (
             startDate >= Math.min(...week) && Math.max(...week) >= startDate
           )
         }
-        return (
-          (startDate >= Math.min(...week) && Math.max(...week) >= startDate) ||
-          (endDate >= Math.min(...week) && Math.max(...week) >= endDate)
-        )
-      } else {
-        return startDate >= Math.min(...week) && Math.max(...week) >= startDate
+      })
+      .forEach((datum) => {
+        if (datum.type === 'main') {
+          targetData.push(datum)
+        } else {
+          subData.push(datum)
+        }
+      })
+
+    if (targetData.length > 0) {
+      if (subData.length > 0) {
+        let allCovered = subData.length
+
+        subData.forEach((datum) => {
+          targetData = targetData.map((target) => {
+            if (target.no === datum.parentNo) {
+              allCovered--
+              return {
+                ...target,
+                subNo: datum.no,
+                subStartDate: datum.startDate,
+                subEndDate: datum.endDate,
+              }
+            } else {
+              return target
+            }
+          })
+        })
+
+        if (allCovered > 0) {
+          const subLefts = subData.filter(
+            (subDatum) =>
+              !targetData.some((datum) => datum.subNo === subDatum.no),
+          )
+          targetData = [...targetData, ...subLefts]
+        }
       }
-      // }).map((datum) => {
-      //   let startDate = datum.startDate
-      //   let endDate = datum.endDate
-      //   const startDateNum = Number(moment(startDate).format('YYYYMMDD'))
-      //   const endDateNum = endDate ? Number(moment(endDate).format('YYYYMMDD')) : undefined
-
-      //   if (startDateNum < Math.min(...week)) {
-      //     const str = String(Math.min(...week))
-      //     startDate = moment(str.substr(0, 4) + '-' + str.substr(4, 2) + '-' + str.substr(6, 2), 'YYYY-MM-DD').toDate()
-      //   }
-      //   if (endDate && (endDateNum as number) !== startDateNum && (endDateNum as number) > Math.max(...week)) {
-      //     const str = String(Math.max(...week))
-      //     endDate = moment(str.substr(0, 4) + '-' + str.substr(4, 2) + '-' + str.substr(6, 2), 'YYYY-MM-DD').toDate()
-      //   }
-      //   return {
-      //     ...datum,
-      //     startDate,
-      //     endDate
-      //   }
-    })
-
-    type ScheduleDisplay = {
-      start?: boolean
-      end?: boolean
-      sub?: boolean
-      label: string
-      color: string
+    } else {
+      targetData = subData
     }
 
-    const stack: Array<Array<{ no: number; week: number }> | null> = []
+    const stack: Array<Array<ScheduleStackType>> = []
 
     while (targetData.length > 0) {
       const availableRange = [...week]
-      const queue: Array<{ no: number; parentNo?: number; week: number }> = []
+      const queue: Array<ScheduleStackType> = []
       console.log('QUEE', queue)
       console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!', targetData.length)
 
       for (let i = 0; i < targetData.length; i++) {
-        console.log('?????', targetData[i])
+        console.log('?????', [...targetData])
         console.log(targetData[i].endDate)
         // if (
         //   stack.some((stackStack) =>
@@ -196,33 +226,60 @@ export default function CalendarDateContainer({
         //   continue
         // }
 
-        const startDate = Number(
-          moment(targetData[i].startDate).format('YYYYMMDD'),
+        const startDate = helper.getStartEndDateNum(
+          'start',
+          targetData[i].startDate,
+          targetData[i].subStartDate,
         )
-        const endDate: number | undefined = targetData[i].endDate
-          ? Number(moment(targetData[i].endDate).format('YYYYMMDD'))
-          : undefined
+        const endDate = helper.getStartEndDateNum(
+          'end',
+          targetData[i].endDate,
+          targetData[i].subEndDate,
+        )
+
+        console.log('START', startDate)
+        console.log('END', endDate)
+
+        if (!startDate) continue
 
         let added = false
 
         if (endDate && endDate !== startDate) {
           const dtNums: number[] = []
+          let outOfThisWeek = false
+
           for (
             let dtOffset = 0,
               jj = helper.getDiffDayCnt(
-                targetData[i].startDate,
-                targetData[i].endDate as Date,
+                helper.getStartEndDate(
+                  'start',
+                  targetData[i].startDate,
+                  targetData[i].subStartDate,
+                ) as Date,
+                helper.getStartEndDate(
+                  'end',
+                  targetData[i].endDate,
+                  targetData[i].subEndDate,
+                ) as Date,
               );
             dtOffset <= jj;
             dtOffset++
           ) {
-            const dt = moment(targetData[i].startDate).toDate()
+            const dt = moment(
+              helper.getStartEndDate(
+                'start',
+                targetData[i].startDate,
+                targetData[i].subStartDate,
+              ) as Date,
+            ).toDate()
             dt.setDate(dt.getDate() + dtOffset)
 
             const dtNum = Number(moment(dt).format('YYYYMMDD'))
 
             if (dtNum >= Math.min(...week) && Math.max(...week) >= dtNum) {
               dtNums.push(Number(moment(dt).format('YYYYMMDD')))
+            } else {
+              outOfThisWeek = true
             }
           }
 
@@ -238,8 +295,14 @@ export default function CalendarDateContainer({
             dtNums.forEach((dtNum) => {
               queue.push({
                 no: targetData[i].no,
-                parentNo: targetData[i].parentNo,
+                subNo: targetData[i].subNo,
                 week: dtNum,
+                mainWeek:
+                  targetData[i].type !== 'sub' &&
+                  helper.checkMainWeek(targetData[i], dtNum),
+                label: targetData[i].name,
+                color: targetData[i].channel.color,
+                outOfThisWeek,
               })
               availableRange.splice(
                 availableRange.findIndex((avlRng) => avlRng === dtNum),
@@ -255,8 +318,11 @@ export default function CalendarDateContainer({
           if (available > -1) {
             queue.push({
               no: targetData[i].no,
-              parentNo: targetData[i].parentNo,
+              subNo: targetData[i].subNo,
               week: startDate,
+              mainWeek: helper.checkMainWeek(targetData[i], startDate),
+              label: targetData[i].name,
+              color: targetData[i].channel.color,
             })
             availableRange.splice(available, 1)
             added = true
@@ -278,11 +344,11 @@ export default function CalendarDateContainer({
       console.log('stack', stack)
     }
 
-    // console.log('stack', stack)
-    // console.log('targetData', targetData)
+    return stack
   }
 
   const constructDateRow = (
+    scheduleStack: Array<Array<ScheduleStackType>>,
     _date: React.RefObject<HTMLDivElement> | null,
     num: number,
     year: number,
@@ -377,6 +443,13 @@ export default function CalendarDateContainer({
         }`}
         chosenDate={chosenDate}
         startWeekOffset={displayDate ? 0 - num : 1 - num}
+        edgeOfWeek={
+          num == (displayDate ? 0 : 1)
+            ? 'start'
+            : num === (displayDate ? 6 : 7)
+            ? 'end'
+            : undefined
+        }
         day={day}
         year={year}
         month={Number(helper.setMonth(monthNum))}
@@ -384,18 +457,8 @@ export default function CalendarDateContainer({
         thisMonth={thisMonth}
         onClick={onClickDate}
         _date={_date}
-        icons={
-          <CalendarIcons
-            endingProjects={testData.endingProjects}
-            endingCards={testData.endingCards}
-            endingTodos={testData.endingTodos}
-            day={day}
-            year={year}
-            month={Number(helper.setMonth(monthNum))}
-            beforeOrAfter={beforeOrAfter}
-            thisMonth={thisMonth}
-          />
-        }
+        scheduleStack={scheduleStack}
+        icons={testData}
       />
     )
   }
@@ -456,13 +519,13 @@ export default function CalendarDateContainer({
           displayDate?: number[],
           beforeOrAfter?: 'before' | 'after',
         ) => {
-          if (
-            year === 2021 &&
-            monthNum === 1 &&
-            displayDate &&
-            displayDate[0] === 14
+          const scheduleStack = constructWeekRow(
+            year,
+            monthNum,
+            testScheduleData,
+            displayDate,
           )
-            constructWeekRow(year, monthNum, testScheduleData, displayDate)
+
           for (
             let num = displayDate ? 0 : 1;
             num < (displayDate ? 7 : 8);
@@ -471,6 +534,7 @@ export default function CalendarDateContainer({
             const _date = React.createRef<HTMLDivElement>()
             DateList.push(
               constructDateRow(
+                scheduleStack,
                 _date,
                 num,
                 year,

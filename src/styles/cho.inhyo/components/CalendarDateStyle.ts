@@ -4,7 +4,6 @@ const CalendarDateStyle = {
     justifyContent: 'space-between' as const,
     cursor: 'pointer' as const,
     margin: 0,
-    minHeight: '120px',
   },
   title: {
     margin: 0,

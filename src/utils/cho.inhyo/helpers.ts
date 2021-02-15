@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { TestDataType } from './testScheduleData'
 
 // 날짜 입력 유효성체크
 export const dateValidator = (input: string): Date => {
@@ -85,4 +86,70 @@ export const compareDate = (day1: Date, day2: Date) => {
 export const getDiffDayCnt = (day1: Date, day2: Date) => {
   const differenceInTime = Math.abs(day1.getTime() - day2.getTime())
   return differenceInTime / (1000 * 3600 * 24)
+}
+
+// get first startDate / last endDate (number)
+export const getStartEndDateNum = (
+  type: 'start' | 'end',
+  day1?: Date,
+  day2?: Date,
+): number | undefined => {
+  if (!day1 && !day2) {
+    return undefined
+  }
+  if (!day1) {
+    return Number(moment(day2).format('YYYYMMDD'))
+  }
+  if (!day2) {
+    return Number(moment(day1).format('YYYYMMDD'))
+  }
+
+  const first = Number(moment(day1).format('YYYYMMDD'))
+  const second = Number(moment(day2).format('YYYYMMDD'))
+
+  if (type === 'start') {
+    return first < second ? first : second
+  } else {
+    return first > second ? first : second
+  }
+}
+
+// get first startDate / last endDate
+export const getStartEndDate = (
+  type: 'start' | 'end',
+  day1?: Date,
+  day2?: Date,
+): Date | undefined => {
+  if (!day1 && !day2) {
+    return undefined
+  }
+  if (!day1) {
+    return day2
+  }
+  if (!day2) {
+    return day1
+  }
+
+  const first = Number(moment(day1).format('YYYYMMDD'))
+  const second = Number(moment(day2).format('YYYYMMDD'))
+
+  if (type === 'start') {
+    return first < second ? day1 : day2
+  } else {
+    return first > second ? day1 : day2
+  }
+}
+
+// check whether the daynum is within main schedule range or not
+export const checkMainWeek = (data: TestDataType, week: number) => {
+  if (!data.subNo) {
+    return true
+  }
+
+  const startDate = Number(moment(data.startDate).format('YYYYMMDD'))
+  if (!data.endDate) {
+    return startDate === week
+  }
+  const endDate = Number(moment(data.endDate).format('YYYYMMDD'))
+  return week >= startDate && endDate >= week
 }

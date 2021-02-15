@@ -1,16 +1,20 @@
 import moment from 'moment'
 import * as polished from 'polished'
 import React from 'react'
+import { ScheduleStackType } from '../../containers/cho.inhyo/CalendarDateContainer'
 import Box from '../../foundations/cho.inhyo/Box'
 import TextView from '../../foundations/cho.inhyo/TextView'
 import CalendarDateStyle from '../../styles/cho.inhyo/components/CalendarDateStyle'
 import theme from '../../styles/cho.inhyo/global/theme'
 import * as helper from '../../utils/cho.inhyo/helpers'
 import { useIsMounted } from '../../utils/cho.inhyo/hooks'
+import CalendarIcons from './CalendarIcons'
+import CalendarSchedules, { ScheduleDisplayType } from './CalendarSchedules'
 
 interface Props {
   chosenDate?: Date
   startWeekOffset: number
+  edgeOfWeek?: 'start' | 'end'
   day: number
   month: number
   year: number
@@ -19,13 +23,18 @@ interface Props {
   beforeOrAfter?: 'before' | 'after'
   onClick: (date: Date) => void
   _date: React.RefObject<HTMLDivElement> | null
-  schedules?: React.ReactNode | React.ReactNode[]
-  icons?: React.ReactNode | React.ReactNode[]
+  scheduleStack: Array<Array<ScheduleStackType>>
+  icons?: {
+    endingProjects?: Date[]
+    endingCards?: Date[]
+    endingTodos?: Date[]
+  }
 }
 
 export default function CalendarDate({
   chosenDate,
   startWeekOffset,
+  edgeOfWeek,
   day,
   month,
   year,
@@ -34,7 +43,7 @@ export default function CalendarDate({
   beforeOrAfter,
   onClick,
   _date,
-  schedules,
+  scheduleStack,
   icons,
 }: Props) {
   const [actualYear, setActualYear] = React.useState(year)
@@ -138,6 +147,7 @@ export default function CalendarDate({
               )
             ? undefined
             : `1px solid ${theme.palette.mono.paleWhite}`,
+        // height: '188px',
       }}
       refObj={_date}
       id={`${actualYear}-${helper.makeTwoDigits(
@@ -173,14 +183,108 @@ export default function CalendarDate({
           ...CalendarDateStyle.contents,
           opacity: !thisMonth ? 0.2 : undefined,
         }}>
-        {schedules}
+        {scheduleStack.length > 0 && (
+          <CalendarSchedules
+            schedules={scheduleStack.map((stack) => {
+              const found = stack.find(
+                (schedule) =>
+                  schedule.week ===
+                  Number(
+                    String(actualYear) +
+                      helper.makeTwoDigits(actualMonth + 1) +
+                      helper.makeTwoDigits(day),
+                  ),
+              )
+              if (!found) return null
+
+              const stackList = stack.filter(
+                (schedule) => schedule.no === found.no,
+              )
+
+              const result: Record<string, unknown> = {
+                week: found.week,
+                type: found.mainWeek ? 'main' : 'sub',
+                sub: !!found.subNo,
+                label:
+                  !stackList.some(
+                    (schedule) =>
+                      schedule.mainWeek && schedule.week < found.week,
+                  ) ||
+                  (edgeOfWeek === 'start' && found.outOfThisWeek)
+                    ? found.label
+                    : undefined,
+                color: found.color,
+              }
+
+              if (result.type === 'main') {
+                result.start =
+                  !(edgeOfWeek === 'start' && found.outOfThisWeek) &&
+                  !stackList.some(
+                    (schedule) =>
+                      schedule.mainWeek && schedule.week < found.week,
+                  )
+                result.end =
+                  !(edgeOfWeek === 'end' && found.outOfThisWeek) &&
+                  !stackList.some(
+                    (schedule) =>
+                      schedule.mainWeek && schedule.week > found.week,
+                  )
+                result.subStart =
+                  !(edgeOfWeek === 'start' && found.outOfThisWeek) &&
+                  !stackList.some(
+                    (schedule) =>
+                      !schedule.mainWeek && schedule.week < found.week,
+                  )
+                result.subEnd =
+                  !(edgeOfWeek === 'end' && found.outOfThisWeek) &&
+                  !stackList.some(
+                    (schedule) =>
+                      !schedule.mainWeek && schedule.week > found.week,
+                  )
+              } else {
+                result.start =
+                  !(edgeOfWeek === 'start' && found.outOfThisWeek) &&
+                  !stackList.some((schedule) => schedule.week < found.week)
+                result.end =
+                  !(edgeOfWeek === 'end' && found.outOfThisWeek) &&
+                  !stackList.some((schedule) => schedule.week > found.week)
+              }
+
+              if (
+                String(actualYear) +
+                  helper.makeTwoDigits(actualMonth + 1) +
+                  helper.makeTwoDigits(day) ===
+                '20210208'
+              ) {
+                console.log('===================@$$@$@----------------------')
+                console.log(
+                  String(actualYear) +
+                    helper.makeTwoDigits(actualMonth + 1) +
+                    helper.makeTwoDigits(day),
+                )
+                console.log('result', result)
+                console.log('result', stackList)
+              }
+
+              return result as ScheduleDisplayType
+            })}
+          />
+        )}
       </div>
       <div
         style={{
           ...CalendarDateStyle.contents,
+          marginTop: '5px',
           opacity: !thisMonth ? 0.2 : undefined,
         }}>
-        {icons}
+        {icons && (
+          <CalendarIcons
+            today={new Date(actualYear, actualMonth, day)}
+            endingProjects={icons.endingProjects}
+            endingCards={icons.endingCards}
+            endingTodos={icons.endingTodos}
+          />
+        )}
       </div>
     </Box>
   )

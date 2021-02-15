@@ -6,6 +6,7 @@ const format = moment.localeData().longDateFormat('L')
 export type TestDataType = {
   type: 'sub' | 'main'
   parentNo?: number
+  subNo?: number
   no: number
   channel: {
     no: number
@@ -14,6 +15,8 @@ export type TestDataType = {
   name: string
   startDate: Date
   endDate?: Date
+  subStartDate?: Date
+  subEndDate?: Date
 }
 
 const testScheduleData: TestDataType[] = [
@@ -63,29 +66,29 @@ const testScheduleData: TestDataType[] = [
     startDate: moment('2021-02-11', 'YYYY-MM-DD').toDate(),
     endDate: moment('2021-02-12', 'YYYY-MM-DD').toDate(),
   },
-  // {
-  //   type: 'main',
-  //   no: 5,
-  //   channel: {
-  //     no: 1,
-  //     color: theme.palette.main.turquoise,
-  //   },
-  //   name: '파란 채널 새로운 일정2',
-  //   startDate: moment('2021.02-05', 'YYYY-MM-DD').toDate(),
-  //   endDate: moment('2021-02-15', 'YYYY-MM-DD').toDate(),
-  // },
-  // {
-  //   type: 'sub',
-  //   no: 6,
-  //   parentNo: 5,
-  //   channel: {
-  //     no: 1,
-  //     color: theme.palette.main.turquoise,
-  //   },
-  //   name: '파란 채널 새로운 일정2 sub',
-  //   startDate: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
-  //   endDate: moment('2021-02-14', 'YYYY-MM-DD').toDate(),
-  // },
+  {
+    type: 'main',
+    no: 5,
+    channel: {
+      no: 1,
+      color: theme.palette.main.turquoise,
+    },
+    name: '파란 채널 새로운 일정2',
+    startDate: moment('2021-02-05', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-15', 'YYYY-MM-DD').toDate(),
+  },
+  {
+    type: 'sub',
+    no: 6,
+    parentNo: 5,
+    channel: {
+      no: 1,
+      color: theme.palette.main.turquoise,
+    },
+    name: '파란 채널 새로운 일정2 sub',
+    startDate: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-14', 'YYYY-MM-DD').toDate(),
+  },
   {
     type: 'sub',
     no: 7,
@@ -147,7 +150,7 @@ const testScheduleData: TestDataType[] = [
     no: 12,
     channel: {
       no: 5,
-      color: theme.palette.main.navy,
+      color: theme.palette.main.blue,
     },
     name: '다른 새로운 일정',
     startDate: moment('2021-02-10', 'YYYY-MM-DD').toDate(),

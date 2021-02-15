@@ -9,69 +9,23 @@ import { useIsMounted } from '../../utils/cho.inhyo/hooks'
 import { Icons } from '../../utils/cho.inhyo/types'
 
 interface Props {
-  day: number
-  month: number
-  year: number
-  thisMonth?: boolean
-  beforeOrAfter?: 'before' | 'after'
+  today: Date
   endingProjects?: Date[]
   endingCards?: Date[]
   endingTodos?: Date[]
 }
 
 export default function CalendarIcons({
-  day,
-  month,
-  year,
-  thisMonth = true,
-  beforeOrAfter,
+  today,
   endingProjects,
   endingCards,
   endingTodos,
 }: Props) {
-  const [today, setToday] = React.useState(new Date())
   const [endingProjectCnt, setEndingProjectCnt] = React.useState(0)
   const [endingCardCnt, setEndingCardCnt] = React.useState(0)
   const [endingTodoCnt, setEndingTodoCnt] = React.useState(0)
 
   const isMounted = useIsMounted()
-
-  React.useEffect(() => {
-    if (!isMounted()) return
-
-    setToday(
-      () =>
-        new Date(
-          beforeOrAfter
-            ? beforeOrAfter === 'before'
-              ? !thisMonth
-                ? month === 0
-                  ? year - 1
-                  : year
-                : year
-              : !thisMonth
-              ? month === 11
-                ? year + 1
-                : year
-              : year
-            : year,
-          beforeOrAfter
-            ? beforeOrAfter === 'before'
-              ? !thisMonth
-                ? month === 0
-                  ? 11
-                  : month - 1
-                : month
-              : !thisMonth
-              ? month === 11
-                ? 0
-                : month + 1
-              : month
-            : month,
-          day,
-        ),
-    )
-  }, [isMounted, year, month, day, thisMonth, beforeOrAfter])
 
   React.useEffect(() => {
     if (!isMounted()) return

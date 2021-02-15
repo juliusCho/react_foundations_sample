@@ -212,8 +212,6 @@ export default function CalendarDateContainer({
     while (targetData.length > 0) {
       const availableRange = [...week]
       const queue: Array<ScheduleStackType> = []
-      console.log('QUEE', queue)
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!', targetData.length)
 
       for (let i = 0; i < targetData.length; i++) {
         console.log('?????', [...targetData])

@@ -50,6 +50,7 @@ export default function CalendarDateContainer({
   const [lastScrollTop, setLastScrollTop] = React.useState(0)
   const [init, setInit] = React.useState(true)
 
+  // 월 포커스 이벤트
   const focusMonth = (focusingYear: number, focusingMonth: number) => {
     if (!_dateList || _dateList.length === 0) return
     const _focusTargets = _dateList.filter((_date) => {
@@ -87,6 +88,7 @@ export default function CalendarDateContainer({
     }
   }
 
+  // 날짜 클릭 이벤트
   const onClickDate = (date: Date) => {
     setActionProcessing(true)
 
@@ -95,6 +97,7 @@ export default function CalendarDateContainer({
     onClick(date)
   }
 
+  // 현재 포커스된 월 영역화면 최상단 offsetY값 세팅
   React.useEffect(() => {
     if (isMounted()) {
       if (!init) return
@@ -125,15 +128,13 @@ export default function CalendarDateContainer({
     }
   }, [isMounted, init, _dateBody.current, dateRow.length, yearMonth, offsetY])
 
-  const constructWeekRow = (
+  // 현재 주의 날짜 목록 세팅
+  const setRowWeekDates = (
     year: number,
-    monthNum: number,
-    data: TestDataType[],
-    displayDate?: number[],
+    month: number,
+    day: number,
     beforeOrAfter?: 'before' | 'after',
   ) => {
-    const month = Number(helper.setMonth(monthNum))
-    const day = displayDate ? displayDate[0] : 1
     const week: number[] = []
 
     for (let i = 0; i < 7; i++) {
@@ -146,7 +147,11 @@ export default function CalendarDateContainer({
       dt.setDate(dt.getDate() + i)
       week.push(Number(moment(dt).format('YYYYMMDD')))
     }
+    return week
+  }
 
+  // 현재 주에 해당하는 일정 목록 필터
+  const getThisWeekData = (data: TestDataType[], week: number[]) => {
     let targetData: TestDataType[] = []
     const subData: TestDataType[] = []
 
@@ -201,6 +206,7 @@ export default function CalendarDateContainer({
           })
         })
 
+        // 만일 메인 일정이 해당 주에 발견되지 않았을 때
         if (allCovered > 0) {
           const subLefts = subData.filter(
             (subDatum) =>
@@ -212,6 +218,22 @@ export default function CalendarDateContainer({
     } else {
       targetData = subData
     }
+
+    return targetData
+  }
+
+  // 한 주(행) 별 일정 행 목록 세팅(로딩)
+  const constructWeekRow = (
+    year: number,
+    monthNum: number,
+    data: TestDataType[],
+    displayDate?: number[],
+    beforeOrAfter?: 'before' | 'after',
+  ) => {
+    const month = Number(helper.setMonth(monthNum))
+    const day = displayDate ? displayDate[0] : 1
+    const week = setRowWeekDates(year, month, day, beforeOrAfter)
+    const targetData = getThisWeekData(data, week)
 
     const stack: Array<Array<ScheduleStackType>> = []
 
@@ -235,6 +257,7 @@ export default function CalendarDateContainer({
 
         let added = false
 
+        // 종료일자 존재 시
         if (endDate && endDate !== startDate) {
           const dtNums: number[] = []
           let outOfThisWeek = false
@@ -297,6 +320,8 @@ export default function CalendarDateContainer({
             })
             added = true
           }
+
+          // 종료일자 미 존재 시
         } else {
           const available = availableRange.findIndex(
             (avlRng) => avlRng === startDate,
@@ -323,7 +348,9 @@ export default function CalendarDateContainer({
         }
       }
 
-      if (queue.length === 0) break
+      if (queue.length === 0) {
+        break
+      }
       stack.push(queue)
     }
 
@@ -453,6 +480,7 @@ export default function CalendarDateContainer({
     const DateRow: React.ReactNode[] = []
     const _tmpDateList: Array<React.RefObject<HTMLDivElement> | null> = []
 
+    // 2달전 ~ 2달후 범위 데이터 세팅
     for (let monthNum = month - 2; monthNum <= month + 2; monthNum++) {
       const year = Number(
         helper.setYear(Number(yearMonth.substr(0, 4)), monthNum),
@@ -533,6 +561,7 @@ export default function CalendarDateContainer({
           }
         }
 
+        // 첫째 주
         if (displayWeekNum === 1) {
           if (seqOfFirstDayOfThisMonth === 0) {
             constructRow()
@@ -551,6 +580,8 @@ export default function CalendarDateContainer({
               constructRow(displayDate, 'before')
             }
           }
+
+          // 마지막 주
         } else if (displayWeekNum === displayWeekCnt) {
           let cnt = 1
           const displayDate: number[] = []
@@ -566,6 +597,8 @@ export default function CalendarDateContainer({
           if (month === monthNum) {
             constructRow(displayDate, 'after')
           }
+
+          // 중간 주
         } else {
           const displayDate: number[] = []
           for (let num = 0; num < 7; num++) {
@@ -575,6 +608,7 @@ export default function CalendarDateContainer({
           constructRow(displayDate)
         }
 
+        // 한 주 표시 세팅
         if (DateList.length > 0) {
           DateRow.push(
             <Box
@@ -592,6 +626,7 @@ export default function CalendarDateContainer({
     set_dateList(() => _tmpDateList)
   }, [isMounted, yearMonth, chosenDate])
 
+  // 스크롤 이벤트
   const onScroll = (e: Event) => {
     if (!isMounted()) return
     if (!_dateBody?.current) return
@@ -599,6 +634,7 @@ export default function CalendarDateContainer({
 
     e.preventDefault()
 
+    // 12일 날짜 영역의 최하단을 기준으로 월 포커스 발생
     const _foundList = _dateList.filter((_date) => {
       if (_date?.current && _dateBody?.current) {
         const {
@@ -657,6 +693,7 @@ export default function CalendarDateContainer({
     }
   }
 
+  // 스크롤 이벤트 등록
   React.useLayoutEffect(() => {
     if (!isMounted()) return
     if (!_dateBody?.current) return
@@ -686,6 +723,7 @@ export default function CalendarDateContainer({
     _dateBody.current,
   ])
 
+  // 스크롤 이벤트를 스크롤 움직임이 약할때만 발생 시키기
   const onWheel = (e: WheelEvent) => {
     if (e.deltaY < 10 || e.deltaY > -1) {
       setActionProcessing(() => false)

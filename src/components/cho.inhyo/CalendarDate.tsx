@@ -53,6 +53,7 @@ export default function CalendarDate({
   const [isWeekend, setIsWeekend] = React.useState(false)
   const [thisWeek, setThisWeek] = React.useState<Date[]>([])
   const [containerWidth, setContainerWidth] = React.useState(0)
+  const [containerHeight, setContainerHeight] = React.useState(0)
 
   const isMounted = useIsMounted()
 
@@ -123,6 +124,7 @@ export default function CalendarDate({
     if (isMounted()) {
       if (_date?.current) {
         setContainerWidth(() => Number(_date.current?.clientWidth))
+        setContainerHeight(() => Number(_date.current?.scrollHeight))
       }
     }
   }, [isMounted, _date?.current, window.outerWidth])
@@ -147,15 +149,15 @@ export default function CalendarDate({
               theme.palette.main.turquoise,
             )
           : undefined,
-        // borderLeft:
-        //   thisWeek.length === 0
-        //     ? undefined
-        //     : helper.compareDate(
-        //         thisWeek[0],
-        //         new Date(actualYear, actualMonth, day),
-        //       )
-        //     ? undefined
-        //     : `0.5px solid ${theme.palette.mono.paleWhite}`,
+        borderLeft:
+          thisWeek.length === 0
+            ? undefined
+            : helper.compareDate(
+                thisWeek[0],
+                new Date(actualYear, actualMonth, day),
+              )
+            ? undefined
+            : `1px solid ${theme.palette.mono.paleWhite}`,
       }}
       refObj={_date}
       id={`${actualYear}-${helper.makeTwoDigits(
@@ -171,7 +173,7 @@ export default function CalendarDate({
             borderRadius: '50%',
             padding: '9px 5px 5px 5px',
             width: '24px',
-            height: '20px',
+            height: '19px',
             textAlign: 'center' as const,
             backgroundColor: isToday
               ? polished.lighten(thisMonth ? 0 : 0.3, theme.palette.main.red)
@@ -193,108 +195,114 @@ export default function CalendarDate({
         }}>
         {scheduleStack.length > 0 && (
           <CalendarSchedules
-            schedules={scheduleStack.map((stack) => {
-              const found = stack.find(
-                (schedule) =>
-                  schedule.week ===
-                  Number(
-                    String(actualYear) +
-                      helper.makeTwoDigits(actualMonth + 1) +
-                      helper.makeTwoDigits(day),
-                  ),
-              )
-              if (!found) return null
+            schedules={scheduleStack
+              .filter((stack, idx) => idx < 10)
+              .map((stack) => {
+                const found = stack.find(
+                  (schedule) =>
+                    schedule.week ===
+                    Number(
+                      String(actualYear) +
+                        helper.makeTwoDigits(actualMonth + 1) +
+                        helper.makeTwoDigits(day),
+                    ),
+                )
+                if (!found) return null
 
-              const stackList = stack.filter(
-                (schedule) => schedule.no === found.no,
-              )
+                const stackList = stack.filter(
+                  (schedule) => schedule.no === found.no,
+                )
 
-              const result: Record<string, unknown> = {
-                week: found.week,
-                type: found.mainWeek ? 'main' : 'sub',
-                sub: !!found.subNo,
-                label:
-                  !stackList.some(
-                    (schedule) =>
-                      schedule.mainWeek && schedule.week < found.week,
-                  ) ||
-                  (edgeOfWeek === 'start' && found.outOfThisWeek)
-                    ? found.label
-                    : undefined,
-                color: found.color,
-              }
+                const result: Record<string, unknown> = {
+                  week: found.week,
+                  type: found.mainWeek ? 'main' : 'sub',
+                  sub: !!found.subNo,
+                  label:
+                    !stackList.some(
+                      (schedule) =>
+                        schedule.mainWeek && schedule.week < found.week,
+                    ) ||
+                    (edgeOfWeek === 'start' && found.outOfThisWeek)
+                      ? found.label
+                      : undefined,
+                  color: found.color,
+                }
 
-              if (result.label && thisWeek.length > 0 && containerWidth !== 0) {
-                const label = result.label as string
+                if (
+                  result.label &&
+                  thisWeek.length > 0 &&
+                  containerWidth !== 0
+                ) {
+                  const label = result.label as string
 
-                if (label.length > 10) {
-                  const wordLen = Math.floor(containerWidth / 12)
+                  if (label.length > 10) {
+                    const wordLen = Math.round(containerWidth / 12) + 2
 
-                  const more = stackList.some(
-                    (schedule) =>
-                      schedule.mainWeek && schedule.week > found.week,
-                  )
+                    const more = stackList.some(
+                      (schedule) =>
+                        schedule.mainWeek && schedule.week > found.week,
+                    )
 
-                  if (edgeOfWeek === 'end' || !more) {
-                    result.label = label.substr(0, wordLen) + '...'
-                  } else {
-                    const maxLen =
-                      wordLen *
-                      stackList.filter(
-                        (schedule) =>
-                          schedule.mainWeek &&
-                          schedule.week >= found.week &&
-                          schedule.week <=
-                            Math.max(
-                              ...thisWeek.map((week) =>
-                                Number(moment(week).format('YYYYMMDD')),
+                    if (edgeOfWeek === 'end' || !more) {
+                      result.label = label.substr(0, wordLen) + '..extra..'
+                    } else {
+                      const maxLen =
+                        wordLen *
+                        stackList.filter(
+                          (schedule) =>
+                            schedule.mainWeek &&
+                            schedule.week >= found.week &&
+                            schedule.week <=
+                              Math.max(
+                                ...thisWeek.map((week) =>
+                                  Number(moment(week).format('YYYYMMDD')),
+                                ),
                               ),
-                            ),
-                      ).length
+                        ).length
 
-                    if (label.length > maxLen) {
-                      result.label = label.substr(0, maxLen) + '...'
+                      if (label.length > maxLen) {
+                        result.label = label.substr(0, maxLen) + '..extra..'
+                      }
                     }
                   }
                 }
-              }
 
-              if (result.type === 'main') {
-                result.start =
-                  !(edgeOfWeek === 'start' && found.outOfThisWeek) &&
-                  !stackList.some(
-                    (schedule) =>
-                      schedule.mainWeek && schedule.week < found.week,
-                  )
-                result.end =
-                  !(edgeOfWeek === 'end' && found.outOfThisWeek) &&
-                  !stackList.some(
-                    (schedule) =>
-                      schedule.mainWeek && schedule.week > found.week,
-                  )
-                result.subStart =
-                  !(edgeOfWeek === 'start' && found.outOfThisWeek) &&
-                  !stackList.some(
-                    (schedule) =>
-                      !schedule.mainWeek && schedule.week < found.week,
-                  )
-                result.subEnd =
-                  !(edgeOfWeek === 'end' && found.outOfThisWeek) &&
-                  !stackList.some(
-                    (schedule) =>
-                      !schedule.mainWeek && schedule.week > found.week,
-                  )
-              } else {
-                result.start =
-                  !(edgeOfWeek === 'start' && found.outOfThisWeek) &&
-                  !stackList.some((schedule) => schedule.week < found.week)
-                result.end =
-                  !(edgeOfWeek === 'end' && found.outOfThisWeek) &&
-                  !stackList.some((schedule) => schedule.week > found.week)
-              }
+                if (result.type === 'main') {
+                  result.start =
+                    !(edgeOfWeek === 'start' && found.outOfThisWeek) &&
+                    !stackList.some(
+                      (schedule) =>
+                        schedule.mainWeek && schedule.week < found.week,
+                    )
+                  result.end =
+                    !(edgeOfWeek === 'end' && found.outOfThisWeek) &&
+                    !stackList.some(
+                      (schedule) =>
+                        schedule.mainWeek && schedule.week > found.week,
+                    )
+                  result.subStart =
+                    !(edgeOfWeek === 'start' && found.outOfThisWeek) &&
+                    !stackList.some(
+                      (schedule) =>
+                        !schedule.mainWeek && schedule.week < found.week,
+                    )
+                  result.subEnd =
+                    !(edgeOfWeek === 'end' && found.outOfThisWeek) &&
+                    !stackList.some(
+                      (schedule) =>
+                        !schedule.mainWeek && schedule.week > found.week,
+                    )
+                } else {
+                  result.start =
+                    !(edgeOfWeek === 'start' && found.outOfThisWeek) &&
+                    !stackList.some((schedule) => schedule.week < found.week)
+                  result.end =
+                    !(edgeOfWeek === 'end' && found.outOfThisWeek) &&
+                    !stackList.some((schedule) => schedule.week > found.week)
+                }
 
-              return result as ScheduleDisplayType
-            })}
+                return result as ScheduleDisplayType
+              })}
           />
         )}
       </div>

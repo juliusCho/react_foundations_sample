@@ -1,7 +1,8 @@
 const CalendarDateStyle = {
   container: {
     width: 'calc(100% / 7)',
-    justifyContent: 'space-between' as const,
+    justifyContent: 'flex-start' as const,
+    alignSelf: 'stretch' as const,
     cursor: 'pointer' as const,
     margin: 0,
   },

@@ -22,4 +22,5 @@ export enum Icons {
   ANGLE_RIGHT = 'xi-angle-right',
   EMOTICON = 'xi-emoticon',
   CARD = 'xi-view-column',
+  MORE = 'xi-ellipsis-h',
 }

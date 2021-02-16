@@ -118,7 +118,7 @@ const testScheduleData: TestDataType[] = [
       no: 3,
       color: theme.palette.main.red,
     },
-    name: '빨간 채널의 다른 새로운 일정 틸발구 12',
+    name: '빨간 채널의 다른 새로 운 일정 틸발구 12 나나',
     startDate: moment('2021-02-08', 'YYYY-MM-DD').toDate(),
     endDate: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
   },

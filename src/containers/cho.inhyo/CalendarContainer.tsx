@@ -1,6 +1,6 @@
 import moment from 'moment'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
+import { TFunction, useTranslation } from 'react-i18next'
 import Recoil from 'recoil'
 import DateTimePicker from '../../components/cho.inhyo/DateTimePicker'
 import Box from '../../foundations/cho.inhyo/Box'
@@ -15,6 +15,40 @@ import { Days, Months } from '../../utils/cho.inhyo/i18n'
 import { loadingState } from '../../utils/cho.inhyo/states'
 import { Icons } from '../../utils/cho.inhyo/types'
 import CalendarDateContainer from './CalendarDateContainer'
+
+const createDayLabels = (startDay: number, t: TFunction<string>) => {
+  const DayList: React.ReactNode[] = []
+
+  let dayCount = 0
+  for (let dayNum: number = startDay; dayNum < 7; dayNum++) {
+    DayList.push(
+      <Box
+        key={Days[dayNum]}
+        direction="horizontal"
+        style={CalendarContainerStyle.dayHeader}>
+        <TextView
+          value={t(`calendar.${Days[dayNum]}`)}
+          style={{
+            ...CalendarContainerStyle.day,
+            color:
+              dayNum === 0 || dayNum === 6
+                ? theme.palette.main.red
+                : theme.palette.mono.darkGray,
+          }}
+        />
+      </Box>,
+    )
+
+    dayCount++
+    if (dayCount === 7) {
+      break
+    } else if (dayNum === 6 && dayCount < 7) {
+      dayNum = -1
+    }
+  }
+
+  return DayList
+}
 
 interface Props {
   baseDate: Date
@@ -67,35 +101,10 @@ export default function CalendarContainer({
     }
   }, [isMounted, year, month, helper.makeTwoDigits, yearMonth])
 
-  const DayList: React.ReactNode[] = []
-
-  let dayCount = 0
-  for (let dayNum: number = startDay; dayNum < 7; dayNum++) {
-    DayList.push(
-      <Box
-        key={Days[dayNum]}
-        direction="horizontal"
-        style={CalendarContainerStyle.dayHeader}>
-        <TextView
-          value={t(`calendar.${Days[dayNum]}`)}
-          style={{
-            ...CalendarContainerStyle.day,
-            color:
-              dayNum === 0 || dayNum === 6
-                ? theme.palette.main.red
-                : theme.palette.mono.darkGray,
-          }}
-        />
-      </Box>,
-    )
-
-    dayCount++
-    if (dayCount === 7) {
-      break
-    } else if (dayNum === 6 && dayCount < 7) {
-      dayNum = -1
-    }
-  }
+  const DayList = React.useMemo(() => createDayLabels(startDay, t), [
+    startDay,
+    t,
+  ])
 
   const onChange = (increment: boolean) => {
     setActionProcessing(true)

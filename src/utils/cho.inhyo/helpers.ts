@@ -153,3 +153,22 @@ export const checkMainWeek = (data: TestDataType, week: number) => {
   const endDate = Number(moment(data.endDate).format('YYYYMMDD'))
   return week >= startDate && endDate >= week
 }
+
+// Manual calculation of current month & year depend on display week
+export const getNewDateUponBeforeOrAfter = (
+  year: number,
+  month: number,
+  day: number,
+  beforeOrAfter?: 'before' | 'after',
+) => {
+  if (beforeOrAfter) {
+    if (beforeOrAfter === 'before') {
+      if (month - 1 < 0) {
+        return new Date(year - 1, 11, day)
+      } else {
+        return new Date(year, month - 1, day)
+      }
+    }
+  }
+  return new Date(year, month, day)
+}

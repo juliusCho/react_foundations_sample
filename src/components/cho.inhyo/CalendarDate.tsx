@@ -52,6 +52,7 @@ export default function CalendarDate({
   const [isToday, setIsToday] = React.useState(false)
   const [isWeekend, setIsWeekend] = React.useState(false)
   const [thisWeek, setThisWeek] = React.useState<Date[]>([])
+  const [containerWidth, setContainerWidth] = React.useState(0)
 
   const isMounted = useIsMounted()
 
@@ -118,6 +119,14 @@ export default function CalendarDate({
     setThisWeek(() => week)
   }, [isMounted, actualYear, actualMonth, day, startWeekOffset])
 
+  React.useEffect(() => {
+    if (isMounted()) {
+      if (_date?.current) {
+        setContainerWidth(() => Number(_date.current?.clientWidth))
+      }
+    }
+  }, [isMounted, _date?.current, window.outerWidth])
+
   const onClickDay = (e?: React.MouseEvent<HTMLDivElement>) => {
     if (e) {
       e.preventDefault()
@@ -138,16 +147,15 @@ export default function CalendarDate({
               theme.palette.main.turquoise,
             )
           : undefined,
-        borderLeft:
-          thisWeek.length === 0
-            ? undefined
-            : helper.compareDate(
-                thisWeek[0],
-                new Date(actualYear, actualMonth, day),
-              )
-            ? undefined
-            : `1px solid ${theme.palette.mono.paleWhite}`,
-        // height: '188px',
+        // borderLeft:
+        //   thisWeek.length === 0
+        //     ? undefined
+        //     : helper.compareDate(
+        //         thisWeek[0],
+        //         new Date(actualYear, actualMonth, day),
+        //       )
+        //     ? undefined
+        //     : `0.5px solid ${theme.palette.mono.paleWhite}`,
       }}
       refObj={_date}
       id={`${actualYear}-${helper.makeTwoDigits(
@@ -216,6 +224,41 @@ export default function CalendarDate({
                 color: found.color,
               }
 
+              if (result.label && thisWeek.length > 0 && containerWidth !== 0) {
+                const label = result.label as string
+
+                if (label.length > 10) {
+                  const wordLen = Math.floor(containerWidth / 12)
+
+                  const more = stackList.some(
+                    (schedule) =>
+                      schedule.mainWeek && schedule.week > found.week,
+                  )
+
+                  if (edgeOfWeek === 'end' || !more) {
+                    result.label = label.substr(0, wordLen) + '...'
+                  } else {
+                    const maxLen =
+                      wordLen *
+                      stackList.filter(
+                        (schedule) =>
+                          schedule.mainWeek &&
+                          schedule.week >= found.week &&
+                          schedule.week <=
+                            Math.max(
+                              ...thisWeek.map((week) =>
+                                Number(moment(week).format('YYYYMMDD')),
+                              ),
+                            ),
+                      ).length
+
+                    if (label.length > maxLen) {
+                      result.label = label.substr(0, maxLen) + '...'
+                    }
+                  }
+                }
+              }
+
               if (result.type === 'main') {
                 result.start =
                   !(edgeOfWeek === 'start' && found.outOfThisWeek) &&
@@ -248,22 +291,6 @@ export default function CalendarDate({
                 result.end =
                   !(edgeOfWeek === 'end' && found.outOfThisWeek) &&
                   !stackList.some((schedule) => schedule.week > found.week)
-              }
-
-              if (
-                String(actualYear) +
-                  helper.makeTwoDigits(actualMonth + 1) +
-                  helper.makeTwoDigits(day) ===
-                '20210208'
-              ) {
-                console.log('===================@$$@$@----------------------')
-                console.log(
-                  String(actualYear) +
-                    helper.makeTwoDigits(actualMonth + 1) +
-                    helper.makeTwoDigits(day),
-                )
-                console.log('result', result)
-                console.log('result', stackList)
               }
 
               return result as ScheduleDisplayType

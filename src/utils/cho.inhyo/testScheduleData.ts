@@ -1,7 +1,6 @@
 import moment from 'moment'
+import * as polished from 'polished'
 import theme from '../../styles/cho.inhyo/global/theme'
-
-const format = moment.localeData().longDateFormat('L')
 
 export type TestDataType = {
   type: 'sub' | 'main'
@@ -108,7 +107,7 @@ const testScheduleData: TestDataType[] = [
       no: 2,
       color: theme.palette.main.yellow,
     },
-    name: '노란 채널의 다른 새로운 긴 일정 sub',
+    name: '노란 채널의 다른 새로운 긴 일정 substar 43argy',
     startDate: moment('2021-02-08', 'YYYY-MM-DD').toDate(),
     endDate: moment('2021-02-12', 'YYYY-MM-DD').toDate(),
   },
@@ -119,7 +118,7 @@ const testScheduleData: TestDataType[] = [
       no: 3,
       color: theme.palette.main.red,
     },
-    name: '빨간 채널의 다른 새로운 일정',
+    name: '빨간 채널의 다른 새로운 일정 틸발구 12',
     startDate: moment('2021-02-08', 'YYYY-MM-DD').toDate(),
     endDate: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
   },
@@ -150,11 +149,34 @@ const testScheduleData: TestDataType[] = [
     no: 12,
     channel: {
       no: 5,
-      color: theme.palette.main.blue,
+      color: polished.lighten(0.2, theme.palette.main.blue),
     },
     name: '다른 새로운 일정',
     startDate: moment('2021-02-10', 'YYYY-MM-DD').toDate(),
     endDate: moment('2021-02-10', 'YYYY-MM-DD').toDate(),
+  },
+  {
+    type: 'main',
+    no: 13,
+    channel: {
+      no: 5,
+      color: polished.lighten(0.2, theme.palette.main.blue),
+    },
+    name: '테스트 일정',
+    startDate: moment('2021-01-27', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-01-29', 'YYYY-MM-DD').toDate(),
+  },
+  {
+    type: 'sub',
+    no: 14,
+    parentNo: 13,
+    channel: {
+      no: 5,
+      color: polished.lighten(0.2, theme.palette.main.blue),
+    },
+    name: '테스트 일정 sub',
+    startDate: moment('2021-01-26', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-02', 'YYYY-MM-DD').toDate(),
   },
 ]
 

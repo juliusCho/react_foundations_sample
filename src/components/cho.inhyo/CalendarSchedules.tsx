@@ -55,14 +55,13 @@ export default function CalendarSchedules({ schedules }: Props) {
                   : schedule.end
                   ? '0px 30px 30px 0px'
                   : 'unset',
-              }}>
-              {schedule.label && (
-                <TextView
-                  value={schedule.label}
-                  style={CalendarSchedulesStyle.label}
-                />
-              )}
-            </div>
+              }}></div>
+            {schedule.label && (
+              <TextView
+                value={schedule.label}
+                style={CalendarSchedulesStyle.label}
+              />
+            )}
           </div>
         ) : (
           <div

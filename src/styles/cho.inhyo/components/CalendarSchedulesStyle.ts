@@ -43,6 +43,7 @@ const CalendarSchedulesStyle = {
   label: {
     whiteSpace: 'pre' as const,
     wordBreak: 'keep-all' as const,
+    zIndex: 2,
   },
 }
 

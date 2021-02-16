@@ -130,13 +130,19 @@ export default function CalendarDateContainer({
     monthNum: number,
     data: TestDataType[],
     displayDate?: number[],
+    beforeOrAfter?: 'before' | 'after',
   ) => {
     const month = Number(helper.setMonth(monthNum))
     const day = displayDate ? displayDate[0] : 1
     const week: number[] = []
 
     for (let i = 0; i < 7; i++) {
-      const dt = new Date(year, month, day)
+      const dt = helper.getNewDateUponBeforeOrAfter(
+        year,
+        month,
+        day,
+        beforeOrAfter,
+      )
       dt.setDate(dt.getDate() + i)
       week.push(Number(moment(dt).format('YYYYMMDD')))
     }
@@ -214,9 +220,6 @@ export default function CalendarDateContainer({
       const queue: Array<ScheduleStackType> = []
 
       for (let i = 0; i < targetData.length; i++) {
-        console.log('?????', [...targetData])
-        console.log(targetData[i].endDate)
-
         const startDate = helper.getStartEndDateNum(
           'start',
           targetData[i].startDate,
@@ -227,9 +230,6 @@ export default function CalendarDateContainer({
           targetData[i].endDate,
           targetData[i].subEndDate,
         )
-
-        console.log('START', startDate)
-        console.log('END', endDate)
 
         if (!startDate) continue
 
@@ -273,11 +273,6 @@ export default function CalendarDateContainer({
               outOfThisWeek = true
             }
           }
-
-          console.log('-------------------------------')
-          console.log('target', targetData[i])
-          console.log('dtNums', dtNums)
-          console.log('new', new Date('2021-02-11T01:00:00.000'))
 
           const available = dtNums.every((dtNum) =>
             availableRange.some((avlRng) => avlRng === dtNum),
@@ -330,9 +325,6 @@ export default function CalendarDateContainer({
 
       if (queue.length === 0) break
       stack.push(queue)
-      console.log('============================')
-      console.log('targetData', targetData)
-      console.log('stack', stack)
     }
 
     return stack
@@ -515,6 +507,7 @@ export default function CalendarDateContainer({
             monthNum,
             testScheduleData,
             displayDate,
+            beforeOrAfter,
           )
 
           for (

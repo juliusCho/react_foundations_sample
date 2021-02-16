@@ -261,6 +261,8 @@ export default React.memo(function CalendarDate({
       className="hover"
       style={{
         ...CalendarDateStyle.container,
+        justifyContent:
+          scheduleStack.length > 0 ? 'flex-start' : ('flex-end' as const),
         backgroundColor: selected
           ? polished.lighten(
               thisMonth ? 0.3 : 0.35,

@@ -4,8 +4,9 @@ import DueScheduleList from '../../components/cho.inhyo/DueScheduleItem'
 import Box from '../../foundations/cho.inhyo/Box'
 import IconButton from '../../foundations/cho.inhyo/IconButton'
 import TextView from '../../foundations/cho.inhyo/TextView'
-import testScheduleData, {
+import {
   TestDataType,
+  testScheduleData,
 } from '../../utils/cho.inhyo/testScheduleData'
 import { Icons } from '../../utils/cho.inhyo/types'
 

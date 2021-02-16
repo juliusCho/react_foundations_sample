@@ -21,7 +21,7 @@ interface Props {
   schedules: Array<ScheduleDisplayType | null>
 }
 
-export default function CalendarSchedules({ schedules }: Props) {
+export default React.memo(function CalendarSchedules({ schedules }: Props) {
   const { t } = useTranslation()
 
   const maxCount = 10
@@ -35,6 +35,7 @@ export default function CalendarSchedules({ schedules }: Props) {
         .map((schedule, idx) =>
           idx === maxCount && extraCount > 0 ? (
             <TextView
+              key={'more_' + String(idx)}
               value={t('calendar.moreSchedule', { count: extraCount })}
               style={{
                 ...CalendarSchedulesStyle.nullStyle,
@@ -44,7 +45,10 @@ export default function CalendarSchedules({ schedules }: Props) {
               }}
             />
           ) : schedule === null ? (
-            <div key={idx} style={CalendarSchedulesStyle.nullStyle} />
+            <div
+              key={'null_' + String(idx)}
+              style={CalendarSchedulesStyle.nullStyle}
+            />
           ) : schedule.type === 'main' ? (
             <div
               key={String(idx) + String(schedule.week)}
@@ -104,7 +108,7 @@ export default function CalendarSchedules({ schedules }: Props) {
             </div>
           ) : (
             <div
-              key={schedule.week}
+              key={'sub_' + String(schedule.week) + String(idx)}
               style={{
                 ...CalendarSchedulesStyle.sub,
                 backgroundColor: schedule.color,
@@ -121,4 +125,4 @@ export default function CalendarSchedules({ schedules }: Props) {
         )}
     </div>
   )
-}
+})

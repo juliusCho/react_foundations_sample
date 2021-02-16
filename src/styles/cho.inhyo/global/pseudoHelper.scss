@@ -35,6 +35,10 @@ $font-big: 23px;
   outline: none;
 }
 
+.hover:hover {
+  opacity: 0.7;
+}
+
 .active-gray {
   background-color: $gray;
 }

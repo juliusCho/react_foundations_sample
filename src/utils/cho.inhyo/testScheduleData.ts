@@ -5,7 +5,7 @@ import theme from '../../styles/cho.inhyo/global/theme'
 export type TestDataType = {
   type: 'sub' | 'main'
   parentNo?: number
-  subNo?: number
+  subNo?: number[]
   no: number
   channel: {
     no: number
@@ -18,7 +18,7 @@ export type TestDataType = {
   subEndDate?: Date
 }
 
-const testScheduleData: TestDataType[] = [
+export const testScheduleData: TestDataType[] = [
   {
     type: 'sub',
     parentNo: 2,
@@ -49,9 +49,9 @@ const testScheduleData: TestDataType[] = [
       no: 1,
       color: theme.palette.main.turquoise,
     },
-    name: '파란 채널 새로운 일정1',
+    name: '파란 채널 새로운 일정11',
     startDate: moment('2021-02-11', 'YYYY-MM-DD').toDate(),
-    endDate: moment('2021-02-12', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-11', 'YYYY-MM-DD').toDate(),
   },
   {
     type: 'sub',
@@ -96,7 +96,7 @@ const testScheduleData: TestDataType[] = [
       no: 2,
       color: theme.palette.main.yellow,
     },
-    name: '노란 채널의 다른 새로운 긴 일정',
+    name: '노란 채널의 다른 새로운 긴 일정 sub',
     startDate: moment('2021-02-11', 'YYYY-MM-DD').toDate(),
     endDate: moment('2021-02-14', 'YYYY-MM-DD').toDate(),
   },
@@ -107,9 +107,9 @@ const testScheduleData: TestDataType[] = [
       no: 2,
       color: theme.palette.main.yellow,
     },
-    name: '노란 채널의 다른 새로운 긴 일정 substar 43argy',
+    name: '노란 채널의 다른 새로운 긴 일정 substar 43argy ㅜ무ㅏ자딤수ㅏㅣㄷ',
     startDate: moment('2021-02-08', 'YYYY-MM-DD').toDate(),
-    endDate: moment('2021-02-12', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-10', 'YYYY-MM-DD').toDate(),
   },
   {
     type: 'main',
@@ -118,7 +118,7 @@ const testScheduleData: TestDataType[] = [
       no: 3,
       color: theme.palette.main.red,
     },
-    name: '빨간 채널의 다른 새로 운 일정 틸발구 12 나나',
+    name: '빨간 채널의 다른 새로 운 일정 틸발구 12 나나sl enlam',
     startDate: moment('2021-02-08', 'YYYY-MM-DD').toDate(),
     endDate: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
   },
@@ -143,6 +143,18 @@ const testScheduleData: TestDataType[] = [
     name: '다른 새로운 일정 sub',
     startDate: moment('2021-02-10', 'YYYY-MM-DD').toDate(),
     endDate: moment('2021-02-12', 'YYYY-MM-DD').toDate(),
+  },
+  {
+    type: 'sub',
+    parentNo: 10,
+    no: 110,
+    channel: {
+      no: 4,
+      color: theme.palette.main.pink,
+    },
+    name: '다른 새로운 일정 sub2',
+    startDate: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-13', 'YYYY-MM-DD').toDate(),
   },
   {
     type: 'main',
@@ -178,6 +190,186 @@ const testScheduleData: TestDataType[] = [
     startDate: moment('2021-01-26', 'YYYY-MM-DD').toDate(),
     endDate: moment('2021-02-02', 'YYYY-MM-DD').toDate(),
   },
+  {
+    type: 'sub',
+    no: 15,
+    parentNo: 13,
+    channel: {
+      no: 5,
+      color: polished.lighten(0.2, theme.palette.main.blue),
+    },
+    name: '테스트 일정 sub2',
+    startDate: moment('2021-01-29', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-03', 'YYYY-MM-DD').toDate(),
+  },
 ]
 
-export default testScheduleData
+export type TestIconDataType = {
+  no: number
+  name: string
+  date: Date
+}
+
+export const testIconData = {
+  projects: [
+    {
+      no: 1,
+      name: '프로젝트1',
+      date: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 2,
+      name: '프로젝트2',
+      date: moment('2021-02-12', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 3,
+      name: '프로젝트3',
+      date: moment('2021-02-26', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 4,
+      name: '프로젝트4',
+      date: moment('2021-02-26', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 5,
+      name: '프로젝트5',
+      date: moment('2021-02-06', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 6,
+      name: '프로젝트6',
+      date: moment('2021-02-21', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 7,
+      name: '프로젝트7',
+      date: moment('2021-02-21', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 8,
+      name: '프로젝트8',
+      date: moment('2021-02-21', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 9,
+      name: '프로젝트9',
+      date: moment('2021-02-24', 'YYYY-MM-DD').toDate(),
+    },
+  ],
+  cards: [
+    {
+      no: 1,
+      name: '카드1',
+      date: moment('2021-02-24', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 2,
+      name: '카드2',
+      date: moment('2021-02-24', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 3,
+      name: '카드3',
+      date: moment('2021-02-02', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 4,
+      name: '카드4',
+      date: moment('2021-02-01', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 5,
+      name: '카드5',
+      date: moment('2021-02-22', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 6,
+      name: '카드6',
+      date: moment('2021-02-14', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 7,
+      name: '카드7',
+      date: moment('2021-02-02', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 8,
+      name: '카드8',
+      date: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 9,
+      name: '카드9',
+      date: moment('2021-02-28', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 10,
+      name: '카드10',
+      date: moment('2021-02-27', 'YYYY-MM-DD').toDate(),
+    },
+  ],
+  todos: [
+    {
+      no: 1,
+      name: '할일1',
+      date: moment('2021-02-01', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 2,
+      name: '할일2',
+      date: moment('2021-02-01', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 3,
+      name: '할일3',
+      date: moment('2021-02-11', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 4,
+      name: '할일4',
+      date: moment('2021-02-21', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 5,
+      name: '할일5',
+      date: moment('2021-02-25', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 6,
+      name: '할일6',
+      date: moment('2021-02-03', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 7,
+      name: '할일7',
+      date: moment('2021-02-16', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 8,
+      name: '할일8',
+      date: moment('2021-02-25', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 9,
+      name: '할일9',
+      date: moment('2021-02-17', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 10,
+      name: '할일10',
+      date: moment('2021-02-17', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 11,
+      name: '할일11',
+      date: moment('2021-02-20', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 12,
+      name: '할일12',
+      date: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
+    },
+  ],
+}

@@ -15,7 +15,7 @@ interface Props {
   endingTodos?: Date[]
 }
 
-export default function CalendarIcons({
+export default React.memo(function CalendarIcons({
   today,
   endingProjects,
   endingCards,
@@ -105,4 +105,4 @@ export default function CalendarIcons({
       )}
     </>
   )
-}
+})

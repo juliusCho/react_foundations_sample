@@ -10,9 +10,6 @@ const IconButonStyle = {
     align-items: center;
     cursor: pointer;
 
-    &:hover {
-      opacity: 0.3;
-    }
     &:active {
       opacity: 0.5;
     }

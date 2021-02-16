@@ -5,19 +5,33 @@ import Box from '../../foundations/cho.inhyo/Box'
 import CalendarDateContainerStyle from '../../styles/cho.inhyo/containers/CalendarDateContainerStyle'
 import * as helper from '../../utils/cho.inhyo/helpers'
 import { useIsMounted } from '../../utils/cho.inhyo/hooks'
-import testScheduleData, {
+import {
   TestDataType,
+  testIconData,
+  testScheduleData,
 } from '../../utils/cho.inhyo/testScheduleData'
 
 export type ScheduleStackType = {
   no: number
-  subNo?: number
+  subNo?: number[]
   week: number
   mainWeek: boolean
   outOfThisWeek?: boolean
   label: string
   color: string
 }
+
+const DateRowComponent = React.memo(function DateRowFnc({
+  children,
+}: {
+  children: React.ReactNode[]
+}) {
+  return (
+    <Box direction="horizontal" style={CalendarDateContainerStyle.row}>
+      {children}
+    </Box>
+  )
+})
 
 interface Props {
   startDay?: 0 | 1 | 2 | 3 | 4 | 5 | 6
@@ -153,7 +167,7 @@ export default function CalendarDateContainer({
   // 현재 주에 해당하는 일정 목록 필터
   const getThisWeekData = (data: TestDataType[], week: number[]) => {
     let targetData: TestDataType[] = []
-    const subData: TestDataType[] = []
+    let subData: TestDataType[] = []
 
     data
       .filter((datum) => {
@@ -182,7 +196,30 @@ export default function CalendarDateContainer({
         if (datum.type === 'main') {
           targetData.push(datum)
         } else {
-          subData.push(datum)
+          const idx = subData.findIndex(
+            (sub) => sub.parentNo === datum.parentNo,
+          )
+          if (idx === -1) {
+            subData.push(datum)
+          } else {
+            subData = subData.map((sub, index) =>
+              index === idx
+                ? {
+                    ...sub,
+                    startDate: helper.getStartEndDate(
+                      'start',
+                      sub.startDate,
+                      datum.startDate,
+                    ) as Date,
+                    endDate: helper.getStartEndDate(
+                      'end',
+                      sub.endDate,
+                      datum.endDate,
+                    ),
+                  }
+                : sub,
+            )
+          }
         }
       })
 
@@ -196,9 +233,23 @@ export default function CalendarDateContainer({
               allCovered--
               return {
                 ...target,
-                subNo: datum.no,
-                subStartDate: datum.startDate,
-                subEndDate: datum.endDate,
+                subNo: target.subNo
+                  ? target.subNo.concat(datum.no)
+                  : [datum.no],
+                subStartDate: target.subStartDate
+                  ? helper.getStartEndDate(
+                      'start',
+                      target.subStartDate,
+                      datum.startDate,
+                    )
+                  : datum.startDate,
+                subEndDate: target.subEndDate
+                  ? helper.getStartEndDate(
+                      'end',
+                      target.subEndDate,
+                      datum.endDate,
+                    )
+                  : datum.endDate,
               }
             } else {
               return target
@@ -210,13 +261,38 @@ export default function CalendarDateContainer({
         if (allCovered > 0) {
           const subLefts = subData.filter(
             (subDatum) =>
-              !targetData.some((datum) => datum.subNo === subDatum.no),
+              !targetData.some(
+                (datum) =>
+                  datum.subNo && datum.subNo.some((sub) => sub === subDatum.no),
+              ),
           )
           targetData = [...targetData, ...subLefts]
         }
       }
     } else {
-      targetData = subData
+      const parents = subData
+        .map((sub) => sub.parentNo as number)
+        .filter((val, idx, self) => self.indexOf(val) === idx)
+
+      parents.forEach((parentNo) => {
+        targetData.push(
+          subData
+            .filter((sub) => sub.parentNo === parentNo)
+            .reduce((sub1, sub2) => ({
+              ...sub1,
+              startDate: helper.getStartEndDate(
+                'start',
+                sub1.startDate,
+                sub2.startDate,
+              ) as Date,
+              endDate: helper.getStartEndDate(
+                'end',
+                sub1.endDate,
+                sub2.endDate,
+              ),
+            })),
+        )
+      })
     }
 
     return targetData
@@ -376,74 +452,9 @@ export default function CalendarDateContainer({
       : month === monthNum
 
     const testData = {
-      endingProjects: [
-        moment('2021-02-09', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-12', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-26', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-26', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-06', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-21', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-21', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-21', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-24', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-09', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-12', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-26', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-26', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-06', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-21', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-21', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-21', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-24', 'YYYY-MM-DD').toDate(),
-      ],
-      endingCards: [
-        moment('2021-02-24', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-24', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-02', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-01', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-22', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-14', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-02', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-09', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-28', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-27', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-24', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-24', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-02', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-01', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-22', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-14', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-02', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-09', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-28', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-27', 'YYYY-MM-DD').toDate(),
-      ],
-      endingTodos: [
-        moment('2021-02-01', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-01', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-11', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-21', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-25', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-03', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-16', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-25', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-17', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-17', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-20', 'YYYY-MM-DD').toDate(),
-        moment('2021-02-09', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-01', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-01', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-11', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-21', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-25', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-03', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-16', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-25', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-17', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-17', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-20', 'YYYY-MM-DD').toDate(),
-        moment('2021-03-09', 'YYYY-MM-DD').toDate(),
-      ],
+      endingProjects: testIconData.projects.map((project) => project.date),
+      endingCards: testIconData.cards.map((card) => card.date),
+      endingTodos: testIconData.todos.map((todo) => todo.date),
     }
 
     return (
@@ -469,6 +480,7 @@ export default function CalendarDateContainer({
         _date={_date}
         scheduleStack={scheduleStack}
         icons={testData}
+        exteriorWidth={_dateBody?.current?.clientWidth}
       />
     )
   }
@@ -611,12 +623,10 @@ export default function CalendarDateContainer({
         // 한 주 표시 세팅
         if (DateList.length > 0) {
           DateRow.push(
-            <Box
-              key={`${year}_${helper.setMonth(monthNum)}_${displayWeekNum}`}
-              direction="horizontal"
-              style={CalendarDateContainerStyle.row}>
+            <DateRowComponent
+              key={`${year}_${helper.setMonth(monthNum)}_${displayWeekNum}`}>
               {DateList}
-            </Box>,
+            </DateRowComponent>,
           )
         }
       }
@@ -744,6 +754,8 @@ export default function CalendarDateContainer({
       }
     }
   }, [isMounted, onWheel])
+
+  //
 
   return (
     <CalendarDateContainerStyle.container ref={_dateBody}>

@@ -1,9 +1,11 @@
 import moment from 'moment'
 import React from 'react'
+import Recoil from 'recoil'
 import CalendarContainer from '../../containers/cho.inhyo/CalendarContainer'
 import DateScheduleListContainer from '../../containers/cho.inhyo/DateScheduleListContainer'
 import Box from '../../foundations/cho.inhyo/Box'
 import { useIsMounted } from '../../utils/cho.inhyo/hooks'
+import { loadingState } from '../../utils/cho.inhyo/states'
 import {
   TestDataType,
   testIconData,
@@ -16,6 +18,8 @@ interface Props {
 }
 
 export default function CalendarPage({ platform }: Props) {
+  const setLoading = Recoil.useSetRecoilState(loadingState)
+
   const [baseDate, setBaseDate] = React.useState<Date>(new Date())
   const [chosenDate, setChosenDate] = React.useState<Date | undefined>()
   const [showDateSchedule, setShowDateSchedule] = React.useState(false)
@@ -64,16 +68,20 @@ export default function CalendarPage({ platform }: Props) {
         (todo) => Number(moment(todo.date).format('YYYYMMDD')) === dateNum,
       ),
     )
+    setTimeout(() => {
+      if (
+        !!chosenDate &&
+        moment(date).format('YYYYMMDD') ===
+          moment(chosenDate).format('YYYYMMDD')
+      ) {
+        setChosenDate(undefined)
+      } else {
+        setBaseDate(date)
+        setChosenDate(date)
+      }
 
-    if (
-      !!chosenDate &&
-      moment(date).format('YYYYMMDD') === moment(chosenDate).format('YYYYMMDD')
-    ) {
-      setChosenDate(undefined)
-    } else {
-      setBaseDate(date)
-      setChosenDate(date)
-    }
+      setLoading(false)
+    }, 50)
   }
 
   React.useEffect(() => {
@@ -120,11 +128,19 @@ export default function CalendarPage({ platform }: Props) {
           onClick={onClickDate}
         />
       </Box>
-      {showDateSchedule && !!chosenDate && (
-        <Box direction="vertical" style={{ width: '30%' }}>
-          <DateScheduleListContainer platform={platform} date={chosenDate} />
-        </Box>
-      )}
+      <Box
+        direction="vertical"
+        style={{
+          transition: 'width 0.5s',
+          width: showDateSchedule && !!chosenDate ? '30%' : '0%',
+        }}>
+        {showDateSchedule && !!chosenDate && (
+          <DateScheduleListContainer
+            platform={platform}
+            date={chosenDate ?? new Date()}
+          />
+        )}
+      </Box>
     </Box>
   )
 }

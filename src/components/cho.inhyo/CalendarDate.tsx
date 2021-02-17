@@ -55,7 +55,6 @@ export default React.memo(function CalendarDate({
   const [isWeekend, setIsWeekend] = React.useState(false)
   const [thisWeek, setThisWeek] = React.useState<Date[]>([])
   const [containerWidth, setContainerWidth] = React.useState(0)
-  const [containerHeight, setContainerHeight] = React.useState(0)
   const [calendarSchedules, setCalendarSchedules] = React.useState<
     Array<ScheduleDisplayType | null>
   >([])
@@ -129,7 +128,6 @@ export default React.memo(function CalendarDate({
     if (isMounted()) {
       if (_date?.current) {
         setContainerWidth(() => Number(_date.current?.clientWidth))
-        setContainerHeight(() => Number(_date.current?.scrollHeight))
       }
     }
   }, [isMounted, _date?.current, exteriorWidth, window.outerWidth])
@@ -254,10 +252,19 @@ export default React.memo(function CalendarDate({
     onClick(new Date(actualYear, actualMonth, day))
   }
 
+  const onDoubeClickDay = (e?: React.MouseEvent<HTMLDivElement>) => {
+    if (e) {
+      e.preventDefault()
+    }
+
+    alert('Double Clicked!')
+  }
+
   return (
     <Box
       direction="vertical"
       onClick={onClickDay}
+      onDoubleClick={onDoubeClickDay}
       className="hover"
       style={{
         ...CalendarDateStyle.container,

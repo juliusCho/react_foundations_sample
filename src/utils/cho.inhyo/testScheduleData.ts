@@ -5,6 +5,7 @@ import theme from '../../styles/cho.inhyo/global/theme'
 export type TestDataType = {
   type: 'sub' | 'main'
   parentNo?: number
+  parentName?: string
   subNo?: number[]
   no: number
   channel: {
@@ -208,54 +209,64 @@ export type TestIconDataType = {
   no: number
   name: string
   date: Date
+  color?: string
 }
 
 export const testIconData = {
-  projects: [
+  channels: [
     {
       no: 1,
-      name: '프로젝트1',
+      name: '채널1',
       date: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
+      color: theme.palette.main.blue,
     },
     {
       no: 2,
-      name: '프로젝트2',
+      name: '채널2',
       date: moment('2021-02-12', 'YYYY-MM-DD').toDate(),
+      color: theme.palette.main.pink,
     },
     {
       no: 3,
-      name: '프로젝트3',
+      name: '채널3',
       date: moment('2021-02-26', 'YYYY-MM-DD').toDate(),
+      color: theme.palette.main.red,
     },
     {
       no: 4,
-      name: '프로젝트4',
+      name: '채널4',
       date: moment('2021-02-26', 'YYYY-MM-DD').toDate(),
+      color: theme.palette.main.yellow,
     },
     {
       no: 5,
-      name: '프로젝트5',
+      name: '채널5',
       date: moment('2021-02-06', 'YYYY-MM-DD').toDate(),
+      color: theme.palette.main.turquoise,
     },
     {
       no: 6,
-      name: '프로젝트6',
+      name: '채널6',
       date: moment('2021-02-21', 'YYYY-MM-DD').toDate(),
+      color: theme.palette.main.turquoise,
     },
     {
       no: 7,
-      name: '프로젝트7',
+      name: '채널7',
       date: moment('2021-02-21', 'YYYY-MM-DD').toDate(),
+      color: theme.palette.main.pink,
     },
     {
       no: 8,
-      name: '프로젝트8',
+      name: '채널8',
       date: moment('2021-02-21', 'YYYY-MM-DD').toDate(),
+      color: theme.palette.main.red,
     },
     {
       no: 9,
-      name: '프로젝트9',
+      name: '채널9',
       date: moment('2021-02-24', 'YYYY-MM-DD').toDate(),
+      color: theme.palette.main.yellow,
     },
   ],
   cards: [

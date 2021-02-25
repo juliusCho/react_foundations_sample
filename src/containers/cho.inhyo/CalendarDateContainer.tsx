@@ -38,7 +38,7 @@ interface Props {
   onChangeMonth: (date: Date) => void
   chosenDate?: Date
   yearMonth: string
-  onClick: (date: Date) => void
+  onClick: (date: Date, doubleClicked?: boolean) => void
   actionProcessing: boolean
   setActionProcessing: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -103,12 +103,12 @@ export default function CalendarDateContainer({
   }
 
   // 날짜 클릭 이벤트
-  const onClickDate = (date: Date) => {
+  const onClickDate = (date: Date, doubleClicked?: boolean) => {
     setActionProcessing(true)
 
     focusMonth(date.getFullYear(), date.getMonth())
 
-    onClick(date)
+    onClick(date, doubleClicked)
   }
 
   // 현재 포커스된 월 영역화면 최상단 offsetY값 세팅
@@ -452,7 +452,7 @@ export default function CalendarDateContainer({
       : month === monthNum
 
     const testData = {
-      endingProjects: testIconData.projects.map((project) => project.date),
+      endingChannels: testIconData.channels.map((channel) => channel.date),
       endingCards: testIconData.cards.map((card) => card.date),
       endingTodos: testIconData.todos.map((todo) => todo.date),
     }

@@ -54,7 +54,7 @@ interface Props {
   baseDate: Date
   onChangeMonth: (date: Date) => void
   chosenDate?: Date
-  onClick: (date: Date) => void
+  onClick: (date: Date, doubleClicked?: boolean) => void
   startDay?: 0 | 1 | 2 | 3 | 4 | 5 | 6
 }
 

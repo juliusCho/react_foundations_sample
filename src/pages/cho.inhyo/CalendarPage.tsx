@@ -3,7 +3,7 @@ import React from 'react'
 import Recoil from 'recoil'
 import CalendarContainer from '../../containers/cho.inhyo/CalendarContainer'
 import DateScheduleListContainer from '../../containers/cho.inhyo/DateScheduleListContainer'
-import Box from '../../foundations/cho.inhyo/Box'
+import theme from '../../styles/cho.inhyo/global/theme'
 import { useIsMounted } from '../../utils/cho.inhyo/hooks'
 import { loadingState } from '../../utils/cho.inhyo/states'
 import {
@@ -25,37 +25,51 @@ export default function CalendarPage({ platform }: Props) {
   const [showDateSchedule, setShowDateSchedule] = React.useState(false)
   const [containerWidth, setContainerWidth] = React.useState('100%')
   const [schedules, setSchedules] = React.useState<TestDataType[]>([])
-  const [endingProjects, setEndingProjects] = React.useState<
+  const [endingChannels, setEndingChannels] = React.useState<
     TestIconDataType[]
   >([])
   const [endingCards, setEndingCards] = React.useState<TestIconDataType[]>([])
   const [endingTodos, setEndingTodos] = React.useState<TestIconDataType[]>([])
+  const [doubleClicked, setDoubleClicked] = React.useState(false)
+  const [showCreateSchedule, setShowCreateSchedule] = React.useState(false)
 
   const isMounted = useIsMounted()
 
-  const onClickDate = (date: Date) => {
+  const onClickDate = (date: Date, doubleClicked?: boolean) => {
     const dateNum = Number(moment(date).format('YYYYMMDD'))
 
     setSchedules(
-      testScheduleData.filter((datum) => {
-        const startDate = Number(moment(datum.startDate).format('YYYYMMDD'))
-        if (datum.endDate) {
-          const endDate = Number(moment(datum.endDate).format('YYYYMMDD'))
-          if (endDate === startDate) {
+      testScheduleData
+        .filter((datum) => {
+          const startDate = Number(moment(datum.startDate).format('YYYYMMDD'))
+          if (datum.endDate) {
+            const endDate = Number(moment(datum.endDate).format('YYYYMMDD'))
+            if (endDate === startDate) {
+              return startDate === dateNum
+            }
+            return startDate <= dateNum && dateNum <= endDate
+          } else {
             return startDate === dateNum
           }
-          return startDate <= dateNum && dateNum <= endDate
-        } else {
-          return startDate === dateNum
-        }
-      }),
+        })
+        .map((item) => {
+          if (item.type === 'sub') {
+            const found = testScheduleData.find(
+              (testD) => testD.no === item.parentNo,
+            )
+            if (found) {
+              return { ...item, parentName: found.name }
+            }
+          }
+          return item
+        }),
     )
 
-    const { projects, cards, todos } = testIconData
-    setEndingProjects(
-      projects.filter(
-        (project) =>
-          Number(moment(project.date).format('YYYYMMDD')) === dateNum,
+    const { channels, cards, todos } = testIconData
+    setEndingChannels(
+      channels.filter(
+        (channel) =>
+          Number(moment(channel.date).format('YYYYMMDD')) === dateNum,
       ),
     )
     setEndingCards(
@@ -69,6 +83,8 @@ export default function CalendarPage({ platform }: Props) {
       ),
     )
     setTimeout(() => {
+      setDoubleClicked(!!doubleClicked)
+
       if (
         !!chosenDate &&
         moment(date).format('YYYYMMDD') ===
@@ -86,9 +102,20 @@ export default function CalendarPage({ platform }: Props) {
 
   React.useEffect(() => {
     if (isMounted()) {
+      if (doubleClicked) {
+        setShowDateSchedule(() => false)
+
+        if (platform === 'web') {
+          setContainerWidth(() => '70%')
+        }
+        setShowCreateSchedule(() => true)
+
+        return
+      }
+
       if (
         schedules.length +
-          endingProjects.length +
+          endingChannels.length +
           endingCards.length +
           endingTodos.length ===
           0 ||
@@ -96,6 +123,7 @@ export default function CalendarPage({ platform }: Props) {
       ) {
         setContainerWidth(() => '100%')
         setShowDateSchedule(() => false)
+        setShowCreateSchedule(() => false)
         return
       }
 
@@ -107,40 +135,59 @@ export default function CalendarPage({ platform }: Props) {
   }, [
     isMounted,
     schedules.length,
-    endingProjects.length,
+    endingChannels.length,
     endingCards.length,
     endingTodos.length,
     chosenDate,
     platform,
+    doubleClicked,
   ])
 
   const onChangeMonth = (date: Date) => {
     setBaseDate(date)
   }
 
+  const rightContainerStyle = {
+    transition: 'width 0.5s',
+    height: '100vh',
+    width: showDateSchedule && !!chosenDate ? '30%' : '0%',
+    borderLeft: `1px solid ${theme.palette.mono.paleWhite}`,
+    backgroundColor: theme.palette.mono.white,
+  }
+
   return (
-    <Box direction="horizontal" style={{ width: '100%' }}>
-      <Box direction="vertical" style={{ width: containerWidth }}>
+    <div
+      style={{
+        width: '100%',
+        display: 'flex' as const,
+        justifyContent: 'center' as const,
+      }}>
+      <div style={{ width: containerWidth }}>
         <CalendarContainer
           baseDate={baseDate}
           onChangeMonth={onChangeMonth}
           chosenDate={chosenDate}
           onClick={onClickDate}
         />
-      </Box>
-      <Box
-        direction="vertical"
-        style={{
-          transition: 'width 0.5s',
-          width: showDateSchedule && !!chosenDate ? '30%' : '0%',
-        }}>
+      </div>
+      <div style={rightContainerStyle}>
         {showDateSchedule && !!chosenDate && (
           <DateScheduleListContainer
             platform={platform}
-            date={chosenDate ?? new Date()}
+            date={chosenDate || new Date()}
+            schedules={schedules}
+            channels={endingChannels}
+            cards={endingCards}
+            todos={endingTodos}
           />
         )}
-      </Box>
-    </Box>
+        {/* {showCreateSchedule && !!chosenDate && (
+          <DateScheduleListContainer
+            platform={platform}
+            date={chosenDate || new Date()}
+          />
+        )} */}
+      </div>
+    </div>
   )
 }

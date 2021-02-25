@@ -10,18 +10,18 @@ import { Icons } from '../../utils/cho.inhyo/types'
 
 interface Props {
   today: Date
-  endingProjects?: Date[]
+  endingChannels?: Date[]
   endingCards?: Date[]
   endingTodos?: Date[]
 }
 
 export default React.memo(function CalendarIcons({
   today,
-  endingProjects,
+  endingChannels,
   endingCards,
   endingTodos,
 }: Props) {
-  const [endingProjectCnt, setEndingProjectCnt] = React.useState(0)
+  const [endingChannelCnt, setEndingChannelCnt] = React.useState(0)
   const [endingCardCnt, setEndingCardCnt] = React.useState(0)
   const [endingTodoCnt, setEndingTodoCnt] = React.useState(0)
 
@@ -32,12 +32,12 @@ export default React.memo(function CalendarIcons({
 
     const todayStr = moment(today).format('YYYYMMDD')
 
-    if (!!endingProjects && endingProjects.length > 0) {
-      setEndingProjectCnt(
+    if (!!endingChannels && endingChannels.length > 0) {
+      setEndingChannelCnt(
         () =>
-          endingProjects.filter(
-            (endingProject) =>
-              moment(endingProject).format('YYYYMMDD') === todayStr,
+          endingChannels.filter(
+            (endingChannel) =>
+              moment(endingChannel).format('YYYYMMDD') === todayStr,
           ).length,
       )
     }
@@ -57,11 +57,11 @@ export default React.memo(function CalendarIcons({
           ).length,
       )
     }
-  }, [isMounted, endingProjects, endingCards, endingTodos, today])
+  }, [isMounted, endingChannels, endingCards, endingTodos, today])
 
   return (
     <>
-      {endingProjectCnt > 0 && (
+      {endingChannelCnt > 0 && (
         <Box direction="horizontal" style={CalendarIconsStyle.container}>
           <IconButton
             icon={Icons.EMOTICON}
@@ -70,7 +70,7 @@ export default React.memo(function CalendarIcons({
               backgroundColor: theme.palette.main.red,
             }}
           />
-          <TextView value={String(endingProjectCnt)} />
+          <TextView value={String(endingChannelCnt)} />
         </Box>
       )}
       {(endingCardCnt > 0 || endingTodoCnt > 0) && (

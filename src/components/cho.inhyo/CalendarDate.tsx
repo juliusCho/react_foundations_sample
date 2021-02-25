@@ -21,11 +21,11 @@ interface Props {
   holiday?: boolean
   thisMonth?: boolean
   beforeOrAfter?: 'before' | 'after'
-  onClick: (date: Date) => void
+  onClick: (date: Date, doubleClicked?: boolean) => void
   _date: React.RefObject<HTMLDivElement> | null
   scheduleStack: Array<Array<ScheduleStackType>>
   icons?: {
-    endingProjects?: Date[]
+    endingChannels?: Date[]
     endingCards?: Date[]
     endingTodos?: Date[]
   }
@@ -257,7 +257,7 @@ export default React.memo(function CalendarDate({
       e.preventDefault()
     }
 
-    alert('Double Clicked!')
+    onClick(new Date(actualYear, actualMonth, day), true)
   }
 
   return (
@@ -268,8 +268,6 @@ export default React.memo(function CalendarDate({
       className="hover"
       style={{
         ...CalendarDateStyle.container,
-        justifyContent:
-          scheduleStack.length > 0 ? 'flex-start' : ('flex-end' as const),
         backgroundColor: selected
           ? polished.lighten(
               thisMonth ? 0.3 : 0.35,
@@ -329,11 +327,15 @@ export default React.memo(function CalendarDate({
           ...CalendarDateStyle.contents,
           marginTop: '5px',
           opacity: !thisMonth ? 0.2 : undefined,
+          position:
+            scheduleStack.length > 0 ? 'relative' : ('absolute' as const),
+          left: 0,
+          bottom: 0,
         }}>
         {icons && (
           <CalendarIcons
             today={new Date(actualYear, actualMonth, day)}
-            endingProjects={icons.endingProjects}
+            endingChannels={icons.endingChannels}
             endingCards={icons.endingCards}
             endingTodos={icons.endingTodos}
           />

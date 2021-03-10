@@ -9,7 +9,6 @@ import ChannelItem from './ChannelItem'
 import ScheduleItem from './ScheduleItem'
 
 interface Props<T> {
-  date: Date
   dataList: Array<T>
   type: 'schedule' | 'channel' | 'card' | 'todo'
   onClick: (data: T) => void
@@ -17,7 +16,7 @@ interface Props<T> {
 
 export default function DueScheduleList<
   T extends TestDataType | TestIconDataType
->({ date, dataList, type, onClick }: Props<T>) {
+>({ dataList, type, onClick }: Props<T>) {
   const { t } = useTranslation()
 
   return (
@@ -41,6 +40,7 @@ export default function DueScheduleList<
           (dataList as TestIconDataType[]).map((datum) => (
             <ChannelItem
               key={datum.no}
+              type={type}
               data={datum}
               onClick={onClick as (data: TestIconDataType) => void}
             />

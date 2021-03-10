@@ -149,7 +149,7 @@ export default function CalendarPage({ platform }: Props) {
 
   const rightContainerStyle = {
     transition: 'width 0.5s',
-    height: '100vh',
+    height: '100%',
     width: showDateSchedule && !!chosenDate ? '30%' : '0%',
     borderLeft: `1px solid ${theme.palette.mono.paleWhite}`,
     backgroundColor: theme.palette.mono.white,

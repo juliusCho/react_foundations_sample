@@ -210,6 +210,7 @@ export type TestIconDataType = {
   name: string
   date: Date
   color?: string
+  modTime?: Date
 }
 
 export const testIconData = {
@@ -219,54 +220,70 @@ export const testIconData = {
       name: '채널1',
       date: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
       color: theme.palette.main.blue,
+      modTime: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
     },
     {
       no: 2,
       name: '채널2',
       date: moment('2021-02-12', 'YYYY-MM-DD').toDate(),
       color: theme.palette.main.pink,
+      modTime: moment('2021-02-12', 'YYYY-MM-DD').toDate(),
     },
     {
       no: 3,
       name: '채널3',
       date: moment('2021-02-26', 'YYYY-MM-DD').toDate(),
       color: theme.palette.main.red,
+      modTime: moment('2021-02-26', 'YYYY-MM-DD').toDate(),
     },
     {
       no: 4,
       name: '채널4',
       date: moment('2021-02-26', 'YYYY-MM-DD').toDate(),
       color: theme.palette.main.yellow,
+      modTime: moment('2021-02-26', 'YYYY-MM-DD').toDate(),
     },
     {
       no: 5,
       name: '채널5',
       date: moment('2021-02-06', 'YYYY-MM-DD').toDate(),
       color: theme.palette.main.turquoise,
+      modTime: moment('2021-02-06', 'YYYY-MM-DD').toDate(),
     },
     {
       no: 6,
       name: '채널6',
       date: moment('2021-02-21', 'YYYY-MM-DD').toDate(),
       color: theme.palette.main.turquoise,
+      modTime: moment('2021-02-21', 'YYYY-MM-DD').toDate(),
     },
     {
       no: 7,
       name: '채널7',
       date: moment('2021-02-21', 'YYYY-MM-DD').toDate(),
       color: theme.palette.main.pink,
+      modTime: moment('2021-02-21', 'YYYY-MM-DD').toDate(),
     },
     {
       no: 8,
       name: '채널8',
       date: moment('2021-02-21', 'YYYY-MM-DD').toDate(),
       color: theme.palette.main.red,
+      modTime: moment('2021-02-21', 'YYYY-MM-DD').toDate(),
     },
     {
       no: 9,
       name: '채널9',
       date: moment('2021-02-24', 'YYYY-MM-DD').toDate(),
       color: theme.palette.main.yellow,
+      modTime: moment('2021-02-24', 'YYYY-MM-DD').toDate(),
+    },
+    {
+      no: 10,
+      name: '채널10',
+      date: moment('2021-03-09', 'YYYY-MM-DD').toDate(),
+      color: theme.palette.main.yellow,
+      modTime: moment('2021-03-09', 'YYYY-MM-DD').toDate(),
     },
   ],
   cards: [

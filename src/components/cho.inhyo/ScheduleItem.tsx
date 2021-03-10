@@ -1,5 +1,6 @@
 import moment from 'moment'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import ScheduleItemStyle from '../../styles/cho.inhyo/components/ScheduleItemStyle'
 import { TestDataType } from '../../utils/cho.inhyo/testScheduleData'
 import { Icons } from '../../utils/cho.inhyo/types'
@@ -10,6 +11,8 @@ interface Props {
 }
 
 export default function ScheduleItem({ data, onClick }: Props) {
+  const { t } = useTranslation()
+
   const trimName = (top: boolean, name?: string) => {
     if (!name) return ''
 
@@ -31,8 +34,10 @@ export default function ScheduleItem({ data, onClick }: Props) {
         style={{
           ...ScheduleItemStyle.color,
           backgroundColor: data.channel.color,
-        }}
-      />
+          opacity: data.type === 'main' ? 1 : 0.3,
+        }}>
+        {t(`calendar.${data.type}Schedule`)}
+      </div>
       <div style={ScheduleItemStyle.infoContainer}>
         <div
           style={{

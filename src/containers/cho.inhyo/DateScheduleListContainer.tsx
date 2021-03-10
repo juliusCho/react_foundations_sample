@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import DueScheduleList from '../../components/cho.inhyo/DueScheduleList'
@@ -5,6 +6,7 @@ import Box from '../../foundations/cho.inhyo/Box'
 import IconButton from '../../foundations/cho.inhyo/IconButton'
 import TextView from '../../foundations/cho.inhyo/TextView'
 import DateScheduleListContainerStyle from '../../styles/cho.inhyo/containers/DateScheduleListContainerStyle'
+import { Months } from '../../utils/cho.inhyo/i18n'
 import {
   TestDataType,
   TestIconDataType,
@@ -56,26 +58,23 @@ export default function DateScheduleListContainer({
     //
   }
 
+  const year = moment(date).format('YYYY')
+  const month = Number(moment(date).format('MM')) - 1
+  const day = Number(moment(date).format('DD'))
+
   return (
     <div style={DateScheduleListContainerStyle.container}>
-      <Box
-        direction="horizontal"
-        onClick={onClickScheduleShow}
-        style={DateScheduleListContainerStyle.sectionTitle}>
-        <TextView value={t('calendar.schedule')} />
-        <IconButton
-          style={DateScheduleListContainerStyle.toggle}
-          icon={showScheduleList ? Icons.ANGLE_UP : Icons.ANGLE_DOWN}
-        />
-      </Box>
-      {showScheduleList && (
-        <DueScheduleList<TestDataType>
-          date={date}
-          dataList={schedules}
-          type="schedule"
-          onClick={onClickSchedule}
-        />
-      )}
+      <div style={DateScheduleListContainerStyle.date}>
+        {t('calendar.yearMonth', {
+          year,
+          month: t(`calendar.${Months[month]}`),
+        }) +
+          ` ${
+            day < 4
+              ? t(`calendar.day${day}`, { day })
+              : t('calendar.day', { day })
+          }`}
+      </div>
       <Box
         direction="horizontal"
         onClick={onClickChannelShow}
@@ -88,10 +87,26 @@ export default function DateScheduleListContainer({
       </Box>
       {showChannelList && (
         <DueScheduleList<TestIconDataType>
-          date={date}
           dataList={channels}
           type="channel"
           onClick={onClickChannel}
+        />
+      )}
+      <Box
+        direction="horizontal"
+        onClick={onClickScheduleShow}
+        style={DateScheduleListContainerStyle.sectionTitle}>
+        <TextView value={t('calendar.schedule')} />
+        <IconButton
+          style={DateScheduleListContainerStyle.toggle}
+          icon={showScheduleList ? Icons.ANGLE_UP : Icons.ANGLE_DOWN}
+        />
+      </Box>
+      {showScheduleList && (
+        <DueScheduleList<TestDataType>
+          dataList={schedules}
+          type="schedule"
+          onClick={onClickSchedule}
         />
       )}
       <Box
@@ -106,7 +121,6 @@ export default function DateScheduleListContainer({
       </Box>
       {showCardList && (
         <DueScheduleList<TestIconDataType>
-          date={date}
           dataList={cards}
           type="card"
           onClick={onClickCard}
@@ -124,7 +138,6 @@ export default function DateScheduleListContainer({
       </Box>
       {showTodoList && (
         <DueScheduleList<TestIconDataType>
-          date={date}
           dataList={todos}
           type="todo"
           onClick={onClickTodo}

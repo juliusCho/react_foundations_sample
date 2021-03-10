@@ -7,11 +7,12 @@ import { TestIconDataType } from '../../utils/cho.inhyo/testScheduleData'
 import { Icons } from '../../utils/cho.inhyo/types'
 
 interface Props {
+  type: 'channel' | 'card' | 'todo'
   data: TestIconDataType
   onClick: (data: TestIconDataType) => void
 }
 
-export default function ChannelItem({ data, onClick }: Props) {
+export default function ChannelItem({ type, data, onClick }: Props) {
   const { t } = useTranslation()
 
   const trimName = (top: boolean, name?: string) => {
@@ -29,6 +30,26 @@ export default function ChannelItem({ data, onClick }: Props) {
     )
   }
 
+  const calculateTimeDiff = (modTime?: Date) => {
+    if (!modTime) return t('calendar.minute', { minute: 0 })
+
+    const ago = Math.floor(
+      moment.duration(moment(new Date()).diff(moment(modTime))).asMinutes(),
+    )
+    const hour = Math.floor(ago / 60)
+    const minute = ago % 60
+
+    if (hour > 0 && minute > 0) {
+      return `${t('calendar.hour', { hour })} ${t('calendar.minute', {
+        minute,
+      })}`
+    } else if (hour > 0) {
+      return t('calendar.hour', { hour })
+    } else {
+      return t('calendar.minute', { minute })
+    }
+  }
+
   return (
     <div style={ScheduleItemStyle.container}>
       <div
@@ -44,11 +65,13 @@ export default function ChannelItem({ data, onClick }: Props) {
             justifyContent: 'flex-end' as const,
           }}>
           <div style={ScheduleItemStyle.schedule}>
-            {t('calendar.dueto', {
-              date: moment(data.date)
-                .format('YY.MM.DD HH:mm')
-                .replace(' 00:00', ''),
-            })}
+            {type === 'channel'
+              ? t('calendar.before', { time: calculateTimeDiff(data.modTime) })
+              : t('calendar.dueto', {
+                  date: moment(data.date)
+                    .format('YY.MM.DD HH:mm')
+                    .replace(' 00:00', ''),
+                })}
           </div>
         </div>
         <div style={ScheduleItemStyle.label}>{trimName(false, data.name)}</div>

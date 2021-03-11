@@ -1,16 +1,24 @@
-import theme from '../global/theme'
+import styled, { css } from 'styled-components'
+import theme, { StyledPropType } from '../global/theme'
 
 const ScheduleItemStyle = {
-  container: {
-    width: 'calc(100% - 0.5rem)',
-    minHeight: '3rem',
-    display: 'flex' as const,
-    justifyContent: 'space-around' as const,
-    alignItems: 'center' as const,
-    borderBottom: `1px solid ${theme.palette.mono.paleWhite}`,
-    cursor: 'pointer' as const,
-    padding: '0.4rem 0',
-  },
+  container: styled.div`
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.4rem 0;
+
+    ${(props: StyledPropType) => css`
+      border-bottom: 1px solid ${props.theme.palette.mono.paleWhite};
+
+      &:hover {
+        background-color: ${props.theme.palette.mono.paleWhite};
+      }
+    `}
+  `,
   color: {
     width: '2rem',
     height: '2rem',

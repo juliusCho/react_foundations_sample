@@ -29,7 +29,7 @@ export default function ScheduleItem({ data, onClick }: Props) {
   }
 
   return (
-    <div style={ScheduleItemStyle.container}>
+    <ScheduleItemStyle.container>
       <div
         style={{
           ...ScheduleItemStyle.color,
@@ -47,7 +47,9 @@ export default function ScheduleItem({ data, onClick }: Props) {
             {moment(data.startDate)
               .format('YY.MM.DD HH:mm')
               .replace(' 00:00', '') +
-              (data.endDate
+              (data.endDate &&
+              moment(data.startDate).format('YYYYMMDDHHmm') !==
+                moment(data.endDate).format('YYYYMMDDHHmm')
                 ? `~${moment(data.endDate)
                     .format('YY.MM.DD HH:mm')
                     .replace(' 00:00', '')}`
@@ -65,6 +67,6 @@ export default function ScheduleItem({ data, onClick }: Props) {
           </div>
         )}
       </div>
-    </div>
+    </ScheduleItemStyle.container>
   )
 }

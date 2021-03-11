@@ -49,7 +49,7 @@ export default function TodoItem({ data, onClick }: Props) {
   }
 
   return (
-    <div style={ScheduleItemStyle.container}>
+    <ScheduleItemStyle.container>
       <i
         style={{ fontSize: '1.5rem', margin: '0.5rem' }}
         className={`xi-${data.done ? 'check-square-o' : 'checkbox-blank'}`}
@@ -79,6 +79,6 @@ export default function TodoItem({ data, onClick }: Props) {
           className="xi-ellipsis-h"
         />
       </div>
-    </div>
+    </ScheduleItemStyle.container>
   )
 }

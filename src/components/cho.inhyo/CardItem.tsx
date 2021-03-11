@@ -51,7 +51,7 @@ export default function CardItem({ type, data, onClick }: Props) {
   }
 
   return (
-    <div style={ScheduleItemStyle.container}>
+    <ScheduleItemStyle.container>
       <div
         style={{
           ...ScheduleItemStyle.color,
@@ -80,6 +80,6 @@ export default function CardItem({ type, data, onClick }: Props) {
           </div>
         </div>
       </div>
-    </div>
+    </ScheduleItemStyle.container>
   )
 }

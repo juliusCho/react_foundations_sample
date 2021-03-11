@@ -63,7 +63,7 @@ export default function DateScheduleListContainer({
   const day = Number(moment(date).format('DD'))
 
   return (
-    <div style={DateScheduleListContainerStyle.container}>
+    <DateScheduleListContainerStyle.container>
       <div style={DateScheduleListContainerStyle.date}>
         {t('calendar.yearMonth', {
           year,
@@ -143,6 +143,6 @@ export default function DateScheduleListContainer({
           onClick={onClickTodo}
         />
       )}
-    </div>
+    </DateScheduleListContainerStyle.container>
   )
 }

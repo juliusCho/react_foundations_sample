@@ -237,6 +237,32 @@ export const testScheduleData: TestDataType[] = [
     startDate: moment('2021-01-29', 'YYYY-MM-DD').toDate(),
     endDate: moment('2021-02-03', 'YYYY-MM-DD').toDate(),
   },
+  {
+    type: 'main',
+    no: 16,
+    channel: {
+      no: 5,
+      name: '채널5',
+      color: polished.lighten(0.2, theme.palette.main.blue),
+    },
+    name: '테스트 일정',
+    writerName: '조인효',
+    startDate: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-28', 'YYYY-MM-DD').toDate(),
+  },
+  {
+    type: 'main',
+    no: 17,
+    channel: {
+      no: 5,
+      name: '채널5',
+      color: polished.lighten(0.2, theme.palette.main.blue),
+    },
+    name: '테스트 일정',
+    writerName: '조인효',
+    startDate: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
+    endDate: moment('2021-02-28', 'YYYY-MM-DD').toDate(),
+  },
 ]
 
 export type TestIconDataType = {
@@ -265,7 +291,7 @@ export const testIconData = {
       color: theme.palette.main.blue,
       modTime: moment('2021-02-09', 'YYYY-MM-DD').toDate(),
       newCnt: 40,
-      curMsg: '한줄 텍스트\n두줄텍스트',
+      curMsg: '한줄 텍스트\n두줄텍스트\n세줄',
     },
     {
       no: 2,

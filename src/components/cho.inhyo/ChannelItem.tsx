@@ -50,7 +50,7 @@ export default function ChannelItem({ data, onClick }: Props) {
   }
 
   return (
-    <div style={ScheduleItemStyle.container}>
+    <ScheduleItemStyle.container>
       <div
         style={{
           ...ScheduleItemStyle.color,
@@ -80,10 +80,11 @@ export default function ChannelItem({ data, onClick }: Props) {
           style={{
             ...ScheduleItemStyle.mainLabel,
             whiteSpace: 'pre' as const,
+            maxHeight: '2rem',
           }}>
           {trimName(false, data.curMsg || '')}
         </div>
       </div>
-    </div>
+    </ScheduleItemStyle.container>
   )
 }

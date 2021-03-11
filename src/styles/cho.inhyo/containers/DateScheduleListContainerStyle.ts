@@ -1,16 +1,27 @@
-import theme from '../global/theme'
+import styled, { css } from 'styled-components'
+import theme, { StyledPropType } from '../global/theme'
 
 const DateScheduleListContainerStyle = {
-  container: {
-    width: '100%',
-    height: '100%',
-    display: 'flex' as const,
-    flexDirection: 'column' as const,
-    justifyContent: 'flex-start' as const,
-    alignItems: 'center' as const,
-    border: `1px solid ${theme.palette.mono.pale}`,
-    backgroundColor: theme.palette.mono.white,
-  },
+  container: styled.div`
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    ${(props: StyledPropType) => css`
+      border: 1px solid ${props.theme.palette.mono.pale};
+      background-color: ${props.theme.palette.mono.white};
+    `}
+  `,
   date: {
     display: 'flex' as const,
     justifyContent: 'center' as const,

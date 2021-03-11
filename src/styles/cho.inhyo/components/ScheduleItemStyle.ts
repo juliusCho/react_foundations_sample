@@ -9,6 +9,7 @@ const ScheduleItemStyle = {
     alignItems: 'center' as const,
     borderBottom: `1px solid ${theme.palette.mono.paleWhite}`,
     cursor: 'pointer' as const,
+    padding: '0.4rem 0',
   },
   color: {
     width: '2rem',
@@ -18,6 +19,7 @@ const ScheduleItemStyle = {
     margin: '0.5rem',
     color: theme.palette.mono.white,
     fontSize: '1rem',
+    fontWeight: 900,
     display: 'flex' as const,
     justifyContent: 'center' as const,
     alignItems: 'center' as const,
@@ -28,18 +30,31 @@ const ScheduleItemStyle = {
   top: {
     display: 'flex' as const,
     alignItems: 'center' as const,
+    justifyContent: 'space-between' as const,
   },
   mainLabel: {
     color: theme.palette.mono.darkGray,
     ...theme.font.text1,
   },
+  bottomLabel: {
+    color: theme.palette.mono.darkGray,
+    ...theme.font.small,
+  },
   schedule: {
+    marginRight: '0.4rem',
     color: theme.palette.mono.darkGray,
     ...theme.font.sub,
   },
   label: {
     color: theme.palette.mono.black,
     ...theme.font.list2,
+  },
+  mainLabelArea: {
+    margin: '0.4rem 0',
+    width: '100%',
+    display: 'flex' as const,
+    alignItems: 'center' as const,
+    justifyContent: 'space-between' as const,
   },
 }
 

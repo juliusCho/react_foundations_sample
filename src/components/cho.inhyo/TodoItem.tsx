@@ -2,7 +2,6 @@ import moment from 'moment'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import ScheduleItemStyle from '../../styles/cho.inhyo/components/ScheduleItemStyle'
-import theme from '../../styles/cho.inhyo/global/theme'
 import { TestIconDataType } from '../../utils/cho.inhyo/testScheduleData'
 import { Icons } from '../../utils/cho.inhyo/types'
 
@@ -11,13 +10,13 @@ interface Props {
   onClick: (data: TestIconDataType) => void
 }
 
-export default function ChannelItem({ data, onClick }: Props) {
+export default function TodoItem({ data, onClick }: Props) {
   const { t } = useTranslation()
 
   const trimName = (top: boolean, name?: string) => {
     if (!name) return ''
 
-    const maxLen = top ? 8 : 20
+    const maxLen = top ? 13 : 10
 
     return name.length > maxLen ? (
       <>
@@ -51,38 +50,34 @@ export default function ChannelItem({ data, onClick }: Props) {
 
   return (
     <div style={ScheduleItemStyle.container}>
+      <i
+        style={{ fontSize: '1.5rem', margin: '0.5rem' }}
+        className={`xi-${data.done ? 'check-square-o' : 'checkbox-blank'}`}
+      />
       <div
         style={{
-          ...ScheduleItemStyle.color,
-          backgroundColor: data.color || theme.palette.mono.gray,
-          width: '3rem',
-          height: '3rem',
-        }}
-      />
-      <div style={ScheduleItemStyle.infoContainer}>
-        <div style={ScheduleItemStyle.mainLabelArea}>
-          <div style={{ ...ScheduleItemStyle.top, width: '100%' }}>
-            <div style={{ ...ScheduleItemStyle.top, maxWidth: '60%' }}>
-              <div style={ScheduleItemStyle.label}>
-                {trimName(true, data.name)}
-              </div>
-              <div
-                style={{ ...ScheduleItemStyle.schedule, marginLeft: '0.3rem' }}>
-                {`(${data.newCnt || 0})`}
-              </div>
-            </div>
-            <div style={ScheduleItemStyle.schedule}>
-              {t('calendar.before', { time: calculateTimeDiff(data.modTime) })}
+          ...ScheduleItemStyle.infoContainer,
+          display: 'flex' as const,
+          justifyContent: 'space-between' as const,
+          alignItems: 'center' as const,
+        }}>
+        <div style={{ maxWidth: 'calc(100% - 4.8rem)' }}>
+          <div style={ScheduleItemStyle.mainLabel}>
+            {trimName(
+              true,
+              `#${data?.channel?.name || ''} > ${data.cardName || ''}`,
+            )}
+          </div>
+          <div style={ScheduleItemStyle.mainLabelArea}>
+            <div style={ScheduleItemStyle.label}>
+              {trimName(false, data.name)}
             </div>
           </div>
         </div>
-        <div
-          style={{
-            ...ScheduleItemStyle.mainLabel,
-            whiteSpace: 'pre' as const,
-          }}>
-          {trimName(false, data.curMsg || '')}
-        </div>
+        <i
+          style={{ fontSize: '1rem', margin: '0.4rem' }}
+          className="xi-ellipsis-h"
+        />
       </div>
     </div>
   )

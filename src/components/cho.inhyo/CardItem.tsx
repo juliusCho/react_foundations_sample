@@ -7,17 +7,18 @@ import { TestIconDataType } from '../../utils/cho.inhyo/testScheduleData'
 import { Icons } from '../../utils/cho.inhyo/types'
 
 interface Props {
+  type: string
   data: TestIconDataType
   onClick: (data: TestIconDataType) => void
 }
 
-export default function ChannelItem({ data, onClick }: Props) {
+export default function CardItem({ type, data, onClick }: Props) {
   const { t } = useTranslation()
 
   const trimName = (top: boolean, name?: string) => {
     if (!name) return ''
 
-    const maxLen = top ? 8 : 20
+    const maxLen = top ? 13 : 25
 
     return name.length > maxLen ? (
       <>
@@ -55,33 +56,28 @@ export default function ChannelItem({ data, onClick }: Props) {
         style={{
           ...ScheduleItemStyle.color,
           backgroundColor: data.color || theme.palette.mono.gray,
-          width: '3rem',
-          height: '3rem',
         }}
       />
       <div style={ScheduleItemStyle.infoContainer}>
-        <div style={ScheduleItemStyle.mainLabelArea}>
-          <div style={{ ...ScheduleItemStyle.top, width: '100%' }}>
-            <div style={{ ...ScheduleItemStyle.top, maxWidth: '60%' }}>
-              <div style={ScheduleItemStyle.label}>
-                {trimName(true, data.name)}
-              </div>
-              <div
-                style={{ ...ScheduleItemStyle.schedule, marginLeft: '0.3rem' }}>
-                {`(${data.newCnt || 0})`}
-              </div>
-            </div>
-            <div style={ScheduleItemStyle.schedule}>
-              {t('calendar.before', { time: calculateTimeDiff(data.modTime) })}
-            </div>
+        <div style={ScheduleItemStyle.top}>
+          <div style={ScheduleItemStyle.mainLabel}>
+            {trimName(
+              true,
+              `#${data?.channel?.name || ''} > ${data.writerName || ''}`,
+            )}
+          </div>
+          <div style={ScheduleItemStyle.schedule}>
+            {t('calendar.dueto', {
+              date: moment(data.date)
+                .format('YY.MM.DD HH:mm')
+                .replace(' 00:00', ''),
+            })}
           </div>
         </div>
-        <div
-          style={{
-            ...ScheduleItemStyle.mainLabel,
-            whiteSpace: 'pre' as const,
-          }}>
-          {trimName(false, data.curMsg || '')}
+        <div style={ScheduleItemStyle.mainLabelArea}>
+          <div style={ScheduleItemStyle.label}>
+            {trimName(false, data.name)}
+          </div>
         </div>
       </div>
     </div>

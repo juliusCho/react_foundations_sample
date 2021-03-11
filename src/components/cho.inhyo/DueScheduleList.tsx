@@ -5,8 +5,10 @@ import {
   TestDataType,
   TestIconDataType,
 } from '../../utils/cho.inhyo/testScheduleData'
+import CardItem from './CardItem'
 import ChannelItem from './ChannelItem'
 import ScheduleItem from './ScheduleItem'
+import TodoItem from './TodoItem'
 
 interface Props<T> {
   dataList: Array<T>
@@ -33,14 +35,38 @@ export default function DueScheduleList<
             />
           ))
         )
-      ) : type === 'channel' || type === 'card' || type === 'todo' ? (
+      ) : type === 'channel' ? (
         dataList.length === 0 ? (
           <div style={DueScheduleListStyle.nodata}>{t('calendar.nodata')}</div>
         ) : (
           (dataList as TestIconDataType[]).map((datum) => (
             <ChannelItem
               key={datum.no}
-              type={type}
+              data={datum}
+              onClick={onClick as (data: TestIconDataType) => void}
+            />
+          ))
+        )
+      ) : type === 'card' ? (
+        dataList.length === 0 ? (
+          <div style={DueScheduleListStyle.nodata}>{t('calendar.nodata')}</div>
+        ) : (
+          (dataList as TestIconDataType[]).map((datum) => (
+            <CardItem
+              key={datum.no}
+              type=""
+              data={datum}
+              onClick={onClick as (data: TestIconDataType) => void}
+            />
+          ))
+        )
+      ) : type === 'todo' ? (
+        dataList.length === 0 ? (
+          <div style={DueScheduleListStyle.nodata}>{t('calendar.nodata')}</div>
+        ) : (
+          (dataList as TestIconDataType[]).map((datum) => (
+            <TodoItem
+              key={datum.no}
               data={datum}
               onClick={onClick as (data: TestIconDataType) => void}
             />

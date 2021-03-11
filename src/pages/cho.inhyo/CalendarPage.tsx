@@ -159,6 +159,7 @@ export default function CalendarPage({ platform }: Props) {
     <div
       style={{
         width: '100%',
+        height: '100vh',
         display: 'flex' as const,
         justifyContent: 'center' as const,
       }}>

@@ -60,7 +60,10 @@ export default function DateScheduleListContainer({
     touch(_container.current)
   }, [isMounted, _container?.current, helper.checkIsMobile])
 
-  const onClickScheduleShow = () => setShowScheduleList(!showScheduleList)
+  const onClickScheduleShow = () => {
+    console.log('A$$#')
+    setShowScheduleList(!showScheduleList)
+  }
   const onClickChannelShow = () => setShowChannelList(!showChannelList)
   const onClickCardShow = () => setShowCardList(!showCardList)
   const onClickTodoShow = () => setShowTodoList(!showTodoList)
@@ -128,13 +131,12 @@ export default function DateScheduleListContainer({
           icon={showChannelList ? Icons.ANGLE_UP : Icons.ANGLE_DOWN}
         />
       </Box>
-      {showChannelList && (
-        <DueScheduleList<TestIconDataType>
-          dataList={channels}
-          type="channel"
-          onClick={onClickChannel}
-        />
-      )}
+      <DueScheduleList<TestIconDataType>
+        display={showChannelList}
+        dataList={channels}
+        type="channel"
+        onClick={onClickChannel}
+      />
       <Box
         direction="horizontal"
         onClick={onClickScheduleShow}
@@ -145,13 +147,12 @@ export default function DateScheduleListContainer({
           icon={showScheduleList ? Icons.ANGLE_UP : Icons.ANGLE_DOWN}
         />
       </Box>
-      {showScheduleList && (
-        <DueScheduleList<TestDataType>
-          dataList={schedules}
-          type="schedule"
-          onClick={onClickSchedule}
-        />
-      )}
+      <DueScheduleList<TestDataType>
+        display={showScheduleList}
+        dataList={schedules}
+        type="schedule"
+        onClick={onClickSchedule}
+      />
       <Box
         direction="horizontal"
         onClick={onClickCardShow}
@@ -162,13 +163,12 @@ export default function DateScheduleListContainer({
           icon={showCardList ? Icons.ANGLE_UP : Icons.ANGLE_DOWN}
         />
       </Box>
-      {showCardList && (
-        <DueScheduleList<TestIconDataType>
-          dataList={cards}
-          type="card"
-          onClick={onClickCard}
-        />
-      )}
+      <DueScheduleList<TestIconDataType>
+        display={showCardList}
+        dataList={cards}
+        type="card"
+        onClick={onClickCard}
+      />
       <Box
         direction="horizontal"
         onClick={onClickTodoShow}
@@ -179,13 +179,12 @@ export default function DateScheduleListContainer({
           icon={showTodoList ? Icons.ANGLE_UP : Icons.ANGLE_DOWN}
         />
       </Box>
-      {showTodoList && (
-        <DueScheduleList<TestIconDataType>
-          dataList={todos}
-          type="todo"
-          onClick={onClickTodo}
-        />
-      )}
+      <DueScheduleList<TestIconDataType>
+        display={showTodoList}
+        dataList={todos}
+        type="todo"
+        onClick={onClickTodo}
+      />
     </DateScheduleListContainerStyle.container>
   )
 }

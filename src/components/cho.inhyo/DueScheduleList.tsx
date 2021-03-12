@@ -13,16 +13,21 @@ import TodoItem from './TodoItem'
 interface Props<T> {
   dataList: Array<T>
   type: 'schedule' | 'channel' | 'card' | 'todo'
+  display: boolean
   onClick: (data: T) => void
 }
 
 export default function DueScheduleList<
   T extends TestDataType | TestIconDataType
->({ dataList, type, onClick }: Props<T>) {
+>({ dataList, type, display, onClick }: Props<T>) {
   const { t } = useTranslation()
 
   return (
-    <>
+    <div
+      style={{
+        display: display ? 'block' : 'none',
+        transition: 'display 0.5s',
+      }}>
       {type === 'schedule' ? (
         dataList.length === 0 ? (
           <div style={DueScheduleListStyle.nodata}>{t('calendar.nodata')}</div>
@@ -75,6 +80,6 @@ export default function DueScheduleList<
       ) : (
         <div style={DueScheduleListStyle.nodata}>{t('calendar.nodata')}</div>
       )}
-    </>
+    </div>
   )
 }

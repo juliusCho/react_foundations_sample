@@ -8,12 +8,14 @@ const CalendarContainerStyle = {
   },
   header: {
     width: '100%',
-    borderBottom: `1px solid ${theme.palette.mono.gray}`,
+    height: '7.625',
+    borderBottom: `0.063rem solid ${theme.palette.mono.gray}`,
     backgroundColor: theme.palette.mono.white,
   },
   headerTop: {
     width: '100%',
-    padding: '20px',
+    height: '2.5rem',
+    padding: '1.25rem',
     justifyContent: 'center' as const,
     margin: 0,
   },
@@ -23,8 +25,8 @@ const CalendarContainerStyle = {
   },
   pickerModal: {
     position: 'absolute' as const,
-    top: '20px',
-    left: 'calc(50% - 140px)',
+    top: '1.25rem',
+    left: 'calc(50% - 8.75rem)',
   },
   topItem: {
     ...theme.font.titleLarge,
@@ -32,19 +34,21 @@ const CalendarContainerStyle = {
   dayContainer: {
     justifyContent: 'space-between' as const,
     width: '100%',
+    height: '1.875rem',
   },
   dayHeader: {
     width: 'calc(100% / 7)',
     margin: 0,
-    marginBottom: '5px',
+    marginBottom: '0.313rem',
   },
   day: {
     ...theme.font.text1,
   },
   dateContainer: {
     backgroundColor: theme.palette.mono.white,
-    padding: '20px',
+    padding: '1.25rem',
     overflow: 'hidden' as const,
+    height: 'calc(100% - 10.125rem)',
   },
 }
 

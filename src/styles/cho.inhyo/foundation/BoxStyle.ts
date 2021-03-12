@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 const BoxStyle = {
   box: styled.div`
-    margin: 5px 20px;
+    margin: 0.313rem 1.25rem;
     display: flex;
     justify-content: center;
     align-items: center;

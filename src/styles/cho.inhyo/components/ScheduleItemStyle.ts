@@ -12,7 +12,7 @@ const ScheduleItemStyle = {
     padding: 0.4rem 0;
 
     ${(props: StyledPropType) => css`
-      border-bottom: 1px solid ${props.theme.palette.mono.paleWhite};
+      border-bottom: 0.063rem solid ${props.theme.palette.mono.paleWhite};
 
       &:hover {
         background-color: ${props.theme.palette.mono.paleWhite};

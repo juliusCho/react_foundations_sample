@@ -67,51 +67,51 @@ const theme: ThemeType = {
   },
   font: {
     titleLarge: {
-      fontSize: '24px',
+      fontSize: '1.5rem',
       fontWeight: 900,
     },
     titleMedium: {
-      fontSize: '20px',
+      fontSize: '1.25rem',
       fontWeight: 700,
     },
     titleSmall: {
-      fontSize: '18px',
+      fontSize: '1.125rem',
       fontWeight: 900,
     },
     list1: {
-      fontSize: '16px',
+      fontSize: '1rem',
       fontWeight: 900,
     },
     list2: {
-      fontSize: '16px',
+      fontSize: '1rem',
       fontWeight: 500,
     },
     item1: {
-      fontSize: '14px',
+      fontSize: '0.875rem',
       fontWeight: 900,
     },
     item2: {
-      fontSize: '14px',
+      fontSize: '0.875rem',
       fontWeight: 700,
     },
     text1: {
-      fontSize: '14px',
+      fontSize: '0.875rem',
       fontWeight: 500,
     },
     text2: {
-      fontSize: '14px',
+      fontSize: '0.875rem',
       fontWeight: 500,
     },
     placeholder: {
-      fontSize: '14px',
+      fontSize: '0.875rem',
       fontWeight: 300,
     },
     sub: {
-      fontSize: '12px',
+      fontSize: '0.75rem',
       fontWeight: 500,
     },
     small: {
-      fontSize: '10px',
+      fontSize: '0.625rem',
       fontWeight: 500,
     },
   },

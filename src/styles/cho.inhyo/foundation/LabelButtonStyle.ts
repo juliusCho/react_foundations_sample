@@ -8,7 +8,7 @@ const LabelButonStyle = {
       font-size: ${props.theme.font.item1.fontSize};
     `}
     border: none;
-    border-radius: 10px;
+    border-radius: 0.625rem;
     display: flex;
     justify-content: center;
     align-items: center;

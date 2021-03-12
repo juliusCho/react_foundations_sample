@@ -7,7 +7,7 @@ const DueScheduleListStyle = {
     display: 'flex' as const,
     justifyContent: 'center' as const,
     alignItems: 'center' as const,
-    borderBottom: `1px solid ${theme.palette.mono.paleWhite}`,
+    borderBottom: `0.063rem solid ${theme.palette.mono.paleWhite}`,
     backgroundColor: 'transparent' as const,
     color: theme.palette.mono.gray,
     ...theme.font.list2,

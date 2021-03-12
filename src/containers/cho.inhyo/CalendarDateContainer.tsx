@@ -5,6 +5,7 @@ import Box from '../../foundations/cho.inhyo/Box'
 import CalendarDateContainerStyle from '../../styles/cho.inhyo/containers/CalendarDateContainerStyle'
 import * as helper from '../../utils/cho.inhyo/helpers'
 import { useIsMounted } from '../../utils/cho.inhyo/hooks'
+import Swipe from '../../utils/cho.inhyo/swiper'
 import {
   TestDataType,
   testIconData,
@@ -709,11 +710,17 @@ export default function CalendarDateContainer({
     if (!_dateBody?.current) return
 
     if (!actionProcessing) {
-      _dateBody.current.addEventListener('scroll', onScroll)
+      setTimeout(() => {
+        if (_dateBody.current) {
+          _dateBody.current.addEventListener('scroll', onScroll)
+        }
+      }, 100)
     } else {
-      const year = Number(yearMonth.substr(0, 4))
-      const month = Number(yearMonth.substr(4, 2)) - 1
-      focusMonth(year, month)
+      setTimeout(() => {
+        const year = Number(yearMonth.substr(0, 4))
+        const month = Number(yearMonth.substr(4, 2)) - 1
+        focusMonth(year, month)
+      }, 100)
     }
     const st = _dateBody?.current ? _dateBody.current.scrollTop : 0
     setLastScrollTop(() => st)
@@ -742,20 +749,54 @@ export default function CalendarDateContainer({
     }
   }
 
+  // 모바일 터치 스크롤 검사
+  const touch = (el: HTMLDivElement) => {
+    const swiper = new Swipe(el)
+    swiper.onUp(() => {
+      console.log(
+        '$#Y$##$YA#Y$',
+        new Date(
+          Number(yearMonth.substr(0, 4)),
+          Number(yearMonth.substr(4, 2)),
+          1,
+        ),
+      )
+      onClickDate(
+        new Date(
+          Number(yearMonth.substr(0, 4)),
+          Number(yearMonth.substr(4, 2)),
+          1,
+        ),
+      )
+    })
+    swiper.onDown(() => {
+      onClickDate(
+        new Date(
+          Number(yearMonth.substr(0, 4)),
+          Number(yearMonth.substr(4, 2)) - 2,
+          1,
+        ),
+      )
+    })
+    swiper.run()
+  }
+
   React.useLayoutEffect(() => {
     if (!isMounted()) return
 
     if (_dateBody?.current) {
-      _dateBody.current.onwheel = onWheel
+      if (helper.checkIsMobile()) {
+        touch(_dateBody.current)
+      } else {
+        _dateBody.current.onwheel = onWheel
+      }
     }
     return () => {
       if (_dateBody?.current) {
         _dateBody.current.onwheel = null
       }
     }
-  }, [isMounted, onWheel])
-
-  //
+  }, [isMounted, _dateBody?.current, helper.checkIsMobile, onWheel])
 
   return (
     <CalendarDateContainerStyle.container ref={_dateBody}>

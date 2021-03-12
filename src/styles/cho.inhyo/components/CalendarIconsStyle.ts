@@ -2,7 +2,7 @@ import theme from '../global/theme'
 
 const CalendarIconsStyle = {
   container: {
-    margin: '1px 10px',
+    margin: '0.063rem 0.625rem',
     justifyContent: 'flex-start' as const,
   },
   box: {
@@ -13,8 +13,8 @@ const CalendarIconsStyle = {
   icon: {
     color: theme.palette.mono.white,
     ...theme.font.text1,
-    width: '20px',
-    height: '20px',
+    width: '1.25rem',
+    height: '1.25rem',
   },
 }
 

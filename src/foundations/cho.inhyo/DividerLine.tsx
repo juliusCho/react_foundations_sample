@@ -15,12 +15,12 @@ export default function DividerLine({
   if (direction === 'vertical') {
     style.height = '100%'
     if (!('width' in style) && !className) {
-      style.width = '1px'
+      style.width = '0.063rem'
     }
   } else {
     style.width = '100%'
     if (!('height' in style) && !className) {
-      style.height = '1px'
+      style.height = '0.063rem'
     }
   }
 

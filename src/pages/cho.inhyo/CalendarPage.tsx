@@ -149,19 +149,20 @@ export default function CalendarPage({ platform }: Props) {
 
   const rightContainerStyle = {
     transition: 'width 0.5s',
-    height: '100%',
-    width: showDateSchedule && !!chosenDate ? '30%' : '0%',
-    borderLeft: `1px solid ${theme.palette.mono.paleWhite}`,
+    height: '100vh',
+    width: showDateSchedule && !!chosenDate ? 'calc(30vw - 0.063rem)' : '0%',
+    borderLeft: `0.063rem solid ${theme.palette.mono.paleWhite}`,
     backgroundColor: theme.palette.mono.white,
   }
 
   return (
     <div
       style={{
-        width: '100%',
+        width: '100vw',
         height: '100vh',
         display: 'flex' as const,
         justifyContent: 'center' as const,
+        overscrollBehavior: 'none' as const,
       }}>
       <div style={{ width: containerWidth }}>
         <CalendarContainer

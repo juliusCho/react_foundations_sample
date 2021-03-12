@@ -14,6 +14,7 @@ body {
 
   min-height: -webkit-fill-available;
   text-decoration: none;
+  overscroll-behavior: none;
 }
 
 code {

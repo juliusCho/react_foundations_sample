@@ -43,11 +43,11 @@ export default function LoginPage({ history }: RouteComponentProps) {
   }
 
   const showTimeStyle: React.CSSProperties = {
-    margin: '5px',
-    padding: '5px',
+    margin: '0.313rem',
+    padding: '0.313rem',
     width: '100%',
-    borderRadius: '30px',
-    minWidth: '105px',
+    borderRadius: '1.875rem',
+    minWidth: '6.563rem',
     backgroundColor: theme.palette.mono.paleWhite,
     cursor: 'pointer' as const,
   }

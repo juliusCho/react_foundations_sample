@@ -6,8 +6,8 @@ const TimePickerRangeStyle = {
     justify-content: center;
     align-items: center;
     position: absolute;
-    bottom: 70px;
-    left: 5px;
+    bottom: 4.375rem;
+    left: 0.313rem;
     width: 100%;
   `,
 }

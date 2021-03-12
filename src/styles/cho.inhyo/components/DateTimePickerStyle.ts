@@ -13,10 +13,10 @@ const DatePickerStyle = {
   `,
   container: styled.div`
     border: none;
-    border-radius: 10px;
+    border-radius: 0.625rem;
     z-index: 101;
     position: absolute;
-    width: 280px;
+    width: 17.5rem;
 
     & * {
       cursor: pointer;
@@ -24,7 +24,7 @@ const DatePickerStyle = {
 
     & .react-date-picker__calendar {
       z-index: 102;
-      width: 280px;
+      width: 17.5rem;
       bottom: unset !important;
     }
 
@@ -43,32 +43,32 @@ const DatePickerStyle = {
     &
       .react-date-picker__inputGroup__input
       .react-date-picker__inputGroup__year {
-      width: 30px;
+      width: 1.875rem;
     }
 
     &
       .react-date-picker__inputGroup__input
       .react-date-picker__inputGroup__month {
-      width: 15px;
+      width: 0.938rem;
     }
 
     &
       .react-date-picker__inputGroup__input
       .react-date-picker__inputGroup__date {
-      width: 15px;
+      width: 0.938rem;
     }
 
     & .react-calendar__navigation {
-      margin-bottom: 5px;
+      margin-bottom: 0.313rem;
     }
 
     & .react-calendar__navigation__label {
-      margin-top: 5px;
-      border-radius: 10px;
+      margin-top: 0.313rem;
+      border-radius: 0.625rem;
     }
 
     ${(props: StyledPropType) => css`
-      box-shadow: 0 0 10px ${props.theme.palette.mono.gray};
+      box-shadow: 0 0 0.625rem ${props.theme.palette.mono.gray};
       background-color: ${props.theme.palette.mono.white};
 
       & .react-calendar__navigation__label__labelText {
@@ -84,14 +84,14 @@ const DatePickerStyle = {
       & .react-date-picker {
         width: 100%;
         text-align: center;
-        border-radius: 30px;
+        border-radius: 1.875rem;
         background-color: ${props.theme.palette.mono.white};
       }
 
       & .react-date-picker__wrapper {
         border: none;
         color: ${props.theme.palette.mono.darkGray};
-        padding: 5px;
+        padding: 0.313rem;
       }
 
       & .react-date-picker__inputGroup input {
@@ -101,7 +101,7 @@ const DatePickerStyle = {
       }
       & .react-date-picker__inputGroup input:focus {
         background-color: ${props.theme.palette.mono.white};
-        border-radius: 30px;
+        border-radius: 1.875rem;
       }
       & .react-date-picker__inputGroup input:active {
         color: ${props.theme.palette.mono.lightGray};
@@ -115,7 +115,7 @@ const DatePickerStyle = {
       }
       & .react-date-picker__inputGroup__leadingZero:focus {
         background-color: ${props.theme.palette.mono.white};
-        border-radius: 30px;
+        border-radius: 1.875rem;
       }
       & .react-date-picker__inputGroup__leadingZero:focus {
         color: ${props.theme.palette.mono.paleWhite};
@@ -126,18 +126,18 @@ const DatePickerStyle = {
         border: none;
         background-color: transparent;
         z-index: 101;
-        padding: 5px;
+        padding: 0.313rem;
       }
 
       & .react-calendar__tile {
         background-color: ${props.theme.palette.mono.white};
         z-index: 104;
-        width: 40px;
-        height: 37px;
+        width: 2.5rem;
+        height: 2.313rem;
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 10px !important;
+        border-radius: 0.625rem !important;
       }
 
       & .react-calendar__tile:hover {
@@ -187,7 +187,7 @@ const DatePickerStyle = {
 
       &
         .react-calendar__tile--rangeBothEnds.react-calendar__year-view__months__month {
-        border-radius: 10px !important;
+        border-radius: 0.625rem !important;
       }
 
       & .react-calendar__tile:disabled {
@@ -212,8 +212,8 @@ const DatePickerStyle = {
 
       & .react-calendar__month-view__weekdays__weekday {
         color: ${props.theme.palette.mono.paleBlack};
-        width: 40px;
-        height: 40px;
+        width: 2.5rem;
+        height: 2.5rem;
         display: flex;
         justify-content: center;
         align-items: center;

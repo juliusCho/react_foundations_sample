@@ -137,7 +137,7 @@ export default React.memo(function CalendarDate({
 
     setCalendarSchedules(() =>
       scheduleStack
-        .filter((stack, idx) => idx < 10)
+        // .filter((stack, idx) => idx < 10)
         .map((stack) => {
           const found = stack.find(
             (schedule) =>
@@ -282,7 +282,7 @@ export default React.memo(function CalendarDate({
                 new Date(actualYear, actualMonth, day),
               )
             ? undefined
-            : `1px solid ${theme.palette.mono.paleWhite}`,
+            : `0.063rem solid ${theme.palette.mono.paleWhite}`,
       }}
       refObj={_date}
       id={`${actualYear}-${helper.makeTwoDigits(
@@ -293,12 +293,12 @@ export default React.memo(function CalendarDate({
           value={day === 1 ? `${actualMonth + 1}/${day}` : String(day)}
           style={{
             ...theme.font.sub,
-            marginRight: '10px',
+            marginRight: '0.625rem',
             border: 'none' as const,
             borderRadius: '50%',
-            padding: '9px 5px 5px 5px',
-            width: '24px',
-            height: '19px',
+            padding: '0.563rem 0.313rem 0.313rem 0.313rem',
+            width: '1.5rem',
+            height: '1.188rem',
             textAlign: 'center' as const,
             backgroundColor: isToday
               ? polished.lighten(thisMonth ? 0 : 0.3, theme.palette.main.red)
@@ -325,7 +325,7 @@ export default React.memo(function CalendarDate({
       <div
         style={{
           ...CalendarDateStyle.contents,
-          marginTop: '5px',
+          marginTop: '0.313rem',
           opacity: !thisMonth ? 0.2 : undefined,
           position:
             scheduleStack.length > 0 ? 'relative' : ('absolute' as const),

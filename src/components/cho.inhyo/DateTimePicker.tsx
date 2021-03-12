@@ -50,7 +50,7 @@ export default function DateTimePicker({
     datePick ? 'month' : 'year',
   )
   const [containerHeight, setContainerHeight] = React.useState<string>(
-    timeDisplay ? '470px' : selectRange ? '420px' : '350px',
+    timeDisplay ? '29.375rem' : selectRange ? '26.25rem' : '21.875rem',
   )
   const [value, setValue] = React.useState<
     Date | Array<Date | undefined> | undefined
@@ -141,17 +141,17 @@ export default function DateTimePicker({
       switch (viewMode) {
         case 'month':
           setContainerHeight(() =>
-            timeDisplay ? '470px' : selectRange ? '420px' : '350px',
+            timeDisplay ? '29.375rem' : selectRange ? '26.25rem' : '21.875rem',
           )
           break
         case 'century':
           setContainerHeight(() =>
-            timeDisplay ? '570px' : selectRange ? '520px' : '450px',
+            timeDisplay ? '35.625rem' : selectRange ? '32.5rem' : '28.125rem',
           )
           break
         default:
           setContainerHeight(() =>
-            timeDisplay ? '500px' : selectRange ? '450px' : '380px',
+            timeDisplay ? '31.25rem' : selectRange ? '28.125rem' : '23.75rem',
           )
           break
       }
@@ -372,7 +372,7 @@ export default function DateTimePicker({
         onClick={onClickExterior}
         style={{
           display: isOpen ? 'block' : 'none',
-          height: `calc(1000% + ${calculatedTop || '1px'})`,
+          height: `calc(1000% + ${calculatedTop || '0.063rem'})`,
         }}
       />
       <DateTimePickerStyle.container
@@ -441,11 +441,11 @@ export default function DateTimePicker({
             onClick={() => changeDate(onChange(value))}
             style={{
               position: 'absolute' as const,
-              bottom: '20px',
+              bottom: '1.25rem',
               color: theme.palette.mono.white,
               backgroundColor: theme.palette.main.blue,
-              padding: '5px',
-              minWidth: '50px',
+              padding: '0.313rem',
+              minWidth: '3.125rem',
               left: '40%',
             }}
           />

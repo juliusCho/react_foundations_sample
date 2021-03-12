@@ -90,7 +90,10 @@ export default React.memo(function CalendarIcons({
           {endingTodoCnt > 0 && (
             <Box
               direction="horizontal"
-              style={{ ...CalendarIconsStyle.container, marginRight: '20px' }}>
+              style={{
+                ...CalendarIconsStyle.container,
+                marginRight: '1.25rem',
+              }}>
               <IconButton
                 icon={Icons.MISSION}
                 style={{

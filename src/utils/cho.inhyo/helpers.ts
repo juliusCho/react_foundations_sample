@@ -172,3 +172,10 @@ export const getNewDateUponBeforeOrAfter = (
   }
   return new Date(year, month, day)
 }
+
+// Check if current device is mobile
+export const checkIsMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    window.navigator.userAgent,
+  )
+}

@@ -1,7 +1,7 @@
 const stick = {
-  margin: '1px 0 0 0',
+  margin: '0.063rem 0 0 0',
   width: '100%',
-  height: '20px',
+  height: '1.25rem',
   border: 'none' as const,
 }
 
@@ -18,9 +18,9 @@ const CalendarSchedulesStyle = {
     justifyContent: 'flex-start' as const,
   },
   box: {
-    margin: '1px 0 0 0',
+    margin: '0.063rem 0 0 0',
     width: '100%',
-    height: '20px',
+    height: '1.25rem',
     position: 'relative' as const,
     display: 'flex' as const,
     alignItems: 'center' as const,

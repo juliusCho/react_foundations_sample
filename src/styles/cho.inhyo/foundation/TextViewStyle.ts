@@ -9,7 +9,7 @@ const TextViewStyle = {
       color: ${props.theme.palette.mono.black};
     `}
     background-color: transparent;
-    margin: 5px;
+    margin: 0.313rem;
     wite-space: break-spaces;
     word-break: break-word;
   `,

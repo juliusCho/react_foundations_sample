@@ -26,14 +26,18 @@ export default React.memo(function CalendarSchedules({ schedules }: Props) {
 
   const maxCount = 10
   const extraCount =
-    schedules.filter((schedule) => schedule !== null).length - maxCount
+    schedules.length > maxCount
+      ? schedules.filter(
+          (schedule, idx) => idx >= maxCount && schedule !== null,
+        ).length
+      : 0
 
   return (
     <div style={CalendarSchedulesStyle.container}>
       {schedules
         .filter((schedule, idx) => idx <= maxCount)
         .map((schedule, idx) =>
-          idx === maxCount && extraCount > 0 ? (
+          idx === maxCount && extraCount > 1 ? (
             <TextView
               key={'more_' + String(idx)}
               value={t('calendar.moreSchedule', { count: extraCount })}
@@ -41,7 +45,7 @@ export default React.memo(function CalendarSchedules({ schedules }: Props) {
                 ...CalendarSchedulesStyle.nullStyle,
                 ...theme.font.item1,
                 color: theme.palette.mono.darkGray,
-                marginLeft: '10px',
+                marginLeft: '0.625rem',
               }}
             />
           ) : schedule === null ? (
@@ -62,10 +66,10 @@ export default React.memo(function CalendarSchedules({ schedules }: Props) {
                   display: schedule.sub ? 'flex' : 'none',
                   borderRadius: schedule.subStart
                     ? schedule.subEnd
-                      ? '30px'
-                      : '30px 0px 0px 30px'
+                      ? '1.875rem'
+                      : '1.875rem 0px 0px 1.875rem'
                     : schedule.subEnd
-                    ? '0px 30px 30px 0px'
+                    ? '0px 1.875rem 1.875rem 0px'
                     : 'unset',
                 }}
               />
@@ -77,10 +81,10 @@ export default React.memo(function CalendarSchedules({ schedules }: Props) {
                   backgroundColor: schedule.color,
                   borderRadius: schedule.start
                     ? schedule.end
-                      ? '30px'
-                      : '30px 0px 0px 30px'
+                      ? '1.875rem'
+                      : '1.875rem 0px 0px 1.875rem'
                     : schedule.end
-                    ? '0px 30px 30px 0px'
+                    ? '0px 1.875rem 1.875rem 0px'
                     : 'unset',
                 }}
               />
@@ -114,10 +118,10 @@ export default React.memo(function CalendarSchedules({ schedules }: Props) {
                 backgroundColor: schedule.color,
                 borderRadius: schedule.start
                   ? schedule.end
-                    ? '30px'
-                    : '30px 0px 0px 30px'
+                    ? '1.875rem'
+                    : '1.875rem 0px 0px 1.875rem'
                   : schedule.end
-                  ? '0px 30px 30px 0px'
+                  ? '0px 1.875rem 1.875rem 0px'
                   : 'unset',
               }}
             />

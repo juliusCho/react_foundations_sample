@@ -108,6 +108,7 @@ export default function CalendarContainer({
 
   const onChange = (increment: boolean) => {
     setActionProcessing(true)
+
     if (month === 1) {
       if (increment) {
         setMonth(month + 1)

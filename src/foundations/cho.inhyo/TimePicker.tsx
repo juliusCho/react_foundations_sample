@@ -49,16 +49,17 @@ export default function TimePicker({
       className={clearIcon}
       style={{
         color: '#3067A8',
-        width: '20px',
-        height: '20px',
-        fontSize: '14px',
+        width: '1.25rem',
+        height: '1.25rem',
+        fontSize: '0.875rem',
         position: 'absolute' as const,
-        bottom: value ? '2px' : '8px',
+        bottom: value ? '0.125rem' : '0.5rem',
         left: value
           ? id === 'end'
-            ? '6.5px'
-            : '5.5px'
-          : (id ? (id === 'start' ? '25px' : '152px') : undefined) || '11px',
+            ? '0.406rem'
+            : '0.344rem'
+          : (id ? (id === 'start' ? '1.563rem' : '9.5rem') : undefined) ||
+            '0.688rem',
       }}
       onClick={clickedClear}
     />
@@ -68,7 +69,7 @@ export default function TimePicker({
     <TimePickerStyle.container style={style}>
       <TextView
         value={date ? moment(date).format('YYYY/MM/DD') : ''}
-        style={{ width: '90px', ...theme.font.text2 }}
+        style={{ width: '5.625rem', ...theme.font.text2 }}
       />
       <TimePickerStyle.picker>
         <TmPicker

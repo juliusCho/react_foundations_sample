@@ -2,7 +2,7 @@ import theme from '../global/theme'
 
 const GoSignInStyle = {
   container: {
-    marginTop: '20px',
+    marginTop: '1.25rem',
   },
   text: theme.font.text2,
   button: {

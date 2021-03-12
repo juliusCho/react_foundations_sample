@@ -2,14 +2,14 @@ import theme from '../global/theme'
 
 const SocialLoginStyle = {
   container: {
-    marginTop: '15px',
+    marginTop: '0.938rem',
   },
   icon: {
-    width: '35px',
-    height: '35px',
+    width: '2.188rem',
+    height: '2.188rem',
     color: theme.palette.mono.white,
-    borderRadius: '5px',
-    margin: '5px',
+    borderRadius: '0.313rem',
+    margin: '0.313rem',
   },
   naver: {
     backgroundColor: theme.palette.naver,

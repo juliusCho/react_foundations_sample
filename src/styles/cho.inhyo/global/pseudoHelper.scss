@@ -23,13 +23,13 @@ $apple: #222;
 
 $font-basic: NotoSansCJKkr-Regular;
 $font-bold: NotoSansCJKkr-Bold;
-$font-xSmall: 8px;
-$font-small: 10px;
-$font-xsmedium: 13px;
-$font-smedium: 15px;
-$font-medium: 16px;
-$font-sbig: 18px;
-$font-big: 23px;
+$font-xSmall: 0.5rem;
+$font-small: 0.625rem;
+$font-xsmedium: 0.813rem;
+$font-smedium: 0.938rem;
+$font-medium: 1rem;
+$font-sbig: 1.125rem;
+$font-big: 1.438rem;
 
 *:focus {
   outline: none;
@@ -131,17 +131,17 @@ $font-big: 23px;
 
 .modal-button-cancel {
   color: $black;
-  border: 1px solid $black;
+  border: 0.063rem solid $black;
 }
 .modal-button-cancel:active {
   color: lighten($black, 50%);
-  border: 1px solid lighten($black, 50%);
+  border: 0.063rem solid lighten($black, 50%);
 }
 
 @keyframes slide {
   0% {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-0.625rem);
   }
   5% {
     opacity: 1;
@@ -153,6 +153,6 @@ $font-big: 23px;
   }
   100% {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-0.625rem);
   }
 }

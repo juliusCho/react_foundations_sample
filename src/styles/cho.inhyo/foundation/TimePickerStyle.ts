@@ -10,14 +10,14 @@ const TimePickerStyle = {
     flex-direction: column;
     margin-left: 30%;
     position: absolute;
-    bottom: 70px;
+    bottom: 4.375rem;
   `,
   picker: styled.div`
-    width: calc(100% - 5px);
-    height: 35px;
+    width: calc(100% - 0.313rem);
+    height: 2.188rem;
     cursor: pointer;
     border: none;
-    border-radius: 30px;
+    border-radius: 1.875rem;
 
     & * {
       cursor: pointer;
@@ -30,23 +30,23 @@ const TimePickerStyle = {
 
     ${(props: StyledPropType) => css`
       & .time-picker .rc-time-picker-input {
-        padding-right: 15px;
+        padding-right: 0.938rem;
         background-color: ${props.theme.palette.mono.lightGray};
         font-weight: ${props.theme.font.text1.fontWeight};
         font-size: ${props.theme.font.text1.fontSize};
         border: none;
-        border-radius: 30px;
+        border-radius: 1.875rem;
         color: ${props.theme.palette.mono.black};
-        height: 29px;
+        height: 1.813rem;
       }
 
       & .time-picker .rc-time-picker-clear {
-        padding-right: 15px;
+        padding-right: 0.938rem;
       }
 
       & .rc-time-picker-clear-icon {
         color: ${props.theme.palette.main.red};
-        margin-bottom: 2px;
+        margin-bottom: 0.125rem;
       }
 
       & .rc-time-picker-panel {

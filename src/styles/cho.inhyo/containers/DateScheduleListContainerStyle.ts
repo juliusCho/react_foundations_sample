@@ -3,22 +3,18 @@ import theme, { StyledPropType } from '../global/theme'
 
 const DateScheduleListContainerStyle = {
   container: styled.div`
-    width: 100%;
+    width: calc(100% - 0.125rem);
     height: 100%;
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
 
     &::-webkit-scrollbar {
       display: none;
     }
 
     ${(props: StyledPropType) => css`
-      border: 1px solid ${props.theme.palette.mono.pale};
+      border: 0.063rem solid ${props.theme.palette.mono.pale};
       background-color: ${props.theme.palette.mono.white};
     `}
   `,
@@ -28,6 +24,7 @@ const DateScheduleListContainerStyle = {
     alignItems: 'center' as const,
     width: '100%',
     height: '3rem',
+    borderBottom: theme.palette.mono.lightGray,
     ...theme.font.titleSmall,
   },
   sectionTitle: {
@@ -36,7 +33,7 @@ const DateScheduleListContainerStyle = {
     width: 'calc(100% - 1.6rem)',
     height: '2.5rem',
     padding: '0 0.8rem',
-    borderBottom: `1px solid ${theme.palette.mono.lightGray}`,
+    borderBottom: `0.063rem solid ${theme.palette.mono.lightGray}`,
     backgroundColor: theme.palette.mono.paleWhite,
     color: theme.palette.mono.gray,
     cursor: 'pointer' as const,

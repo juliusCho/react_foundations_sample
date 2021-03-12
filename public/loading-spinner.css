@@ -14,9 +14,9 @@
   animation-iteration-count: infinite;
 }
 .ic-Spin-cycle--classic-load {
-  margin: 6px 12px;
-  width: 36px;
-  height: 36px;
+  margin: 0.375rem 0.75rem;
+  width: 2.25rem;
+  height: 2.25rem;
   margin-top: 90%;
 }
 @keyframes spin-cycle-load {
@@ -30,8 +30,8 @@
   }
 }
 .ic-Spin-cycle--classic-load > svg {
-  width: 36px;
-  height: 36px;
+  width: 2.25rem;
+  height: 2.25rem;
 }
 .ic-Spin-cycle--classic-load > svg > * {
   fill: #707070;

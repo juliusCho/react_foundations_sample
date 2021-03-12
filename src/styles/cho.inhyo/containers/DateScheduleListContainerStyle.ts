@@ -28,6 +28,7 @@ const DateScheduleListContainerStyle = {
     zIndex: 1,
     backgroundColor: theme.palette.mono.lightGray,
     border: `1px solid ${theme.palette.mono.lightGray}`,
+    cursor: 'pointer' as const,
     ...theme.font.titleSmall,
   },
   sectionTitle: {

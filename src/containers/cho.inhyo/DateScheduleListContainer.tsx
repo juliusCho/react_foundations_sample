@@ -7,7 +7,9 @@ import IconButton from '../../foundations/cho.inhyo/IconButton'
 import TextView from '../../foundations/cho.inhyo/TextView'
 import DateScheduleListContainerStyle from '../../styles/cho.inhyo/containers/DateScheduleListContainerStyle'
 import * as helper from '../../utils/cho.inhyo/helpers'
+import { useIsMounted } from '../../utils/cho.inhyo/hooks'
 import { Months } from '../../utils/cho.inhyo/i18n'
+import Swipe from '../../utils/cho.inhyo/swiper'
 import {
   TestDataType,
   TestIconDataType,
@@ -20,6 +22,7 @@ interface Props {
   channels: TestIconDataType[]
   cards: TestIconDataType[]
   todos: TestIconDataType[]
+  onClickTitle: (date: Date) => void
 }
 
 export default function DateScheduleListContainer({
@@ -28,13 +31,34 @@ export default function DateScheduleListContainer({
   channels,
   cards,
   todos,
+  onClickTitle,
 }: Props) {
   const { t } = useTranslation()
+
+  const _container: React.RefObject<HTMLDivElement> = React.createRef()
 
   const [showScheduleList, setShowScheduleList] = React.useState(true)
   const [showChannelList, setShowChannelList] = React.useState(true)
   const [showCardList, setShowCardList] = React.useState(true)
   const [showTodoList, setShowTodoList] = React.useState(true)
+
+  const isMounted = useIsMounted()
+
+  const touch = (el: HTMLDivElement) => {
+    const swiper = new Swipe(el)
+    swiper.onDown(() => {
+      onClickTitle(date)
+    })
+    swiper.run()
+  }
+
+  React.useLayoutEffect(() => {
+    if (!isMounted()) return
+    if (!helper.checkIsMobile()) return
+    if (!_container?.current) return
+
+    touch(_container.current)
+  }, [isMounted, _container?.current, helper.checkIsMobile])
 
   const onClickScheduleShow = () => setShowScheduleList(!showScheduleList)
   const onClickChannelShow = () => setShowChannelList(!showChannelList)
@@ -66,7 +90,7 @@ export default function DateScheduleListContainer({
         width: '100%',
         left: 0,
         top: 'unset',
-        bottom: 'calc(50% - 6.6rem)',
+        bottom: 'calc(70% - 5.2rem)',
       }
     : {
         width: 'calc(30% - 0.063rem)',
@@ -78,6 +102,8 @@ export default function DateScheduleListContainer({
   return (
     <DateScheduleListContainerStyle.container>
       <div
+        ref={_container}
+        onClick={() => onClickTitle(date)}
         style={{
           ...DateScheduleListContainerStyle.date,
           ...topLabelStyle,

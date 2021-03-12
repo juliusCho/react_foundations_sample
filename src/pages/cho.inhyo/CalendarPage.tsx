@@ -126,7 +126,7 @@ export default function CalendarPage() {
 
       setContainerWidth(() =>
         helper.checkIsMobile()
-          ? { width: '100%', height: '50%' }
+          ? { width: '100%', height: '30%' }
           : { width: '70%', height: '100%' },
       )
       setShowDateSchedule(() => true)
@@ -154,7 +154,7 @@ export default function CalendarPage() {
   if (helper.checkIsMobile()) {
     rightContainerStyle.transition = 'height 0.5s'
     rightContainerStyle.height =
-      showDateSchedule && !!chosenDate ? 'calc(50% - 0.063rem)' : '0%'
+      showDateSchedule && !!chosenDate ? 'calc(70% - 0.063rem)' : '0%'
     rightContainerStyle.width = '100%'
   } else {
     rightContainerStyle.transition = 'width 0.5s'
@@ -162,6 +162,8 @@ export default function CalendarPage() {
     rightContainerStyle.width =
       showDateSchedule && !!chosenDate ? 'calc(50% - 0.063rem)' : '0%'
   }
+  rightContainerStyle.MozTransition = rightContainerStyle.transition
+  rightContainerStyle.WebkitTransition = rightContainerStyle.transition
 
   return (
     <div
@@ -183,6 +185,7 @@ export default function CalendarPage() {
       <div style={rightContainerStyle}>
         {showDateSchedule && !!chosenDate && (
           <DateScheduleListContainer
+            onClickTitle={onClickDate}
             date={chosenDate || new Date()}
             schedules={schedules}
             channels={endingChannels}

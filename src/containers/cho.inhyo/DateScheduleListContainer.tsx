@@ -6,6 +6,7 @@ import Box from '../../foundations/cho.inhyo/Box'
 import IconButton from '../../foundations/cho.inhyo/IconButton'
 import TextView from '../../foundations/cho.inhyo/TextView'
 import DateScheduleListContainerStyle from '../../styles/cho.inhyo/containers/DateScheduleListContainerStyle'
+import * as helper from '../../utils/cho.inhyo/helpers'
 import { Months } from '../../utils/cho.inhyo/i18n'
 import {
   TestDataType,
@@ -14,7 +15,6 @@ import {
 import { Icons } from '../../utils/cho.inhyo/types'
 
 interface Props {
-  platform: 'web' | 'mobile'
   date: Date
   schedules: TestDataType[]
   channels: TestIconDataType[]
@@ -23,7 +23,6 @@ interface Props {
 }
 
 export default function DateScheduleListContainer({
-  platform,
   date,
   schedules,
   channels,
@@ -62,9 +61,27 @@ export default function DateScheduleListContainer({
   const month = Number(moment(date).format('MM')) - 1
   const day = Number(moment(date).format('DD'))
 
+  const topLabelStyle = helper.checkIsMobile()
+    ? {
+        width: '100%',
+        left: 0,
+        top: 'unset',
+        bottom: 'calc(50% - 6.6rem)',
+      }
+    : {
+        width: 'calc(30% - 0.063rem)',
+        left: 'calc(70% + 0.063rem)',
+        top: 0,
+        bottom: 'unset',
+      }
+
   return (
     <DateScheduleListContainerStyle.container>
-      <div style={DateScheduleListContainerStyle.date}>
+      <div
+        style={{
+          ...DateScheduleListContainerStyle.date,
+          ...topLabelStyle,
+        }}>
         {t('calendar.yearMonth', {
           year,
           month: t(`calendar.${Months[month]}`),

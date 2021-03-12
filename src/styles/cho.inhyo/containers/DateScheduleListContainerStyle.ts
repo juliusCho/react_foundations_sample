@@ -4,7 +4,8 @@ import theme, { StyledPropType } from '../global/theme'
 const DateScheduleListContainerStyle = {
   container: styled.div`
     width: calc(100% - 0.125rem);
-    height: 100%;
+    height: calc(100% - 3.063rem);
+    padding-top: 3.063rem;
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -22,9 +23,11 @@ const DateScheduleListContainerStyle = {
     display: 'flex' as const,
     justifyContent: 'center' as const,
     alignItems: 'center' as const,
-    width: '100%',
     height: '3rem',
-    borderBottom: theme.palette.mono.lightGray,
+    position: 'absolute' as const,
+    zIndex: 1,
+    backgroundColor: theme.palette.mono.lightGray,
+    border: `1px solid ${theme.palette.mono.lightGray}`,
     ...theme.font.titleSmall,
   },
   sectionTitle: {

@@ -4,6 +4,7 @@ import Recoil from 'recoil'
 import CalendarContainer from '../../containers/cho.inhyo/CalendarContainer'
 import DateScheduleListContainer from '../../containers/cho.inhyo/DateScheduleListContainer'
 import theme from '../../styles/cho.inhyo/global/theme'
+import * as helper from '../../utils/cho.inhyo/helpers'
 import { useIsMounted } from '../../utils/cho.inhyo/hooks'
 import { loadingState } from '../../utils/cho.inhyo/states'
 import {
@@ -13,17 +14,16 @@ import {
   testScheduleData,
 } from '../../utils/cho.inhyo/testScheduleData'
 
-interface Props {
-  platform: 'web' | 'mobile'
-}
-
-export default function CalendarPage({ platform }: Props) {
+export default function CalendarPage() {
   const setLoading = Recoil.useSetRecoilState(loadingState)
 
   const [baseDate, setBaseDate] = React.useState<Date>(new Date())
   const [chosenDate, setChosenDate] = React.useState<Date | undefined>()
   const [showDateSchedule, setShowDateSchedule] = React.useState(false)
-  const [containerWidth, setContainerWidth] = React.useState('100%')
+  const [
+    containerWidth,
+    setContainerWidth,
+  ] = React.useState<React.CSSProperties>({ width: '100%', height: '100%' })
   const [schedules, setSchedules] = React.useState<TestDataType[]>([])
   const [endingChannels, setEndingChannels] = React.useState<
     TestIconDataType[]
@@ -104,10 +104,7 @@ export default function CalendarPage({ platform }: Props) {
     if (isMounted()) {
       if (doubleClicked) {
         setShowDateSchedule(() => false)
-
-        if (platform === 'web') {
-          setContainerWidth(() => '70%')
-        }
+        setContainerWidth(() => ({ width: '100%', height: '100%' }))
         setShowCreateSchedule(() => true)
 
         return
@@ -121,15 +118,17 @@ export default function CalendarPage({ platform }: Props) {
           0 ||
         !chosenDate
       ) {
-        setContainerWidth(() => '100%')
+        setContainerWidth(() => ({ width: '100%', height: '100%' }))
         setShowDateSchedule(() => false)
         setShowCreateSchedule(() => false)
         return
       }
 
-      if (platform === 'web') {
-        setContainerWidth(() => '70%')
-      }
+      setContainerWidth(() =>
+        helper.checkIsMobile()
+          ? { width: '100%', height: '50%' }
+          : { width: '70%', height: '100%' },
+      )
       setShowDateSchedule(() => true)
     }
   }, [
@@ -139,7 +138,7 @@ export default function CalendarPage({ platform }: Props) {
     endingCards.length,
     endingTodos.length,
     chosenDate,
-    platform,
+    helper.checkIsMobile,
     doubleClicked,
   ])
 
@@ -147,12 +146,21 @@ export default function CalendarPage({ platform }: Props) {
     setBaseDate(date)
   }
 
-  const rightContainerStyle = {
-    transition: 'width 0.5s',
-    height: '100vh',
-    width: showDateSchedule && !!chosenDate ? 'calc(30vw - 0.063rem)' : '0%',
+  const rightContainerStyle: React.CSSProperties = {
     borderLeft: `0.063rem solid ${theme.palette.mono.paleWhite}`,
     backgroundColor: theme.palette.mono.white,
+  }
+
+  if (helper.checkIsMobile()) {
+    rightContainerStyle.transition = 'height 0.5s'
+    rightContainerStyle.height =
+      showDateSchedule && !!chosenDate ? 'calc(50% - 0.063rem)' : '0%'
+    rightContainerStyle.width = '100%'
+  } else {
+    rightContainerStyle.transition = 'width 0.5s'
+    rightContainerStyle.height = '100%'
+    rightContainerStyle.width =
+      showDateSchedule && !!chosenDate ? 'calc(50% - 0.063rem)' : '0%'
   }
 
   return (
@@ -160,11 +168,11 @@ export default function CalendarPage({ platform }: Props) {
       style={{
         width: '100vw',
         height: '100vh',
-        display: 'flex' as const,
+        display: helper.checkIsMobile() ? 'block' : 'flex',
         justifyContent: 'center' as const,
         overscrollBehavior: 'none' as const,
       }}>
-      <div style={{ width: containerWidth }}>
+      <div style={containerWidth}>
         <CalendarContainer
           baseDate={baseDate}
           onChangeMonth={onChangeMonth}
@@ -175,7 +183,6 @@ export default function CalendarPage({ platform }: Props) {
       <div style={rightContainerStyle}>
         {showDateSchedule && !!chosenDate && (
           <DateScheduleListContainer
-            platform={platform}
             date={chosenDate || new Date()}
             schedules={schedules}
             channels={endingChannels}

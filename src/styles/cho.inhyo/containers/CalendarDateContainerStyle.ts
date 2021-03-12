@@ -9,6 +9,7 @@ const CalendarDateContainerStyle = {
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    touch-action: pan-y;
 
     &::-webkit-scrollbar {
       display: none;

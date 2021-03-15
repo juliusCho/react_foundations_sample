@@ -638,12 +638,14 @@ export default function CalendarDateContainer({
   }, [isMounted, yearMonth, chosenDate])
 
   // 스크롤 이벤트
-  const onScroll = (e: Event) => {
+  const onScroll = (e?: Event) => {
     if (!isMounted()) return
     if (!_dateBody?.current) return
     if (!_dateList || _dateList.length === 0) return
 
-    e.preventDefault()
+    if (e) {
+      e.preventDefault()
+    }
 
     // 12일 날짜 영역의 최하단을 기준으로 월 포커스 발생
     const _foundList = _dateList.filter((_date) => {
@@ -753,14 +755,6 @@ export default function CalendarDateContainer({
   const touch = (el: HTMLDivElement) => {
     const swiper = new Swipe(el)
     swiper.onUp(() => {
-      console.log(
-        '$#Y$##$YA#Y$',
-        new Date(
-          Number(yearMonth.substr(0, 4)),
-          Number(yearMonth.substr(4, 2)),
-          1,
-        ),
-      )
       onClickDate(
         new Date(
           Number(yearMonth.substr(0, 4)),
@@ -786,6 +780,7 @@ export default function CalendarDateContainer({
 
     if (_dateBody?.current) {
       if (helper.checkIsMobile()) {
+        _dateBody.current.style.touchAction = 'none'
         touch(_dateBody.current)
       } else {
         _dateBody.current.onwheel = onWheel

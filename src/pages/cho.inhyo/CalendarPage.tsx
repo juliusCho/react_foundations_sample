@@ -3,7 +3,7 @@ import React from 'react'
 import Recoil from 'recoil'
 import CalendarContainer from '../../containers/cho.inhyo/CalendarContainer'
 import DateScheduleListContainer from '../../containers/cho.inhyo/DateScheduleListContainer'
-import theme from '../../styles/cho.inhyo/global/theme'
+import CalendarPageStyle from '../../styles/cho.inhyo/pages/CalendarPageStyle'
 import * as helper from '../../utils/cho.inhyo/helpers'
 import { useIsMounted } from '../../utils/cho.inhyo/hooks'
 import { loadingState } from '../../utils/cho.inhyo/states'
@@ -142,14 +142,32 @@ export default function CalendarPage() {
     doubleClicked,
   ])
 
+  const setVhProp = () => {
+    const vh = window.innerHeight * 0.01
+    document.documentElement.style.setProperty('--vh', `${vh}px`)
+  }
+
+  React.useEffect(() => {
+    if (!isMounted()) return
+
+    window.addEventListener('load', setVhProp)
+
+    return () => window.removeEventListener('load', setVhProp)
+  }, [])
+
+  React.useLayoutEffect(() => {
+    if (!isMounted()) return
+
+    window.addEventListener('resize', setVhProp)
+
+    return () => window.removeEventListener('resize', setVhProp)
+  }, [isMounted, setVhProp])
+
   const onChangeMonth = (date: Date) => {
     setBaseDate(date)
   }
 
-  const rightContainerStyle: React.CSSProperties = {
-    borderLeft: `0.063rem solid ${theme.palette.mono.paleWhite}`,
-    backgroundColor: theme.palette.mono.white,
-  }
+  const rightContainerStyle: React.CSSProperties = {}
 
   if (helper.checkIsMobile()) {
     rightContainerStyle.transition = 'height 0.5s'
@@ -166,13 +184,9 @@ export default function CalendarPage() {
   rightContainerStyle.WebkitTransition = rightContainerStyle.transition
 
   return (
-    <div
+    <CalendarPageStyle.container
       style={{
-        width: '100vw',
-        height: '100vh',
         display: helper.checkIsMobile() ? 'block' : 'flex',
-        justifyContent: 'center' as const,
-        overscrollBehavior: 'none' as const,
       }}>
       <div style={containerWidth}>
         <CalendarContainer
@@ -182,7 +196,7 @@ export default function CalendarPage() {
           onClick={onClickDate}
         />
       </div>
-      <div style={rightContainerStyle}>
+      <CalendarPageStyle.rightContainer style={rightContainerStyle}>
         {showDateSchedule && !!chosenDate && (
           <DateScheduleListContainer
             onClickTitle={onClickDate}
@@ -199,7 +213,7 @@ export default function CalendarPage() {
             date={chosenDate || new Date()}
           />
         )} */}
-      </div>
-    </div>
+      </CalendarPageStyle.rightContainer>
+    </CalendarPageStyle.container>
   )
 }
